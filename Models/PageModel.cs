@@ -1,0 +1,36 @@
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace MyBG.Models
+{
+    public class PageModel
+    {
+        public int Id { get; set; }
+        public string? Title { get; set; }
+        public string? TextBody { get; set; }
+        public string? Summary { get; set; }
+        [NotMapped]
+        public IFormFile? PageImage { get; set; }
+        public byte[]? PageImageArr { get; set; }
+        string? _returnFile;
+        public string? ReturnFile
+        {
+            get
+            {
+                try
+                {
+                    var base64 = Convert.ToBase64String(this.PageImageArr);
+
+                    return string.Format("data:image/jpg;base64,{0}", base64);
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+            set
+            {
+                _returnFile = value;
+            }
+        }
+    }
+}

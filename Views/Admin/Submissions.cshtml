@@ -1,0 +1,16 @@
+﻿@model PageModelContainer
+@{
+}
+
+@{
+	foreach(var pagey in Model.Pages)
+	{
+		if (pagey != null)
+		{
+			<span>
+				<h3>@pagey.Title</h3>
+			<div>@pagey.Summary</div>
+		</span>
+		}
+	}
+}
