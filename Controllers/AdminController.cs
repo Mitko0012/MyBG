@@ -14,7 +14,7 @@ namespace MyBG.Controllers
     public class Admin : Controller
     {
         ApplicationDbContext _dbContext;
-        public Admin(ApplicationDbContext context) 
+        public Admin(ApplicationDbContext context)
         {
             _dbContext = context;
         }
@@ -34,8 +34,37 @@ namespace MyBG.Controllers
         public IActionResult Submissions()
         {
             PageModelContainer cont = new PageModelContainer();
-            cont.Pages = _dbContext.Submissions.ToList();
+            cont.Pages = _dbContext.Pages.Where((x) => !x.Approved).ToList();
             return View(cont);
+        }
+        [Authorize(Roles = "Admin")]
+        public IActionResult PageAdmin(int id)
+        {
+            PageModel model = _dbContext.Pages.Find(id);
+            if (model != null && model.Approved == false)
+            {
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+        }
+        [Authorize(Roles = "Admin")]
+        public IActionResult SubmissionApprove(int id)
+        {
+            PageModel model = _dbContext.Pages.Find(id);
+            model.Approved = true;
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        [Authorize(Roles = "Admin")]
+        public IActionResult SubmissionDecline(int id)
+        {
+            PageModel model = _dbContext.Pages.Find(id);
+            _dbContext.Pages.Remove(model);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index");
         }
     }
 }

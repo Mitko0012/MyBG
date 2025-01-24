@@ -25,10 +25,23 @@ namespace MyBG.Controllers
         public IActionResult Index()
         {
             PageModelContainer container = new PageModelContainer();
-            container.Pages = _context.Submissions.ToList();
+            container.Pages = _context.Pages.Where((x) => x.Approved).ToList();
             return View(container);
         }
 
+        [Authorize]
+        public IActionResult PageViewer(int id)
+        {
+            PageModel model = _context.Pages.Find(id);
+            if (model == null || model.Approved == true)
+            {
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+        }
         [Authorize]
         public IActionResult Create()
         {
@@ -38,6 +51,10 @@ namespace MyBG.Controllers
         [HttpPost]
         public IActionResult CreatePost(PageModel page)
         {
+            if(!ModelState.IsValid)
+            {
+                return RedirectToAction("Create");
+            }
             using (var memoryStream = new MemoryStream())
             {
                 page.PageImage.CopyTo(memoryStream);
@@ -52,20 +69,11 @@ namespace MyBG.Controllers
                     ModelState.AddModelError("File", "The file is too large.");
                 }
                 if (!ModelState.IsValid)
-                {
-                    Console.WriteLine("ModelState is invalid. Errors:");
-                    foreach (var key in ModelState.Keys)
-                    {
-                        foreach (var error in ModelState[key].Errors)
-                        {
-                            Console.WriteLine($"Key: {key}, Error: {error.ErrorMessage}");
-                        }
-                    }
+                { 
                     return RedirectToAction("Create");
                 }
-                _context.Submissions.Add(page);
+                _context.Pages.Add(page);
                 _context.SaveChanges();
-                Console.WriteLine(page.Title);
                 return RedirectToAction("Index");
             }
         }

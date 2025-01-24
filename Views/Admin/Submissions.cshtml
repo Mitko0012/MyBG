@@ -7,10 +7,11 @@
 	{
 		if (pagey != null)
 		{
-			<span>
+			<div>
 				<h3>@pagey.Title</h3>
-			<div>@pagey.Summary</div>
-		</span>
+				<p>@pagey.Summary</p>
+				<a asp-action="PageAdmin" asp-route-id="@pagey.Id">View page</a>
+			</div>
 		}
 	}
 }

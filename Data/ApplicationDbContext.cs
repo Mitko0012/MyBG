@@ -7,7 +7,6 @@ namespace MyBG.Data
 {
     public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
-        public DbSet<PageModel> Submissions { get; set; }
         public DbSet<PageModel> Pages { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

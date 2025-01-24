@@ -4,5 +4,17 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-</div>
+@{
+	foreach(var pagey in Model.Pages)
+		{
+			if (pagey != null)
+			{
+			<div>
+				<h3>@pagey.Title</h3>
+				<p>@pagey.Summary</p>
+				<a asp-action="PageViewer" asp-route-id="@pagey.Id">View page</a>
+			</div>
+			}
+		}
+	}
+}
