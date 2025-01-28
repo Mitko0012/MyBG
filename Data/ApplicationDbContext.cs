@@ -8,6 +8,7 @@ namespace MyBG.Data
     public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
         public DbSet<PageModel> Pages { get; set; }
+        public DbSet<PFPModel> PFPs { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {

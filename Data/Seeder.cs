@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyModel;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.General;
+using MyBG.Models;
 using System.Security.Cryptography;
 
 namespace MyBG.Data
@@ -42,6 +43,8 @@ namespace MyBG.Data
 
                     // Create the admin user
                     var result = await manager.CreateAsync(adminUser, "1234Abc#");
+                    var pfp = new PFPModel { UserName = adminUser.UserName };
+                    context.PFPs.Add(pfp);
 
                     if (result.Succeeded)
                     {
@@ -53,6 +56,11 @@ namespace MyBG.Data
                 context.Pages.Add(new Models.PageModel { Title = "Sofia", Summary = "ee", TextBody = "Abdul", PageImageArr = [1] });
                 context.SaveChanges();
             }
+        }
+        public static void RegisterPFP(string username, ApplicationDbContext context)
+        {
+            var pfp = new PFPModel() { UserName = username };
+            context.SaveChanges();
         }
     }
 }
