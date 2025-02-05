@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyBG.Models
 {
@@ -10,6 +11,10 @@ namespace MyBG.Models
         public IFormFile FormFile { get; set; }
         public byte[]? Image { get; set; } = [0];
         string _returnFile;
+        public List<PageModel> PagesLiked { get; set; } = [];
+        public List<CommentModel> CommentsLiked { get; set; } = new List<CommentModel>();
+        public List<ForumQuestion> UpvotedForums { get; set; } = new List<ForumQuestion>();
+        public int PageLikeId { get; set; }
         public string? ReturnFile
         {
             get

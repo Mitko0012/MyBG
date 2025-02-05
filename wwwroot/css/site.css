@@ -20,3 +20,8 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.loginForm {
+    display: flex;
+    justify-content: center;
+}

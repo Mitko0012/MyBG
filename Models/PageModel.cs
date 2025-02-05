@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyBG.Models
@@ -16,8 +17,17 @@ namespace MyBG.Models
         [Required]
         public IFormFile? PageImage { get; set; }
         public byte[]? PageImageArr { get; set; }
+        public List<PFPModel> UsersLiked { get; set; } = [];
         string? _returnFile;
         public bool Approved { get; set; } = false;
+        [NotMapped]
+        public bool LikedByUser { get; set; }
+        public List<CommentModel> Comments { get; set; } = new List<CommentModel>();
+        public int CommentId { get; set; }
+        [NotMapped]
+        public string? Comment { get; set; } = "";
+        [NotMapped]
+        public int CommenntsToDisplay { get; set; } = 10;
         public string? ReturnFile
         {
             get

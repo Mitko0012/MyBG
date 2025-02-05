@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyModel;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.General;
 using MyBG.Models;
 using System.Security.Cryptography;
-
+    
 namespace MyBG.Data
 {
     public static class Seeder
@@ -32,17 +32,17 @@ namespace MyBG.Data
                     }
                 }
 
-                var adminUser = await manager.FindByEmailAsync("morkovbul2@gmail.com");
+                var adminUser = await manager.FindByEmailAsync("User1");
                 if (adminUser == null)
                 {
                     adminUser = new IdentityUser
                     {
-                        UserName = "morkovbul2@gmail.com",
-                        Email = "morkovbul2@gmail.com"
+                        UserName = "User1",
+                        Email = "User1"
                     };
 
                     // Create the admin user
-                    var result = await manager.CreateAsync(adminUser, "1234Abc#");
+                    var result = await manager.CreateAsync(adminUser, "Abc1234!");
                     var pfp = new PFPModel { UserName = adminUser.UserName };
                     context.PFPs.Add(pfp);
 
@@ -52,8 +52,8 @@ namespace MyBG.Data
                         await manager.AddToRoleAsync(adminUser, "Admin");
                     }
                 }
-                context.Pages.Add(new Models.PageModel { Title = "Sofia", Summary = "ee", TextBody = "Andibul" , PageImageArr = [1] });
-                context.Pages.Add(new Models.PageModel { Title = "Sofia", Summary = "ee", TextBody = "Abdul", PageImageArr = [1] });
+                context.Pages.Add(new Models.PageModel { Title = "Test-Town", Summary = "ee", TextBody = "Test-Text" , PageImageArr = [1] });
+                context.Pages.Add(new Models.PageModel { Title = "Test-Town", Summary = "ee", TextBody = "Test-Text", PageImageArr = [1] });
                 context.SaveChanges();
             }
         }

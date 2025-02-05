@@ -9,6 +9,8 @@ namespace MyBG.Data
     {
         public DbSet<PageModel> Pages { get; set; }
         public DbSet<PFPModel> PFPs { get; set; }
+        public DbSet<CommentModel> Comments { get; set; }
+        public DbSet<ForumQuestion> Posts { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -18,6 +20,11 @@ namespace MyBG.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<ForumQuestion>()
+                        .HasMany(x => x.Comment);
+            modelBuilder.Entity<CommentModel>()
+                        .HasMany(x => x.PostedOnForums);
         }
     }
 }

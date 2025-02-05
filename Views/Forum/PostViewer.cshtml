@@ -1,0 +1,36 @@
+﻿@model ForumQuestion
+
+<h1>@Model.Title</h1>
+<p>@Model.Text</p>
+<p>@Model.LikedUser.Count</p>
+<form asp-action="LikePost" asp-route-id="@Model.Id" method="Post">
+	<button type="submit">Like</button>
+</form>
+<form method="post" asp-action="CommentPost" asp-route-id="@Model.Id" enctype="multipart/form-data" asp-route-replyCount="@Model.CommentCount">
+	<label for="commentInput">Post comment</label>
+	<br />
+	<input id="commentInput" asp-for="CommentCurrent"/>
+	<button type="submit"></button>
+</form>
+@{
+	int count = 1;
+	foreach(CommentModel comment in Model.Comment)
+	{
+		<p>@comment.PFP.UserName</p>
+		<img src="@comment.PFP.ReturnFile"/>
+		<p>@comment.Text</p>
+		<form enctype="multipart/form-data" method="post" asp-action="LikeComment" asp-route-replyCount="@Model.CommentCount"asp-route-id="@comment.Id">
+			<p>@comment.LikedUser.Count</p>
+			<button type="submit"></button>
+		</form>
+		count++;
+		if(count >= Model.CommentCount)
+		{
+			break;
+		}
+	}
+	if(Model.Comment.Count > 0 &&  Model.Comment.Count > Model.CommentCount)
+	{
+		<a asp-action="PostViewer" asp-route-id="@Model.Id" asp-route-commentDisplayCount="@(count + 5)">Show 5 more comments</a>
+	}
+}

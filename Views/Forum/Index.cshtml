@@ -1,0 +1,19 @@
+﻿@model ForumContainer
+<h1>Posts</h1>
+<form asp-action="Index">
+	<select asp-for="SearchType" name="sortingType">
+		<option value="NewestFirst">Newest First</option>
+		<option value="MostLiked">Most Liked</option>
+		<option value="Search">Search</option>
+	</select>
+	<input asp-for="SearchString" name="searchString"/>
+	<button type="submit"></button>
+</form>
+@{
+	foreach(ForumQuestion i in Model.ForumPosts)
+	{
+		<a asp-action="PostViewer" asp-route-id="@i.Id" id="ForumPost">@i.Title</a>
+		<br />
+	}
+}
+<a asp-action="Add">Create new post</a>

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyBG.Data;
 
@@ -10,72 +11,14 @@ using MyBG.Data;
 namespace MyBG.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250129170602_comment")]
+    partial class comment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.11");
-
-            modelBuilder.Entity("CommentModelForumQuestion", b =>
-                {
-                    b.Property<int>("CommentId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("PostedOnForumsId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("CommentId", "PostedOnForumsId");
-
-                    b.HasIndex("PostedOnForumsId");
-
-                    b.ToTable("CommentModelForumQuestion");
-                });
-
-            modelBuilder.Entity("CommentModelPFPModel", b =>
-                {
-                    b.Property<int>("CommentsLikedId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("LikedUserId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("CommentsLikedId", "LikedUserId");
-
-                    b.HasIndex("LikedUserId");
-
-                    b.ToTable("CommentModelPFPModel");
-                });
-
-            modelBuilder.Entity("CommentModelPageModel", b =>
-                {
-                    b.Property<int>("CommentsId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("PagesId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("CommentsId", "PagesId");
-
-                    b.HasIndex("PagesId");
-
-                    b.ToTable("CommentModelPageModel");
-                });
-
-            modelBuilder.Entity("ForumQuestionPFPModel", b =>
-                {
-                    b.Property<int>("LikedUserId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("UpvotedForumsId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("LikedUserId", "UpvotedForumsId");
-
-                    b.HasIndex("UpvotedForumsId");
-
-                    b.ToTable("ForumQuestionPFPModel");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -159,6 +102,9 @@ namespace MyBG.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("PageModelId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("PasswordHash")
                         .HasColumnType("TEXT");
 
@@ -186,6 +132,8 @@ namespace MyBG.Migrations
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
+
+                    b.HasIndex("PageModelId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -273,54 +221,6 @@ namespace MyBG.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("MyBG.Models.CommentModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("PageId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("PostId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("MyBG.Models.ForumQuestion", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("Date");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Posts");
-                });
-
             modelBuilder.Entity("MyBG.Models.PFPModel", b =>
                 {
                     b.Property<int>("Id")
@@ -353,7 +253,7 @@ namespace MyBG.Migrations
                     b.Property<bool>("Approved")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CommentId")
+                    b.Property<int?>("PFPModelId")
                         .HasColumnType("INTEGER");
 
                     b.Property<byte[]>("PageImageArr")
@@ -376,82 +276,9 @@ namespace MyBG.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PFPModelId");
+
                     b.ToTable("Pages");
-                });
-
-            modelBuilder.Entity("PFPModelPageModel", b =>
-                {
-                    b.Property<int>("PagesLikedId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("UsersLikedId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("PagesLikedId", "UsersLikedId");
-
-                    b.HasIndex("UsersLikedId");
-
-                    b.ToTable("PFPModelPageModel");
-                });
-
-            modelBuilder.Entity("CommentModelForumQuestion", b =>
-                {
-                    b.HasOne("MyBG.Models.CommentModel", null)
-                        .WithMany()
-                        .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MyBG.Models.ForumQuestion", null)
-                        .WithMany()
-                        .HasForeignKey("PostedOnForumsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CommentModelPFPModel", b =>
-                {
-                    b.HasOne("MyBG.Models.CommentModel", null)
-                        .WithMany()
-                        .HasForeignKey("CommentsLikedId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MyBG.Models.PFPModel", null)
-                        .WithMany()
-                        .HasForeignKey("LikedUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CommentModelPageModel", b =>
-                {
-                    b.HasOne("MyBG.Models.CommentModel", null)
-                        .WithMany()
-                        .HasForeignKey("CommentsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MyBG.Models.PageModel", null)
-                        .WithMany()
-                        .HasForeignKey("PagesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ForumQuestionPFPModel", b =>
-                {
-                    b.HasOne("MyBG.Models.PFPModel", null)
-                        .WithMany()
-                        .HasForeignKey("LikedUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MyBG.Models.ForumQuestion", null)
-                        .WithMany()
-                        .HasForeignKey("UpvotedForumsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -461,6 +288,13 @@ namespace MyBG.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
+                {
+                    b.HasOne("MyBG.Models.PageModel", null)
+                        .WithMany("UsersLiked")
+                        .HasForeignKey("PageModelId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -505,28 +339,21 @@ namespace MyBG.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MyBG.Models.CommentModel", b =>
+            modelBuilder.Entity("MyBG.Models.PageModel", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
+                    b.HasOne("MyBG.Models.PFPModel", null)
+                        .WithMany("PagesLiked")
+                        .HasForeignKey("PFPModelId");
                 });
 
-            modelBuilder.Entity("PFPModelPageModel", b =>
+            modelBuilder.Entity("MyBG.Models.PFPModel", b =>
                 {
-                    b.HasOne("MyBG.Models.PageModel", null)
-                        .WithMany()
-                        .HasForeignKey("PagesLikedId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("PagesLiked");
+                });
 
-                    b.HasOne("MyBG.Models.PFPModel", null)
-                        .WithMany()
-                        .HasForeignKey("UsersLikedId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            modelBuilder.Entity("MyBG.Models.PageModel", b =>
+                {
+                    b.Navigation("UsersLiked");
                 });
 #pragma warning restore 612, 618
         }
