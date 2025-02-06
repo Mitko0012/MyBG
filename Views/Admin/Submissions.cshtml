@@ -1,0 +1,17 @@
+﻿@model PageModelContainer
+@{
+}
+
+@{
+	foreach(var pagey in Model.Pages)
+	{
+		if (pagey != null)
+		{
+			<div>
+				<h3>@pagey.Title</h3>
+				<p>@pagey.Summary</p>
+				<a asp-action="PageAdmin" asp-route-id="@pagey.Id">View page</a>
+			</div>
+		}
+	}
+}

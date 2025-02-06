@@ -1,0 +1,45 @@
+﻿@model MyBG.Models.PageModel
+
+<h1>@Model.Title</h1>
+<p>@Model.Summary</p>
+<p>Likes: @Model.UsersLiked.Count</p>
+<form method="post" asp-action="LikePost" asp-route-id="@Model.Id" enctype="multipart/form-data" asp-route-replyCount="@Model.CommenntsToDisplay">
+	@{
+		if (Model.LikedByUser)
+		{
+			<button type="submit">Unlike</button>
+		}
+		else
+		{
+			<button type="submit">Like</button>
+		}
+	}
+</form>
+<img src="@Model.ReturnFile" />
+<p>@Model.TextBody</p>
+<form method="post" asp-action="PostComment" asp-route-comment="@Model.Comment" asp-route-id="@Model.Id" enctype="multipart/form-data">
+	<input asp-for="Comment" />
+	<button type="submit">Upload comment</button>
+</form>
+@{
+	int count = 1;
+	foreach(CommentModel comment in Model.Comments)
+	{	
+		<p>@comment.User.UserName</p>
+		<img src="@comment.PFP.ReturnFile">
+		<p>@comment.Text</p>
+		<form asp-action="LikeComment" asp-route-id="@comment.Id" asp-route-replyCount="@Model.CommenntsToDisplay">
+			<p>@comment.LikedUser.Count</p>
+			<button type="Submit">Like</button>
+		</form>
+		if (count == Model.CommenntsToDisplay)
+		{
+			break;
+		}
+		count++;
+	}
+	if(count < Model.Comments.Count && Model.Comments.Count > 0)
+	{
+		<a asp-action="PageViewer" asp-route-id="@Model.Id" asp-route-replyCount="@(Model.CommenntsToDisplay + 5 > Model.Comments.Count ? Model.Comments.Count : Model.CommenntsToDisplay + 5 )">Show 5 more comments</a>
+	}
+}
