@@ -6,33 +6,36 @@
 }
 
 <div class="loginForm">
-    <div class="col-md-4">
+    <div>
         <h1>@ViewData["Title"]</h1>
         <section>
-            <form id="account" method="post">
-                <h2>Use a local account to log in.</h2>
+            <form method="post">
+                <h4>Use a MyBG account to log in.</h4>
                 <hr />
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Username" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                    <label asp-for="Input.Username" class="form-label">Username</label>
+                <div>
+                    <label asp-for="Input.Username" class="log-label">Username</label>
+                    <input asp-for="Input.Username" class="log-input" autocomplete="username" aria-required="true"/>
+                    <br>
                     <span asp-validation-for="Input.Username" class="text-danger"></span>
                 </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                    <label asp-for="Input.Password" class="form-label">Password</label>
+                <div>
+                    <label asp-for="Input.Password" class="log-label">Password</label>
+                    <input asp-for="Input.Password" class="log-input" autocomplete="current-password" aria-required="true"/>
+                    <br>
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
                 <div class="checkbox mb-3">
-                    <label asp-for="Input.RememberMe" class="form-label">
+                    <label asp-for="Input.RememberMe" class="log-label">
                         <input class="form-check-input" asp-for="Input.RememberMe" />
                         @Html.DisplayNameFor(m => m.Input.RememberMe)
                     </label>
                 </div>
                 <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
+                    <button id="logreg-button" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
                 </div>
             </form>
+            <a asp-page="Register">Don't have an account?</a>
         </section>
     </div>
 </div>
