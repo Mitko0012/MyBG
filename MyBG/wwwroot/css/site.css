@@ -1,0 +1,156 @@
+html {
+  font-size: 14px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.loginForm {
+    display: flex;
+    justify-content: center;
+}
+
+.loginForm h1 {
+  text-align: center;
+}
+
+.loginForm label {
+  display: block;
+  color: black;
+  transform: translate(-1%);
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.loginForm h3 {
+  text-align: center;
+}
+
+.loginForm h4 {
+  padding: 15px;
+  font-size: 1.3em;
+  padding-left: 0;
+  color: gray;
+  text-align: center;
+}
+
+.loginForm a {
+  size: 0.9em;
+  text-decoration: none;
+  color: rgb(25, 108, 202);
+  margin-top: 10px;
+  text-align: center;
+}
+
+.log-input {
+  border: gray solid 2px;
+  border-radius: 5px; 
+  padding-left: 200px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-size: 1.4em;
+  transform: translate(-1%);
+  margin-top: 15px;
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.log-label {
+  color: rgb(0, 0, 0);
+  text-align: left;
+  padding: 0px;
+  font-size: 1.2em;
+}
+
+.create-input {
+  border: gray solid 2px;
+  border-radius: 10px; 
+  padding-right: 200px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-size: 1.4em;
+  transform: translate(-1%);
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.create-textBody {
+  border: gray solid 2px;
+  border-radius: 10px; 
+  padding-right: 200px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-size: 1.4em;
+  transform: translate(-1%);
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: left;
+  min-width: 400px;
+  min-height: 110px;
+}
+
+#logreg-button {
+  background-color: rgb(2, 71, 2);
+  color: white;
+  transform: translate(-1%);
+}
+
+#searchField select {
+  border: 1px black solid;
+  border-radius: 15px;
+  width: 150px;
+  height: 35px;
+  text-align: center;
+}
+
+#searchField button {
+  border: 1px black solid;
+  border-radius: 15px;
+  color: white;
+  background-color: green;
+}
+
+#search {
+  display: none;
+  border: 1px black solid;
+  border-radius: 15px;
+}
+
+.destinationDiv {
+  border: 3px black solid;
+  border-radius: 15px;
+  padding: 5px;
+  margin: 20px;
+  display: inline-block;
+  min-width: 250px;
+  text-align: center;
+}
+
+.destinationDiv p {
+  color: rgb(53, 53, 53);
+  padding-top: 7px;
+  padding-bottom: 5px;
+}
+
+.destinationDiv a {
+  font-size: 1.2em;
+  color: rgb(48, 12, 255);
+}

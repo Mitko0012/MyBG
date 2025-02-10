@@ -1,0 +1,43 @@
+﻿@model MyBG.Models.PageModel
+
+<div class="loginForm">
+    <br />
+    <form method="post" asp-action="CreatePost" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+        <h2>Submit</h2>
+        <br />
+        <label for="titleContainer" class="log-label">Title: </label>
+        <input id ="titleContainer" asp-for="Title" class="create-input"/>
+        <span asp-validation-for="Title" class="text-danger"></span>
+        <label for="descriptionContainer" class="log-label">Description: </label>
+        <input id="descriptionContainer" asp-for="Summary" class="create-input" />
+        <span asp-validation-for="Summary" class="text-danger"></span>
+        <label for="fileCont" class="log-label">Page image:</label>
+        <input id="fileCont" asp-for="PageImage" type="file" />
+        <span asp-validation-for="PageImage" class="text-danger"></span>
+        <label for="textContainer" class="log-label">Page text:</label>
+        <input id="textContainer" asp-for="TextBody" class="create-textBody" type=""/>
+        <div asp-validation-for="TextBody" class="text-danger"></div>
+        <h3>Transport ways</h3>
+        <hr />
+    	<div id="transportWaysDiv"></div>
+    	<h4>Add a new transport way</h4>
+    	<label for="from" class="log-label">From</label>
+    	<input id="from" class="create-input"/>
+    	<label for="time" class="log-label">Time taken</label>
+    	<input id="time" class="create-input" />
+    	<label for="transportWay" class="log-label">Transport way</label>
+    	<select id="transportWay">
+    		<option value="0">Car</option>
+    		<option value="1">Train</option>
+    		<option value="2">Bus</option>
+    		<option value="3">Plane</option>
+    	</select>
+    	<button type="button" onclick="addOption()">Add option</button>
+        <button type="submit" value="Submit">Submit</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
