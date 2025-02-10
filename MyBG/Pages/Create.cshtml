@@ -1,0 +1,23 @@
+@model MyBG.Models.PageModel
+<h1>@ViewData["Title"]</h1>
+<h1>Submit a new destination</h1>
+<form method="post" asp-action="CreatePost" enctype="multipart/form-data">
+    <label for="TitleContainer">Title: </label>
+    <input id ="TitleContainer" asp-for="Title"/>
+    <br />
+    <label for="DescriptionContainer">Description: </label>
+    <input id="DescriptionContainer" asp-for="Summary" />
+    <br />
+    <span asp-validation-for="Title" class="text-danger"></span>
+    <br />
+    <label for="FileCont">Page image:</label>
+    <input id="FileCont" asp-for="PageImage" type="file"  />
+    <br />
+    <label for="TextContainer">Page text:</label>
+    <br />
+    <input id="TextContainer" asp-for="TextBody" type=""/>
+    <br />
+    <span asp-validation-for="TextBody" class="text-danger"></span>
+    <br />
+    <input type="submit" value="Submit"/>
+</form>
