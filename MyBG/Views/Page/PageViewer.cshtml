@@ -1,51 +1,60 @@
 ﻿@model MyBG.Models.PageModel
 
-<h1>@Model.Title</h1>
-<p>@Model.Summary</p>
-<p>Likes: @Model.UsersLiked.Count</p>
-<form method="post" asp-action="LikePost" asp-route-id="@Model.Id" enctype="multipart/form-data" asp-route-replyCount="@Model.CommenntsToDisplay">
+<div class="page-display">
+	<h1>@Model.Title</h1>
+	<div class="like-div">
+		<form method="post" asp-action="LikePost" asp-route-id="@Model.Id" enctype="multipart/form-data" asp-route-replyCount="@Model.CommenntsToDisplay">
+			<p class="page-info">Likes: @Model.UsersLiked.Count</p>
+			@{
+				if (Model.LikedByUser)
+				{
+					<button type="submit">Unlike</button>
+				}
+				else
+				{
+					<button type="submit">Like</button>
+				}	
+			}
+		</form>
+	</div>
+	<img src="@Model.ReturnFile" id="page-image"/>
+	<p id="regionDisplay">Region: @Model.Regions Bulgaria</p>
+	<p id="page-info">@Model.TextBody</p>
+	<h2>How to get there</h2>
 	@{
-		if (Model.LikedByUser)
+		foreach(TransportWay way in Model.TransportWays)
 		{
-			<button type="submit">Unlike</button>
-		}
-		else
-		{
-			<button type="submit">Like</button>
+			<p>@($"From: {way.TransportOrigin} Time taken: {way.TransportTime} By: {way.TransportWayType}")</p>
 		}
 	}
-</form>
-<img src="@Model.ReturnFile" />
-<p>@Model.TextBody</p>
-<h2>How to get there</h2>
-@{
-	foreach(TransportWay way in Model.TransportWays)
-	{
-		<p>@($"From: ${way.TransportOrigin} ${way.TransportTime} By: ${way.TransportWayType}")</p>
-	}
-}
-<form method="post" asp-action="PostComment" asp-route-comment="@Model.Comment" asp-route-id="@Model.Id" enctype="multipart/form-data">
-	<input asp-for="Comment" />
-	<button type="submit">Upload comment</button>
-</form>
+	<form method="post" id="comment-post" asp-action="PostComment" asp-route-comment="@Model.Comment" asp-route-id="@Model.Id" asp-route-replyCount="@Model.CommenntsToDisplay" enctype="multipart/form-data">
+		<textarea asp-for="Comment"></textarea>
+		<button type="submit">Upload comment</button>
+	</form>
+</div>
 @{
 	int count = 1;
-	foreach(CommentModel comment in Model.Comments)
-	{	
-		<p>@comment.User.UserName</p>
-		<img src="@comment.PFP.ReturnFile">
-		<p>@comment.Text</p>
-		<form asp-action="LikeComment" asp-route-id="@comment.Id" asp-route-replyCount="@Model.CommenntsToDisplay">
-			<p>@comment.LikedUser.Count</p>
-			<button type="Submit">Like</button>
-		</form>
+	foreach (CommentModel comment in Model.Comments)
+	{
+		<div class="comment-div">
+			<img src="@comment.PFP.ReturnFile" class="profile-pic" class="comment-user-data">
+			<div class="comment-user-data">
+				<p class ="comment-username">@comment.PFP.UserName</p>
+			</div>
+			<p class="comment-text-data">@comment.Text</p>
+			<form asp-action="LikeComment" asp-route-id="@comment.Id" asp-route-replyCount="@Model.CommenntsToDisplay" class="comment-like-div">
+				<p id="commentLikeData">@comment.LikedUser.Count</p>
+				<button type="Submit" id="commentLikeData">Like</button>
+			</form>
+		</div>
 		if (count == Model.CommenntsToDisplay)
 		{
 			break;
 		}
 		count++;
+		<hr />
 	}
-	if(count < Model.Comments.Count && Model.Comments.Count > 0)
+	if (count < Model.Comments.Count && Model.Comments.Count > 0)
 	{
 		<a asp-action="PageViewer" asp-route-id="@Model.Id" asp-route-replyCount="@(Model.CommenntsToDisplay + 5 > Model.Comments.Count ? Model.Comments.Count : Model.CommenntsToDisplay + 5 )">Show 5 more comments</a>
 	}

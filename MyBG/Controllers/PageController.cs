@@ -28,17 +28,18 @@ namespace MyBG.Controllers
         }
 
         [Authorize]
-        public IActionResult Index(string displayType, string? searchString)
+        public IActionResult Index(string displayType, string? searchString, int region)
         {
             PageModelContainer container = new PageModelContainer();
             if (displayType == null)
             {
                 displayType = "MostLikes";
             }
-            else if (displayType != "Search" && displayType != "MostLikes")
+            else if (displayType != "Search" && displayType != "MostLikes" && displayType != "Region")
             {
                 return RedirectToAction("PageViewer");
             }
+            container.Region = (Regions)region;
             container.Pages = _context.Pages.Include(x => x.UsersLiked).Include(x => x.TransportWays).Where((x) => x.Approved).ToList();
             switch (displayType)
             {
@@ -51,6 +52,9 @@ namespace MyBG.Controllers
                     break;
                 case "MostLikes":
                     container.Pages = container.Pages.OrderBy(x => -x.UsersLiked.Count).ToList();
+                    break;
+                case "Region":
+                    container.Pages = container.Pages.Where(x => x.Regions == container.Region).ToList();
                     break;
             }
             return View(container);
@@ -69,14 +73,15 @@ namespace MyBG.Controllers
             PageModel model = _context.Pages.Include(p => p.UsersLiked)
                                             .Include(p => p.Comments)
                                                 .ThenInclude(p => p.LikedUser)
+                                            .Include(p => p.TransportWays)
                                             .FirstOrDefault(p => p.Id == id);
             if (replyCount != null)
             {
                 model.CommenntsToDisplay = replyCount.Value;
             }
-            if(model.CommenntsToDisplay > model.Comments.Count)
+            else
             {
-                model.CommenntsToDisplay = model.Comments.Count;  
+                model.CommenntsToDisplay = 10;
             }
             _page = model;
             if (replyCount != null)

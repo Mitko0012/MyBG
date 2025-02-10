@@ -10,5 +10,6 @@ namespace MyBG.Models
         public string? DisplayType { get; set; }
         [NotMapped]
         public string? SearchString { get; set; }
+        public MyBG.Data.Regions? Region { get; set; }
     }
 }

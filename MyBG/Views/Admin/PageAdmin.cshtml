@@ -3,10 +3,34 @@
 
 }
 
-<h1>@Model.Title</h1>
-<p>@Model.Summary</p>
-<img src="@Model.ReturnFile"/>
-<p>@Model.TextBody</p>
+
+<div class="page-display">
+	<h1>@Model.Title</h1>
+	<div class="like-div">
+		<form method="post" asp-action="LikePost" asp-route-id="@Model.Id" enctype="multipart/form-data" asp-route-replyCount="@Model.CommenntsToDisplay">
+			<p class="page-info">Likes: @Model.UsersLiked.Count</p>
+			@{
+				if (Model.LikedByUser)
+				{
+					<button type="submit">Unlike</button>
+				}
+				else
+				{
+					<button type="submit">Like</button>
+				}
+			}
+		</form>
+	</div>
+	<img src="@Model.ReturnFile" id="page-image" />
+	<p id="page-info">@Model.TextBody</p>
+	<h2>How to get there</h2>
+	@{
+		foreach (TransportWay way in Model.TransportWays)
+		{
+			<p>@($"From: {way.TransportOrigin} Time taken: {way.TransportTime} By: {way.TransportWayType}")</p>
+		}
+	}
+</div>
 <a asp-action="SubmissionApprove" asp-route-id="@Model.Id">Approve</a>
 <a asp-action="SubmissionDecline" asp-route-id="@Model.Id">Decline</a>
 <a asp-action="Submissions">Back</a>

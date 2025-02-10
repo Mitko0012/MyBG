@@ -1,40 +1,50 @@
 ﻿@model MyBG.Models.PageModel
 
-<div class="loginForm">
+<div class="createForm">
     <br />
     <form method="post" asp-action="CreatePost" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
         <h2>Submit</h2>
         <br />
-        <label for="titleContainer" class="log-label">Title: </label>
+        <label for="titleContainer" class="create-label">Title: </label>
         <input id ="titleContainer" asp-for="Title" class="create-input"/>
         <span asp-validation-for="Title" class="text-danger"></span>
-        <label for="descriptionContainer" class="log-label">Description: </label>
+        <label for="descriptionContainer" class="create-label">Description: </label>
         <input id="descriptionContainer" asp-for="Summary" class="create-input" />
         <span asp-validation-for="Summary" class="text-danger"></span>
-        <label for="fileCont" class="log-label">Page image:</label>
+        <label for="fileCont" class="create-label">Page image:</label>
         <input id="fileCont" asp-for="PageImage" type="file" />
+        <label for="region" asp-for="Regions" class="create-label">Region:</label>
+        <select asp-for="Regions" class="create-select">
+            <option value="0">Southwestern</option>
+            <option value="1">Southern</option>
+            <option value="2">Southeastern</option>
+            <option value="3">Northwestern</option>
+            <option value="4">Northern</option>
+            <option value="5">Northeastern</option>
+        </select>
         <span asp-validation-for="PageImage" class="text-danger"></span>
-        <label for="textContainer" class="log-label">Page text:</label>
-        <input id="textContainer" asp-for="TextBody" class="create-textBody" type=""/>
+        <label for="textContainer" class="create-label">Page text:</label>
+        <textarea id="textContainer" asp-for="TextBody" class="create-textBody" type=""></textarea>
         <div asp-validation-for="TextBody" class="text-danger"></div>
         <h3>Transport ways</h3>
         <hr />
+        <span asp-validation-for="TransportWays" class="text-danger"></span>
     	<div id="transportWaysDiv"></div>
     	<h4>Add a new transport way</h4>
-    	<label for="from" class="log-label">From</label>
+        <label for="from" class="create-label">From</label>
     	<input id="from" class="create-input"/>
-    	<label for="time" class="log-label">Time taken</label>
+        <label for="time" class="create-label">Time taken</label>
     	<input id="time" class="create-input" />
-    	<label for="transportWay" class="log-label">Transport way</label>
-    	<select id="transportWay">
+        <label for="transportWay" class="create-label">Transport way</label>
+        <select id="transportWay" class="create-input">
     		<option value="0">Car</option>
     		<option value="1">Train</option>
     		<option value="2">Bus</option>
     		<option value="3">Plane</option>
     	</select>
-    	<button type="button" onclick="addOption()">Add option</button>
-        <button type="submit" value="Submit">Submit</button>
+        <button type="button" class="create-button" onclick="addOption()">Add option</button>
+        <button type="submit" class="create-button" value="Submit">Submit</button>
     </form>
 </div>
 

@@ -4,12 +4,21 @@
 	ViewData["Title"] = "Home Page";
 }
 
-<form asp-action="Index" asp-route-displayType="@Model.DisplayType" id="searchField">
+<form asp-action="Index" asp-route-displayType="@Model.DisplayType" asp-route-region="@((int)Model.Region)" id="searchField">
 	<select asp-for="DisplayType" oninput="showOrHideSearch()" id="searchSelect">
 		<option value="MostLikes">Most Likes</option>
+		<option value="Region">Region</option>
 		<option value="Search">Search</option>
 	</select>
 	<input asp-for="SearchString" id="search"/>
+	<select asp-for="Region" oninput="showOrHideSearch()" id="regionSelect">
+		<option value="0">Southwestern</option>
+		<option value="1">Southern</option>
+		<option value="2">Southeastern</option>
+		<option value="3">Northwestern</option>
+		<option value="4">Northern</option>
+		<option value="5">Northeastern</option>
+	</select>
 	<button type="submit">Apply search setting</button>
 </form>
 @{

@@ -40,7 +40,7 @@ namespace MyBG.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult PageAdmin(int id)
         {
-            PageModel model = _dbContext.Pages.Find(id);
+            PageModel model = _dbContext.Pages.Include(x => x.TransportWays).FirstOrDefault(x => x.Id == id);
             if (model != null && model.Approved == false)
             {
                 return View(model);

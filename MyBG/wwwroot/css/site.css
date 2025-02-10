@@ -96,14 +96,13 @@ body {
   border: gray solid 2px;
   border-radius: 10px; 
   padding-right: 200px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  font-size: 1.4em;
+  min-height: 16px;
+  font-size: 0.8em;
   transform: translate(-1%);
   margin-top: 10px;
   margin-bottom: 10px;
   text-align: left;
-  min-width: 400px;
+  min-width: 600px;
   min-height: 110px;
 }
 
@@ -113,25 +112,34 @@ body {
   transform: translate(-1%);
 }
 
-#searchField select {
-  border: 1px black solid;
-  border-radius: 15px;
-  width: 150px;
-  height: 35px;
-  text-align: center;
+#searchSelect {
+    border: 2px black solid;
+    border-radius: 15px;
+    width: 150px;
+    height: 35px;
+    text-align: center;
 }
 
 #searchField button {
-  border: 1px black solid;
-  border-radius: 15px;
-  color: white;
-  background-color: green;
+    border: 1px black solid;
+    border-radius: 15px;
+    height: 35px;
+    color: white;
+    background-color: rgb(2, 71, 2);
 }
 
 #search {
   display: none;
-  border: 1px black solid;
+  border: 2px black solid;
   border-radius: 15px;
+  height: 35px;
+}
+
+#regionSelect {
+    display: none;
+    border: 2px black solid;
+    border-radius: 15px;
+    height: 35px;
 }
 
 .destinationDiv {
@@ -140,8 +148,13 @@ body {
   padding: 5px;
   margin: 20px;
   display: inline-block;
-  min-width: 250px;
+  min-width: 200px;
   text-align: center;
+}
+
+.destinationDiv a {
+    text-decoration: none;
+    color: rgb(25, 108, 202);
 }
 
 .destinationDiv p {
@@ -153,4 +166,147 @@ body {
 .destinationDiv a {
   font-size: 1.2em;
   color: rgb(48, 12, 255);
+}
+
+.create-label {
+    display: block;
+    font-size: 1.3em;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.create-button {
+    color: white;
+    background-color: rgb(2, 71, 2);
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 1.1em;
+    border: 3px solid rgb(20, 20, 20);
+    border-radius: 7px;
+}
+
+.wayDiv {
+    display: none;
+}
+
+.text-danger {
+    display: block;
+    font-size: 1.2em;
+}
+
+.page-display {
+    margin-left: 50%;
+    transform: translate(-50%);
+    text-align: center;
+}
+
+.page-info {
+    font-size: 1.6em;
+}
+
+#page-info {
+    font-size: 1.2em;
+    color: rgb(20, 20, 20);
+    text-align: left;
+    width: max-content;
+    max-width: 80vw;
+    margin-left: 50%;
+    transform: translate(-50%);
+}
+
+#page-image {
+    width: 60vw;
+    margin-left: 50%;
+    transform: translate(-50%);
+}
+
+.like-div p {
+    display: inline-block;
+}
+
+.like-div button {
+    margin: 20px;
+    display: inline-block;
+}
+
+.comment-div {
+    width: 80vw;
+    margin: 0;
+    display: flex;
+}
+
+.comment-user-data {
+    margin-right: 30px;
+    margin-left: 0px;
+    flex-direction: column;
+    flex-grow: 0.2;
+}
+
+.profile-pic {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgb(2, 71, 2);
+}
+
+.comment-text-data {
+    text-align: left;
+    flex-direction: column;
+    flex-grow: 2;
+    font-size: 1em;
+}
+
+.comment-like-div {
+    flex-direction: column;
+    flex-grow: 1;
+    text-align: right;
+}
+
+.comment-like-div p {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.comment-like-div button {
+    display: inline-block;
+}
+
+.comment-username {
+    display: block;
+    position: relative;
+    top: 10px;
+    left: 20px;
+    font-size: 1.2em;
+}
+
+#comment-post {
+    margin-bottom: 30px;
+}
+
+#comment-post textarea {
+    border: 2px solid rgb(2, 71, 2);
+    border-radius: 5px;
+    width: 370px;
+    height: 60px;
+}
+
+#comment-post button {
+    position: relative;
+    left: 10px;
+    bottom: 30px;
+    border: 2px solid grey;
+    border-radius: 10px;
+    background-color: rgb(2, 71, 2);
+    color: white;
+}
+
+.create-select {
+    border: solid 2px black;
+    border-radius: 15px;
+    padding: 10px;
+}
+
+#regionDisplay {
+    color: gray;
+    font-size: 2em;
 }

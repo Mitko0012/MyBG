@@ -359,6 +359,9 @@ namespace MyBG.Migrations
                     b.Property<byte[]>("PageImageArr")
                         .HasColumnType("BLOB");
 
+                    b.Property<int>("Regions")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("ReturnFile")
                         .HasColumnType("TEXT");
 

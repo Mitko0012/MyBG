@@ -29,7 +29,10 @@ namespace MyBG.Models
         public string? Comment { get; set; } = "";
         [NotMapped]
         public int CommenntsToDisplay { get; set; } = 10;
-        public List<TransportWay> TransportWays { get; set; } = new List<TransportWay>();
+        [Required]
+        public List<TransportWay> TransportWays { get; set; }
+        [Required]
+        public Regions Regions { get; set; } = Regions.Southwestern;
         public string? ReturnFile
         {
             get
