@@ -1,0 +1,181 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|c:\\users\\mitko\\projects\\c#\\mybg\\mybg\\areas\\identity\\pages\\account\\manage\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|solutionrelative:mybg\\areas\\identity\\pages\\account\\manage\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|c:\\users\\mitko\\projects\\c#\\mybg\\mybg\\areas\\identity\\pages\\account\\manage\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|solutionrelative:mybg\\areas\\identity\\pages\\account\\manage\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|c:\\users\\mitko\\projects\\c#\\mybg\\mybg\\views\\page\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|solutionrelative:mybg\\views\\page\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|c:\\users\\mitko\\projects\\c#\\mybg\\mybg\\areas\\identity\\pages\\account\\manage\\changepassword.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|solutionrelative:mybg\\areas\\identity\\pages\\account\\manage\\changepassword.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|c:\\users\\mitko\\projects\\c#\\mybg\\mybg\\views\\page\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|solutionrelative:mybg\\views\\page\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|c:\\users\\mitko\\projects\\c#\\mybg\\mybg\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|solutionrelative:mybg\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|c:\\users\\mitko\\projects\\c#\\mybg\\mybg\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|solutionrelative:mybg\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|c:\\users\\mitko\\projects\\c#\\mybg\\mybg\\areas\\identity\\pages\\account\\manage\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|solutionrelative:mybg\\areas\\identity\\pages\\account\\manage\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|c:\\users\\mitko\\projects\\c#\\mybg\\mybg\\areas\\identity\\pages\\account\\manage\\_managenav.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|solutionrelative:mybg\\areas\\identity\\pages\\account\\manage\\_managenav.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Index.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Areas\\Identity\\Pages\\Account\\Manage\\Index.cshtml.cs",
+              "RelativeDocumentMoniker": "MyBG\\Areas\\Identity\\Pages\\Account\\Manage\\Index.cshtml.cs",
+              "ToolTip": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Areas\\Identity\\Pages\\Account\\Manage\\Index.cshtml.cs",
+              "RelativeToolTip": "MyBG\\Areas\\Identity\\Pages\\Account\\Manage\\Index.cshtml.cs",
+              "ViewState": "AgIAAEkAAAAAAAAAAAAcwDMAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-11T19:28:01.813Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ChangePassword.cshtml",
+              "DocumentMoniker": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Areas\\Identity\\Pages\\Account\\Manage\\ChangePassword.cshtml",
+              "RelativeDocumentMoniker": "MyBG\\Areas\\Identity\\Pages\\Account\\Manage\\ChangePassword.cshtml",
+              "ToolTip": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Areas\\Identity\\Pages\\Account\\Manage\\ChangePassword.cshtml",
+              "RelativeToolTip": "MyBG\\Areas\\Identity\\Pages\\Account\\Manage\\ChangePassword.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAABKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-11T19:24:48.321Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Areas\\Identity\\Pages\\Account\\Manage\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "MyBG\\Areas\\Identity\\Pages\\Account\\Manage\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Areas\\Identity\\Pages\\Account\\Manage\\_Layout.cshtml",
+              "RelativeToolTip": "MyBG\\Areas\\Identity\\Pages\\Account\\Manage\\_Layout.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-11T18:59:22.854Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Areas\\Identity\\Pages\\Account\\Manage\\Index.cshtml",
+              "RelativeDocumentMoniker": "MyBG\\Areas\\Identity\\Pages\\Account\\Manage\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Areas\\Identity\\Pages\\Account\\Manage\\Index.cshtml",
+              "RelativeToolTip": "MyBG\\Areas\\Identity\\Pages\\Account\\Manage\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-11T18:55:51.186Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "_ManageNav.cshtml",
+              "DocumentMoniker": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Areas\\Identity\\Pages\\Account\\Manage\\_ManageNav.cshtml",
+              "RelativeDocumentMoniker": "MyBG\\Areas\\Identity\\Pages\\Account\\Manage\\_ManageNav.cshtml",
+              "ToolTip": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Areas\\Identity\\Pages\\Account\\Manage\\_ManageNav.cshtml",
+              "RelativeToolTip": "MyBG\\Areas\\Identity\\Pages\\Account\\Manage\\_ManageNav.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-11T18:55:39.988Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Views\\Page\\Create.cshtml",
+              "RelativeDocumentMoniker": "MyBG\\Views\\Page\\Create.cshtml",
+              "ToolTip": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Views\\Page\\Create.cshtml",
+              "RelativeToolTip": "MyBG\\Views\\Page\\Create.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-11T18:30:44.224Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Views\\Page\\Index.cshtml",
+              "RelativeDocumentMoniker": "MyBG\\Views\\Page\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Views\\Page\\Index.cshtml",
+              "RelativeToolTip": "MyBG\\Views\\Page\\Index.cshtml",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABYAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-11T18:26:30.82Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "site.css",
+              "DocumentMoniker": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\wwwroot\\css\\site.css",
+              "RelativeDocumentMoniker": "MyBG\\wwwroot\\css\\site.css",
+              "ToolTip": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\wwwroot\\css\\site.css",
+              "RelativeToolTip": "MyBG\\wwwroot\\css\\site.css",
+              "ViewState": "AgIAAJ8BAAAAAAAAAAAAALsBAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-02-11T17:52:19.853Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "MyBG\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "MyBG\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAB8AAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-11T17:49:47.46Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

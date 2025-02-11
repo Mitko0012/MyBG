@@ -310,3 +310,136 @@ body {
     color: gray;
     font-size: 2em;
 }
+
+#navHed {
+    background-color: rgb(2, 71, 2);
+    margin: 0px;
+    margin-bottom: 20px;
+    padding-bottom: 10px
+}
+
+#flexDiv {
+    display: flex;
+    background-color: rgb(2, 71, 2);
+}
+
+.navigator-flex a {
+    position: relative;
+    color: white;
+    text-decoration: none;
+    background-color: rgb(2, 71, 2);
+    top: 50%;
+}
+
+.navigator-flex {
+    text-align: center;
+    flex: 1;
+    font-size: 1.5em;
+    color: rgb(2, 71, 2);
+    transform:translate(0, -25%);
+}
+
+.navigator-text {
+    position: relative;
+}
+
+.navigator-flex a {
+    color: white;
+    font-size: 1.8em;
+    position:relative;
+    top: 50%;
+}
+
+.navigator-flex a:hover {
+    color: wheat;
+}
+
+#logoNav {
+    width: 100px;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.titleNav {
+    color: white;
+    text-align: center;
+    display: block;
+    font-size: 1.5em;
+    padding: 5px;
+    margin: 10px;
+    padding-top: 0px;
+}
+
+#submit-a {
+    color: green;
+    text-decoration: none;
+    font-size: 1.2em;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: block;
+}
+
+#submit-a:hover {
+    color: rgb(2, 71, 2);
+}
+
+.navigator-img {
+    flex: 0.2;
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+#ProfileA {
+    font-size: 1.8em;
+    color: white;
+    position: relative;
+    top: 55%;
+    text-decoration: none;
+}
+
+.Username {
+    flex: 0.2;
+    transform: translateY(-25%);
+}
+
+#ProfileA:hover {
+    color: wheat;
+}
+
+.account-label {
+    font-size: 1.5em;
+    padding-bottom: 10px;
+    color: rgb(20, 20, 20);
+}
+
+.profile-picDetails {
+    width: 156px;
+    border: 3px solid rgb(2, 71, 2);
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.account-button {
+    color: white;
+    background-color: rgb(2, 71, 2);
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 1.1em;
+    border: 3px solid rgb(20, 20, 20);
+    border-radius: 7px;
+}
+
+.account-control {
+    border: gray solid 2px;
+    border-radius: 5px;
+    padding-left: 200px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    font-size: 1.4em;
+    transform: translate(-1%);
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: left;
+}

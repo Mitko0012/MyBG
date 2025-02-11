@@ -1,25 +1,20 @@
 ﻿@page
 @model IndexModel
-@{
-    ViewData["Title"] = "Profile";
-    ViewData["ActivePage"] = ManageNavPages.Index;
-}
 
-<h3>@ViewData["Title"]</h3>
-<partial name="_StatusMessage" for="StatusMessage" />
-<div class="row">
+<div class="createForm">
+    <h1>My account</h1>
     <div class="col-md-6">
         <form id="profile-form" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <div class="form-floating mb-3">
-                <p>Username</p>
-                <p>@Model.User1.UserName</p>
-                <p>Profile Picture</p>
-                <img src="@Model.PFP.ReturnFile"/>
-                <p>Upload new profile picture</p>
+                <p class="account-label">Username: @Model.User1.UserName</p>
+                <p class="account-label">Profile Picture</p>
+                <img src="@Model.PFP.ReturnFile" class="profile-picDetails"/>
+                <p class="account-label"> Upload a new profile picture</p>
                 <input type="file" asp-for="@Model.FormFile" name="FormFile"/>
+                <button type="submit" class="account-button">Save changes</button>
                 <br />
-                <button type="submit">Save changes</button>
+                <a asp-page="ChangePassword">Change password</a>
             </div>
         </form>
     </div>
