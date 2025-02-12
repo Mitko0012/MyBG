@@ -1,4 +1,5 @@
 ﻿let index = 0;
+let map;
 const searchSelect = document.getElementById("searchSelect");
 
 function addOption() {
@@ -30,4 +31,8 @@ function showOrHideSearch() {
     else {
         region.style.display = "none";
     }
+}
+
+function initMap() {
+    map = L.map("map").setView([42.766109, 25.238558], 13);
 }

@@ -1,9 +1,11 @@
 ﻿@model EditModel
 
-<h1>Edit submission for page @Model.PageToEdit.Title</h1>
-<p>Old text</p>
-<p>@Model.OldText</p>
-<p>New text</p>
-<p>@Model.NewText</p>
-<a asp-action="EditSubmissionApprove" asp-route-id="@Model.ID">Approve</a>
-<a asp-action="EditSubmissionDecline" asp-route-id="@Model.ID">Decline</a>
+<div id="create-div">
+	<h1>Edit submission for page @Model.PageToEdit.Title</h1>
+	<h3>Content before the edit</h3>
+	<p id="OldTextP">@Model.OldText</p>
+	<h3>Content after the edit</h3>
+	<p id="NewTextP">@Model.NewText</p>
+	<a asp-action="EditSubmissionApprove" asp-route-id="@Model.ID">Approve</a>
+	<a asp-action="EditSubmissionDecline" asp-route-id="@Model.ID">Decline</a>
+</div>

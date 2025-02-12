@@ -6,8 +6,7 @@ namespace MyBG.Models;
 public class EditModel
 {
     public int ID {get; set;}
-    [Required]
-    public string OldText {get; set;}
+    public string? OldText {get; set;}
     [Required]
     public string NewText {get; set;}
     public PageModel? PageToEdit {get; set;}

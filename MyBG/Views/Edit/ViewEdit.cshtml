@@ -1,7 +1,9 @@
 ﻿@model EditModel
 
-<h1>Edit submission #@Model.PageIndex for page @Model.PageToEdit.Title</h1>
-<p>Old text</p>
-<p>@Model.OldText</p>
-<p>New text</p>
-<p>@Model.NewText</p>
+<div id="create-div">
+	<h1>Edit submission #@Model.PageIndex for page @Model.PageToEdit.Title</h1>
+	<h3>Content before the edit</h3>
+	<p id="OldTextP">@Model.OldText</p>
+	<h3>Content after the edit</h3>
+	<p id="NewTextP">@Model.NewText</p>
+</div>

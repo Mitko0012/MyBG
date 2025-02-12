@@ -49,13 +49,12 @@ public class EditController : Controller
     [Authorize]
     [HttpPost]
     public IActionResult PostEdit(EditModel model, int pageId)
-    {
+  {
         PageModel page = _ctx.Pages.Include(x => x.Edits).FirstOrDefault(x => x.Id == pageId);
         page.Edits.Add(model);
         if(!ModelState.IsValid)
         {
-            Console.WriteLine(ModelState.Values.SelectMany(x => x.Errors));
-            return RedirectToAction("ViewEdits", new {id = model.PageModelKey});
+            return RedirectToAction("ViewEdits", new {id = pageId});
         }
         model.PageToEdit = page;
         model.PageModelKey = pageId;

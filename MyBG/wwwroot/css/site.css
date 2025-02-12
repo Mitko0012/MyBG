@@ -102,7 +102,7 @@ body {
   margin-top: 10px;
   margin-bottom: 10px;
   text-align: left;
-  min-width: 600px;
+  min-width: 80vw;
   min-height: 110px;
 }
 
@@ -442,4 +442,34 @@ body {
     margin-top: 15px;
     margin-bottom: 15px;
     text-align: left;
+}
+
+#map {
+    height: 180px;
+}
+
+#OldTextP {
+    font-size: 1.2em;
+    background-color: orangered;
+    border: 3px solid black;
+    border-radius: 10px;
+}
+
+#NewTextP {
+    font-size: 1.2em;
+    background-color: greenyellow;
+    border: 3px solid black;
+    border-radius: 10px;
+}
+
+.editDiv {
+    border: 3px solid gray;
+    border-radius: 10px;
+    display: inline-block;
+    text-align: center;
+}
+
+.edit-redirect {
+    color: lightgreen;
+    font-size: 1.2em;
 }

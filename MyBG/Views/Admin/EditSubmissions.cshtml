@@ -1,7 +1,11 @@
 ﻿@model ViewEditsModel
 
-@foreach(EditModel model1 in Model.Edits)
-{
-	<h3>Edit for @model1.PageToEdit.Title</h3>
-	<a asp-action="EditSubmissionAdmin" asp-route-id="@model1.ID">View edit</a>
+@{
+	foreach (EditModel model1 in Model.Edits)
+	{
+		<div class="editDiv">
+			<h3>Edit for @model1.PageToEdit.Title</h3>
+			<a class="edit-redirect" asp-action="EditSubmissionAdmin" asp-route-id="@model1.ID">View edit</a>
+		</div>
+	}
 }
