@@ -31,7 +31,8 @@ namespace MyBG.Data
                         .HasMany(x => x.TransportWays);
             modelBuilder.Entity<EditModel>()
                         .HasOne(x => x.PageToEdit)
-                        .WithMany(x => x.Edits);
+                        .WithMany(x => x.Edits)
+                        .HasForeignKey(x => x.PageModelKey);
 
         }
     }

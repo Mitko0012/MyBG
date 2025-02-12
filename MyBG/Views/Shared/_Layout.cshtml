@@ -28,11 +28,12 @@
                             <a asp-area="" asp-controller="Forum" asp-action="Index">Forum</a>
                         </div>
                         <div class="Username">
-                            <a href="/Identity/Account/Manage" id="ProfileA">My profile</a>
+                            <a asp-controller="User" asp-action="UserPage" asp-route-userName="@SignInManager.UserManager.GetUserAsync(User).Result.UserName">My account</a>
                         </div>
                         <br />
                     </div>
             </header>
+            <a asp-controller="User" asp-action="UserPage" asp-route-userName="@SignInManager.UserManager.GetUserAsync(User).Result.UserName">My account</a>
         }
     }
     <div class="container">

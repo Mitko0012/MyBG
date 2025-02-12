@@ -26,8 +26,8 @@ public class UserController : Controller
     [Authorize]
     public IActionResult UserPage(string userName)
     {
-        PFP userDataModel = _ctx.PFPs.FirstOrDefault(x => x.UserName == userName);
-        if(!ModelState.IsValid)
+        PFPModel userDataModel = _ctx.PFPs.FirstOrDefault(x => x.UserName == userName);
+        if (!ModelState.IsValid || userDataModel == null)
         {
             return RedirectToAction("Index", "Page");
         }

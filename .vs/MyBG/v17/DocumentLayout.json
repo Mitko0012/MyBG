@@ -1,0 +1,279 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|c:\\users\\mitko\\projects\\c#\\mybg\\mybg\\views\\user\\userpage.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|solutionrelative:mybg\\views\\user\\userpage.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|c:\\users\\mitko\\projects\\c#\\mybg\\mybg\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|solutionrelative:mybg\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|c:\\users\\mitko\\projects\\c#\\mybg\\mybg\\views\\admin\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|solutionrelative:mybg\\views\\admin\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|c:\\users\\mitko\\projects\\c#\\mybg\\mybg\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|solutionrelative:mybg\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|c:\\users\\mitko\\projects\\c#\\mybg\\mybg\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|solutionrelative:mybg\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|c:\\users\\mitko\\projects\\c#\\mybg\\mybg\\areas\\identity\\pages\\account\\manage\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|solutionrelative:mybg\\areas\\identity\\pages\\account\\manage\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|c:\\users\\mitko\\projects\\c#\\mybg\\mybg\\controllers\\editcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|solutionrelative:mybg\\controllers\\editcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|c:\\users\\mitko\\projects\\c#\\mybg\\mybg\\views\\edit\\viewedits.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|solutionrelative:mybg\\views\\edit\\viewedits.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|c:\\users\\mitko\\projects\\c#\\mybg\\mybg\\views\\edit\\viewedit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|solutionrelative:mybg\\views\\edit\\viewedit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|c:\\users\\mitko\\projects\\c#\\mybg\\mybg\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|solutionrelative:mybg\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|c:\\users\\mitko\\projects\\c#\\mybg\\mybg\\views\\edit\\createedit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|solutionrelative:mybg\\views\\edit\\createedit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|c:\\users\\mitko\\projects\\c#\\mybg\\mybg\\views\\page\\pageviewer.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|solutionrelative:mybg\\views\\page\\pageviewer.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|c:\\users\\mitko\\projects\\c#\\mybg\\mybg\\views\\admin\\editsubmissionadmin.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|solutionrelative:mybg\\views\\admin\\editsubmissionadmin.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|c:\\users\\mitko\\projects\\c#\\mybg\\mybg\\views\\admin\\editsubmissions.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|solutionrelative:mybg\\views\\admin\\editsubmissions.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|c:\\users\\mitko\\projects\\c#\\mybg\\mybg\\models\\editmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{52FA3D69-EE24-4F91-A7AC-2D5234AA2F69}|MyBG\\MyBG.csproj|solutionrelative:mybg\\models\\editmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "MyBG\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "MyBG\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-12T16:52:12.793Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UserPage.cshtml",
+              "DocumentMoniker": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Views\\User\\UserPage.cshtml",
+              "RelativeDocumentMoniker": "MyBG\\Views\\User\\UserPage.cshtml",
+              "ToolTip": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Views\\User\\UserPage.cshtml",
+              "RelativeToolTip": "MyBG\\Views\\User\\UserPage.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-12T16:49:58.305Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Areas\\Identity\\Pages\\Account\\Manage\\Index.cshtml",
+              "RelativeDocumentMoniker": "MyBG\\Areas\\Identity\\Pages\\Account\\Manage\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Areas\\Identity\\Pages\\Account\\Manage\\Index.cshtml",
+              "RelativeToolTip": "MyBG\\Areas\\Identity\\Pages\\Account\\Manage\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAABcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-12T16:48:06.799Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ViewEdit.cshtml",
+              "DocumentMoniker": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Views\\Edit\\ViewEdit.cshtml",
+              "RelativeDocumentMoniker": "MyBG\\Views\\Edit\\ViewEdit.cshtml",
+              "ToolTip": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Views\\Edit\\ViewEdit.cshtml",
+              "RelativeToolTip": "MyBG\\Views\\Edit\\ViewEdit.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-12T16:39:18.808Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ViewEdits.cshtml",
+              "DocumentMoniker": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Views\\Edit\\ViewEdits.cshtml",
+              "RelativeDocumentMoniker": "MyBG\\Views\\Edit\\ViewEdits.cshtml",
+              "ToolTip": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Views\\Edit\\ViewEdits.cshtml",
+              "RelativeToolTip": "MyBG\\Views\\Edit\\ViewEdits.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAABCAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-12T14:00:14.135Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "EditSubmissionAdmin.cshtml",
+              "DocumentMoniker": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Views\\Admin\\EditSubmissionAdmin.cshtml",
+              "RelativeDocumentMoniker": "MyBG\\Views\\Admin\\EditSubmissionAdmin.cshtml",
+              "ToolTip": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Views\\Admin\\EditSubmissionAdmin.cshtml",
+              "RelativeToolTip": "MyBG\\Views\\Admin\\EditSubmissionAdmin.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-12T13:49:19.818Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "AdminController.cs",
+              "DocumentMoniker": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Controllers\\AdminController.cs",
+              "RelativeDocumentMoniker": "MyBG\\Controllers\\AdminController.cs",
+              "ToolTip": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Controllers\\AdminController.cs",
+              "RelativeToolTip": "MyBG\\Controllers\\AdminController.cs",
+              "ViewState": "AgIAAEUAAAAAAAAAAADwv08AAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-12T12:50:54.288Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "EditSubmissions.cshtml",
+              "DocumentMoniker": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Views\\Admin\\EditSubmissions.cshtml",
+              "RelativeDocumentMoniker": "MyBG\\Views\\Admin\\EditSubmissions.cshtml",
+              "ToolTip": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Views\\Admin\\EditSubmissions.cshtml",
+              "RelativeToolTip": "MyBG\\Views\\Admin\\EditSubmissions.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-12T13:42:45.426Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Views\\Admin\\Index.cshtml",
+              "RelativeDocumentMoniker": "MyBG\\Views\\Admin\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Views\\Admin\\Index.cshtml",
+              "RelativeToolTip": "MyBG\\Views\\Admin\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-12T13:41:06.227Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Data\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "MyBG\\Data\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Data\\ApplicationDbContext.cs",
+              "RelativeToolTip": "MyBG\\Data\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAwwCIAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-12T13:07:59.526Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "UserController.cs",
+              "DocumentMoniker": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Controllers\\UserController.cs",
+              "RelativeDocumentMoniker": "MyBG\\Controllers\\UserController.cs",
+              "ToolTip": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Controllers\\UserController.cs",
+              "RelativeToolTip": "MyBG\\Controllers\\UserController.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAswB0AAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-12T12:51:03.167Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "EditModel.cs",
+              "DocumentMoniker": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Models\\EditModel.cs",
+              "RelativeDocumentMoniker": "MyBG\\Models\\EditModel.cs",
+              "ToolTip": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Models\\EditModel.cs",
+              "RelativeToolTip": "MyBG\\Models\\EditModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-12T12:50:19.332Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "PageViewer.cshtml",
+              "DocumentMoniker": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Views\\Page\\PageViewer.cshtml",
+              "RelativeDocumentMoniker": "MyBG\\Views\\Page\\PageViewer.cshtml",
+              "ToolTip": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Views\\Page\\PageViewer.cshtml",
+              "RelativeToolTip": "MyBG\\Views\\Page\\PageViewer.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-12T12:48:33.251Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "EditController.cs",
+              "DocumentMoniker": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Controllers\\EditController.cs",
+              "RelativeDocumentMoniker": "MyBG\\Controllers\\EditController.cs",
+              "ToolTip": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Controllers\\EditController.cs",
+              "RelativeToolTip": "MyBG\\Controllers\\EditController.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAgwBcAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-12T12:40:35.076Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "CreateEdit.cshtml",
+              "DocumentMoniker": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Views\\Edit\\CreateEdit.cshtml",
+              "RelativeDocumentMoniker": "MyBG\\Views\\Edit\\CreateEdit.cshtml",
+              "ToolTip": "C:\\Users\\Mitko\\Projects\\C#\\MyBG\\MyBG\\Views\\Edit\\CreateEdit.cshtml",
+              "RelativeToolTip": "MyBG\\Views\\Edit\\CreateEdit.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-12T12:40:32.852Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

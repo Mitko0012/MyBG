@@ -2,6 +2,7 @@
 
 <div class="page-display">
 	<h1>@Model.Title</h1>
+	<a asp-action="ViewEdits" asp-controller="Edit" asp-route-pageId="@Model.Id">View edit history</a>
 	<div class="like-div">
 		<form method="post" asp-action="LikePost" asp-route-id="@Model.Id" enctype="multipart/form-data" asp-route-replyCount="@Model.CommenntsToDisplay">
 			<p class="page-info">Likes: @Model.UsersLiked.Count</p>
@@ -27,6 +28,7 @@
 			<p>@($"From: {way.TransportOrigin} Time taken: {way.TransportTime} By: {way.TransportWayType}")</p>
 		}
 	}
+	<a asp-controller="Edit" asp-action="CreateEdit" asp-route-pageId="@Model.Id">Submit an edit for this page</a>
 	<form method="post" id="comment-post" asp-action="PostComment" asp-route-comment="@Model.Comment" asp-route-id="@Model.Id" asp-route-replyCount="@Model.CommenntsToDisplay" enctype="multipart/form-data">
 		<textarea asp-for="Comment"></textarea>
 		<button type="submit">Upload comment</button>

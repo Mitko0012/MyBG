@@ -1,0 +1,13 @@
+﻿@model ViewEditsModel
+
+
+@{
+	int index = 1;
+	foreach (EditModel model1 in Model.Edits)
+	{
+		<h3>Edit #@index for @model1.PageToEdit.Title</h3>
+		<a asp-action="ViewEdit" asp-route-pageId="@model1.PageToEdit.Id" asp-route-editIndex="@index">View edit</a>
+		index++;
+	}
+}
+ 

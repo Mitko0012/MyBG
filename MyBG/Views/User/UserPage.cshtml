@@ -1,0 +1,15 @@
+﻿@model PFPModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+
+<h2>@Model.UserName</h2>
+<img src="@Model.ReturnFile"/>
+@{
+	if(SignInManager.UserManager.GetUserAsync(User).Result.UserName == Model.UserName)
+	{
+		<a href="~/Identity/Account/Manage">Change PFP</a>
+		<a href="~/Identity/Account/Manage/Password">Change password</a>
+		<a href="~/Identity/Account/Logout">Log out</a>
+	}
+}

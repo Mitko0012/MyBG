@@ -299,6 +299,33 @@ namespace MyBG.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("MyBG.Models.EditModel", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Approved")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("NewText")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("OldText")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PageModelKey")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("PageModelKey");
+
+                    b.ToTable("Edits");
+                });
+
             modelBuilder.Entity("MyBG.Models.ForumQuestion", b =>
                 {
                     b.Property<int>("Id")
@@ -544,6 +571,17 @@ namespace MyBG.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("MyBG.Models.EditModel", b =>
+                {
+                    b.HasOne("MyBG.Models.PageModel", "PageToEdit")
+                        .WithMany("Edits")
+                        .HasForeignKey("PageModelKey")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PageToEdit");
+                });
+
             modelBuilder.Entity("MyBG.Models.TransportWay", b =>
                 {
                     b.HasOne("MyBG.Models.PageModel", null)
@@ -568,6 +606,8 @@ namespace MyBG.Migrations
 
             modelBuilder.Entity("MyBG.Models.PageModel", b =>
                 {
+                    b.Navigation("Edits");
+
                     b.Navigation("TransportWays");
                 });
 #pragma warning restore 612, 618

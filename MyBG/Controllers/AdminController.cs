@@ -71,14 +71,14 @@ namespace MyBG.Controllers
         public IActionResult EditSubmissions()
         {
             ViewEditsModel cont = new ViewEditsModel();
-            cont.Pages = _dbContext.Edits.Where((x) => !x.Approved).ToList();
+            cont.Edits = _dbContext.Edits.Where((x) => !x.Approved).Include(x => x.PageToEdit).ToList();
             return View(cont);
         }
 
         [Authorize(Roles = "Admin")]
         public IActionResult EditSubmissionAdmin(int id)
         {
-            EditModel submission = _ctx.Edits.Where(x => !x.Approved).FirstOrDefault(x => x.ID == id);
+            EditModel submission = _dbContext.Edits.Where(x => !x.Approved).Include(x => x.PageToEdit).FirstOrDefault(x => x.ID == id);
             if(!ModelState.IsValid)
             {
                 return RedirectToAction("Index");
@@ -89,19 +89,20 @@ namespace MyBG.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult EditSubmissionApprove(int id)
         {
-            EditModel model = _dbContext.Edtis.Where(x => !x.Approved).FirstOrDefault(x => x.ID == id);
+            EditModel model = _dbContext.Edits.Where(x => !x.Approved).Include(x => x.PageToEdit).FirstOrDefault(x => x.ID == id);
             if(!ModelState.IsValid)
             {
                 return RedirectToAction("Index");
             }
             model.Approved = true;
+            model.PageToEdit.TextBody = model.NewText;
             _dbContext.SaveChanges();
             return RedirectToAction("Index");
         }
         [Authorize(Roles = "Admin")]
         public IActionResult EditSubmissionDecline(int id)
         {
-           EditModel model = _dbContext.Edtis.Where(x => !x.Approved).FirstOrDefault(x => x.ID == id);
+           EditModel model = _dbContext.Edits.Where(x => !x.Approved).FirstOrDefault(x => x.ID == id);
             if(!ModelState.IsValid)
             {
                 return RedirectToAction("Index");
