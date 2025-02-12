@@ -66,5 +66,49 @@ namespace MyBG.Controllers
             _dbContext.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult EditSubmissions()
+        {
+            ViewEditsModel cont = new ViewEditsModel();
+            cont.Pages = _dbContext.Edits.Where((x) => !x.Approved).ToList();
+            return View(cont);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult EditSubmissionAdmin(int id)
+        {
+            EditModel submission = _ctx.Edits.Where(x => !x.Approved).FirstOrDefault(x => x.ID == id);
+            if(!ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+            return View(submission);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult EditSubmissionApprove(int id)
+        {
+            EditModel model = _dbContext.Edtis.Where(x => !x.Approved).FirstOrDefault(x => x.ID == id);
+            if(!ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+            model.Approved = true;
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        [Authorize(Roles = "Admin")]
+        public IActionResult EditSubmissionDecline(int id)
+        {
+           EditModel model = _dbContext.Edtis.Where(x => !x.Approved).FirstOrDefault(x => x.ID == id);
+            if(!ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+            _dbContext.Edits.Remove(model);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index");
+        }        
     }
 }

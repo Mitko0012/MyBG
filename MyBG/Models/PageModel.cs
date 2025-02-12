@@ -33,6 +33,7 @@ namespace MyBG.Models
         public List<TransportWay> TransportWays { get; set; }
         [Required]
         public Regions Regions { get; set; } = Regions.Southwestern;
+        public List<EditModel> Edits {get; set;} = new List<EditModel>();
         public string? ReturnFile
         {
             get

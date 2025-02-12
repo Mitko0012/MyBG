@@ -12,6 +12,7 @@ namespace MyBG.Data
         public DbSet<CommentModel> Comments { get; set; }
         public DbSet<ForumQuestion> Posts { get; set; }
         public DbSet<TransportWay> TransportWays { get; set; }
+        public DbSet<EditModel> Edits {get; set;}
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -28,6 +29,10 @@ namespace MyBG.Data
                         .HasMany(x => x.PostedOnForums);
             modelBuilder.Entity<PageModel>()
                         .HasMany(x => x.TransportWays);
+            modelBuilder.Entity<EditModel>()
+                        .HasOne(x => x.PageToEdit)
+                        .WithMany(x => x.Edits);
+
         }
     }
 }
