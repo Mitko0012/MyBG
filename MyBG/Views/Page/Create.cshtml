@@ -43,13 +43,15 @@
     		<option value="2">Bus</option>
     		<option value="3">Plane</option>
     	</select>
+        <input asp-for="VerifyTransport" id="verify-transport" value=""/>
+        <span asp-validation-for="VerifyTransport" class="text-danger"></span>
         <button type="button" class="create-button" onclick="addOption()">Add option</button>
         <h3>Point to your destination on the map</h3>
         <hr />
         <div id="map"></div>
         <p>Or, input exact geographic coordinates</p>
-        <input id="xInput" oninput="reverseUpdatePos()"/>
-        <input id="yInput" oninput="reverseUpdatePos()" />
+        <input id="xInput" asp-for="Lat" value="42.766109" type="number" oninput="reverseUpdatePos()" />
+        <input id="yInput" asp-for="Long" value="25.238558" type="number" oninput="reverseUpdatePos()" />
         <button type="submit" class="create-button" value="Submit">Submit</button>
     </form>
     <script src="~/js/site.js"></script>

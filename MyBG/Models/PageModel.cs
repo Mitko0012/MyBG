@@ -34,6 +34,8 @@ namespace MyBG.Models
         [Required]
         public Regions Regions { get; set; } = Regions.Southwestern;
         public List<EditModel> Edits {get; set;} = new List<EditModel>();
+        public double Lat { get; set; }
+        public double Long { get; set; }
         public string? ReturnFile
         {
             get
@@ -54,5 +56,7 @@ namespace MyBG.Models
                 _returnFile = value;
             }
         }
+        [Required]
+        public string VerifyTransport {  get; set; }
     }
 }

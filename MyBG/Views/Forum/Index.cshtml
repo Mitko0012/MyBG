@@ -1,4 +1,7 @@
 ﻿@model ForumContainer
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
 <h1>Posts</h1>
 <form asp-action="Index">
 	<select asp-for="SearchType" name="sortingType">
@@ -7,13 +10,17 @@
 		<option value="Search">Search</option>
 	</select>
 	<input asp-for="SearchString" name="searchString"/>
-	<button type="submit"></button>
+	<button type="submit">Apply options</button>
 </form>
 @{
 	foreach(ForumQuestion i in Model.ForumPosts)
 	{
 		<a asp-action="PostViewer" asp-route-id="@i.Id" id="ForumPost">@i.Title</a>
 		<br />
+		if (SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin"))
+		{
+			<a asp-action="DeleteForumPost" asp-controller="Admin" asp-route-id="@i.Id">Delete post</a>
+		}
 	}
 }
 <a asp-action="Add">Create new post</a>

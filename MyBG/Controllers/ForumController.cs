@@ -67,18 +67,18 @@ namespace MyBG.Controllers
         [Authorize]
         public ActionResult PostViewer(int id, int? commentDisplayCount)
         {
-            ForumQuestion question = _ctx.Posts.Include(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.User).Include(x => x.LikedUser).FirstOrDefault(x => x.Id == id);
-            if(commentDisplayCount != null)
+            ForumQuestion question = _ctx.Posts.Include(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.User).FirstOrDefault(x => x.Id == id);
+            if (!ModelState.IsValid || question == null)
+            {
+                return RedirectToAction("Index");
+            }
+            if (commentDisplayCount != null)
             {
                 question.CommentCount = (int)commentDisplayCount;
             }
             foreach (var item in question.Comment)
             {
                 item.PFP = _ctx.PFPs.FirstOrDefault(x => x.UserName == item.User.UserName);
-            }
-            if (!ModelState.IsValid)
-            {
-                return RedirectToAction("Index");
             }
             return View(question);
         }
@@ -130,7 +130,7 @@ namespace MyBG.Controllers
         [HttpPost]
         public async Task<IActionResult> LikeComment(int id, int replyCount)
         {
-            CommentModel comment = _ctx.Comments.Find(id);
+            CommentModel comment = _ctx.Comments.Include(x => x.LikedUser).FirstOrDefault(x => x.Id == id);
             IdentityUser user = await _manager.GetUserAsync(User);
             PFPModel model = _ctx.PFPs.FirstOrDefault(x => x.UserName == user.UserName);
             if (!ModelState.IsValid)

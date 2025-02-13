@@ -1,4 +1,6 @@
 ﻿@model ForumQuestion
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
 
 <h1>@Model.Title</h1>
 <p>@Model.Text</p>
@@ -10,7 +12,7 @@
 	<label for="commentInput">Post comment</label>
 	<br />
 	<input id="commentInput" asp-for="CommentCurrent"/>
-	<button type="submit"></button>
+	<button type="submit">Post a comment</button>
 </form>
 @{
 	int count = 1;
@@ -27,6 +29,10 @@
 		if(count >= Model.CommentCount)
 		{
 			break;
+		}
+		@if (SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin"))
+		{
+			<a asp-action="DeleteCommentFromPost" asp-controller="Admin" asp-route-id="@comment.Id">Delete comment</a>
 		}
 	}
 	if(Model.Comment.Count > 0 &&  Model.Comment.Count > Model.CommentCount)

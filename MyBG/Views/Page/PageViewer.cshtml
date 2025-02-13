@@ -1,4 +1,7 @@
 ﻿@model MyBG.Models.PageModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
 
 <div class="page-display">
 	<h1>@Model.Title</h1>
@@ -28,6 +31,10 @@
 			<p>@($"From: {way.TransportOrigin} Time taken: {way.TransportTime} By: {way.TransportWayType}")</p>
 		}
 	}
+	<h2>@Model.Title displayed on a map</h2>
+	<div id="map"></div>
+	<input id="latInfo" value="@Model.Lat" />
+	<input id="longInfo" value="@Model.Long" />
 	<a asp-controller="Edit" asp-action="CreateEdit" asp-route-pageId="@Model.Id">Submit an edit for this page</a>
 	<form method="post" id="comment-post" asp-action="PostComment" asp-route-comment="@Model.Comment" asp-route-id="@Model.Id" asp-route-replyCount="@Model.CommenntsToDisplay" enctype="multipart/form-data">
 		<textarea asp-for="Comment"></textarea>
@@ -48,6 +55,10 @@
 				<p id="commentLikeData">@comment.LikedUser.Count</p>
 				<button type="Submit" id="commentLikeData">Like</button>
 			</form>
+			@if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin"))
+			{
+				<a asp-action="DeleteComment" asp-controller="Admin" asp-route-id="@comment.Id">Delete comment</a>
+			}
 		</div>
 		if (count == Model.CommenntsToDisplay)
 		{
@@ -61,3 +72,5 @@
 		<a asp-action="PageViewer" asp-route-id="@Model.Id" asp-route-replyCount="@(Model.CommenntsToDisplay + 5 > Model.Comments.Count ? Model.Comments.Count : Model.CommenntsToDisplay + 5 )">Show 5 more comments</a>
 	}
 }
+<script src="~/js/site.js"></script>
+<script src="~/js/initDisplayMap.js"></script>

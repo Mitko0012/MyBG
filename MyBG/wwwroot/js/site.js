@@ -3,6 +3,9 @@ let map;
 let marker;
 let xInput = document.getElementById("xInput");
 let yInput = document.getElementById("yInput");
+let latInfo = document.getElementById("latInfo");
+let longInfo = document.getElementById("longInfo");
+let transportValid = document.getElementById("verify-transport");
 const searchSelect = document.getElementById("searchSelect");
 
 function addOption() {
@@ -16,6 +19,7 @@ function addOption() {
                                                         <input name="TransportWays[${index}].TransportOrigin" value="${fromInput.value}"/>
                                                         <input name="TransportWays[${index}].TransportTime" value="${timeInput.value}"/>
                                                     </div>`);
+    transportValid.value = ".";
     index++;
 }
 
@@ -42,17 +46,23 @@ function initMap() {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
-    marker = L.marker([42.766109, 25.238558]).addTo(map);
-    marker.options.interactive = true;
-    marker.options.draggable = true;
+    marker = L.marker([42.766109, 25.238558], {draggable: true}).addTo(map);
+    marker.on("move", () => {
+        xInput.value = marker.getLatLng().lat;
+        yInput.value = marker.getLatLng().lng;
+    }
+    );
 }
 
-
-function updatePos() {
-    xInput.value = marker.getLatLng().lat;
-    yInput.value = marker.getLatLng().lng; 
-}
-
-function reverseUpdatePos() {
+function reverseUpdatePos(event) {
     marker.setLatLng([xInput.value, yInput.value])
+}
+
+function initMapDisplay() {
+    map = L.map("map").setView([latInfo.value, longInfo.value], 9);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+    marker = L.marker([latInfo.value, longInfo.value]).addTo(map);
 }

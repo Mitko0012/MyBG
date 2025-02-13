@@ -45,7 +45,7 @@ public class UserController : Controller
         }
         UserContribsModel model = new UserContribsModel()
         {
-            Edits = userDataModel.Contributions,
+            Edits = userDataModel.Contributions.Where(x => x.Approved).ToList(),
             UserName = userDataModel.UserName
         };
         return View(model);

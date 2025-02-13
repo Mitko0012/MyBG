@@ -393,6 +393,12 @@ namespace MyBG.Migrations
                     b.Property<int>("CommentId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<double>("Lat")
+                        .HasColumnType("REAL");
+
+                    b.Property<double>("Long")
+                        .HasColumnType("REAL");
+
                     b.Property<byte[]>("PageImageArr")
                         .HasColumnType("BLOB");
 
@@ -411,6 +417,10 @@ namespace MyBG.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("VerifyTransport")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

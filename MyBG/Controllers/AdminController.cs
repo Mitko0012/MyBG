@@ -31,6 +31,7 @@ namespace MyBG.Controllers
         {
             Users users = new Users();
             users.AllUsers = _dbContext.Users.ToList();
+            users.AllUsers.OrderBy((x) => _manager.UserManager.GetRolesAsync(x).Result.Contains("Admin") ? 0 : 1).ToList();
             return View(users);
         }
 
@@ -89,6 +90,60 @@ namespace MyBG.Controllers
             _dbContext.Pages.Remove(model.PageToEdit);
             _dbContext.SaveChanges();
             return RedirectToAction("Index");
-        }        
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult DeleteForumPost(int id)
+        {
+            ForumQuestion post = _dbContext.Posts.Find(id);
+            if (post == null)
+            {
+                return RedirectToAction("Index", "Page");
+            }
+            _dbContext.Posts.Remove(post); 
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index", "Forum");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult DeleteComment(int id)
+        {
+            CommentModel comment = _dbContext.Comments.Find(id);
+            if (comment == null)
+            {
+                return RedirectToAction("Index", "Page");
+            }
+            _dbContext.Comments.Remove(comment);
+            _dbContext.SaveChanges();
+            return RedirectToAction("PageViewer", "Page", new {id = comment.PageId});
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult DeleteCommentFromPost(int id)
+        {
+            CommentModel comment = _dbContext.Comments.Find(id);
+            if (comment == null)
+            {
+                return RedirectToAction("Index", "Page");
+            }
+            _dbContext.Comments.Remove(comment);
+            _dbContext.SaveChanges();
+            return RedirectToAction("PostViewer", "Forum", new { id = comment.PostId });
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult DeleteUser(string userName)
+        {
+            PFPModel model = _dbContext.PFPs.FirstOrDefault(p => p.UserName == userName);
+            IdentityUser user = _dbContext.Users.FirstOrDefault(u => u.UserName == userName);
+            if(user == null || model == null || _manager.UserManager.GetRolesAsync(user).Result.Contains("Admin"))
+            {
+                return RedirectToAction("Index", "Page");
+            }
+            _dbContext.PFPs.Remove(model);
+            _dbContext.Users.Remove(user);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Users");
+        }
     }
 }
