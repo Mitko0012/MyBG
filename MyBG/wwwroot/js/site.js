@@ -1,5 +1,8 @@
 ﻿let index = 0;
 let map;
+let marker;
+let xInput = document.getElementById("xInput");
+let yInput = document.getElementById("yInput");
 const searchSelect = document.getElementById("searchSelect");
 
 function addOption() {
@@ -34,5 +37,22 @@ function showOrHideSearch() {
 }
 
 function initMap() {
-    map = L.map("map").setView([42.766109, 25.238558], 13);
+    map = L.map("map").setView([42.766109, 25.238558], 8);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+    marker = L.marker([42.766109, 25.238558]).addTo(map);
+    marker.options.interactive = true;
+    marker.options.draggable = true;
+}
+
+
+function updatePos() {
+    xInput.value = marker.getLatLng().lat;
+    yInput.value = marker.getLatLng().lng; 
+}
+
+function reverseUpdatePos() {
+    marker.setLatLng([xInput.value, yInput.value])
 }

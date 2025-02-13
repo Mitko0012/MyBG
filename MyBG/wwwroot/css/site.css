@@ -445,7 +445,8 @@ body {
 }
 
 #map {
-    height: 180px;
+    width: 80vw;
+    height: 40vw;
 }
 
 #OldTextP {

@@ -5,12 +5,18 @@
 
 <h2>@Model.UserName</h2>
 <img src="@Model.ReturnFile"/>
-<a asp-action="ViewContributions" asp-route-userName="@Model.UserName">Contributions made by @Model.UserName</a>
+<p>@Model.Contributions.Count</p>
+<p>Contributions made </p>
+<a asp-action="ViewContributions" asp-route-userName="@Model.UserName">View contributions</a>
 @{
 	if(SignInManager.UserManager.GetUserAsync(User).Result.UserName == Model.UserName)
 	{
 		<a href="~/Identity/Account/Manage">Change PFP</a>
 		<a href="~/Identity/Account/Manage/Password">Change password</a>
 		<a href="~/Identity/Account/Logout">Log out</a>
+		if (SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin"))
+		{
+			<a href="~/Admin">Admin controls</a>
+		}
 	}
 }

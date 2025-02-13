@@ -46,9 +46,14 @@
         <button type="button" class="create-button" onclick="addOption()">Add option</button>
         <h3>Point to your destination on the map</h3>
         <hr />
-        <div id="map" onload="initMap()"></div>
+        <div id="map"></div>
+        <p>Or, input exact geographic coordinates</p>
+        <input id="xInput" oninput="reverseUpdatePos()"/>
+        <input id="yInput" oninput="reverseUpdatePos()" />
         <button type="submit" class="create-button" value="Submit">Submit</button>
     </form>
+    <script src="~/js/site.js"></script>
+    <script src="~/js/initEditMap.js"></script>
 </div>
 
 @section Scripts {

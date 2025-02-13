@@ -72,6 +72,8 @@ namespace MyBG.Controllers
             IdentityUser user = await _manager.GetUserAsync(User);
             PageModel model = _context.Pages.Include(p => p.UsersLiked)
                                             .Include(p => p.Comments)
+                                                .ThenInclude(p => p.User)
+                                            .Include(p => p.Comments)
                                                 .ThenInclude(p => p.LikedUser)
                                             .Include(p => p.TransportWays)
                                             .FirstOrDefault(p => p.Id == id);

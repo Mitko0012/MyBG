@@ -41,7 +41,7 @@
 		<div class="comment-div">
 			<img src="@comment.PFP.ReturnFile" class="profile-pic" class="comment-user-data">
 			<div class="comment-user-data">
-				<p class ="comment-username">@comment.PFP.UserName</p>
+				<a class ="comment-username" asp-controller="User" asp-action="UserPage" asp-route-userName="@comment.PFP.UserName">@comment.PFP.UserName</a>
 			</div>
 			<p class="comment-text-data">@comment.Text</p>
 			<form asp-action="LikeComment" asp-route-id="@comment.Id" asp-route-replyCount="@Model.CommenntsToDisplay" class="comment-like-div">
