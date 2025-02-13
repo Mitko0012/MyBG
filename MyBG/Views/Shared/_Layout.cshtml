@@ -19,7 +19,7 @@
 </head>
 <body>
     @{
-        if (SignInManager.IsSignedIn(User))
+        if (SignInManager != null && SignInManager.IsSignedIn(User))
         {
             <header id="navHed">
                     <div id="flexDiv">

@@ -2,14 +2,12 @@
 
 
 @{
-	int index = 1;
 	foreach (EditModel model1 in Model.Edits)
 	{
 		<div class="editDiv">
-			<h3>Edit #@index for @model1.PageToEdit.Title</h3>
-			<a class="edit-redirect" asp-action="ViewEdit" asp-route-pageId="@model1.PageToEdit.Id" asp-route-editIndex="@index">View edit</a>
+			<h3>Edit #@model1.PageIndex for @model1.PageToEdit.Title</h3>
+			<a class="edit-redirect" asp-action="ViewEdit" asp-route-pageId="@model1.PageToEdit.Id" asp-route-editIndex="@model1.PageIndex">View edit</a>
 		</div>
-		index++;
 	}
 }
  

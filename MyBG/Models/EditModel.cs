@@ -13,6 +13,8 @@ public class EditModel
     [Required]
     public int PageModelKey {get; set;}
     public bool Approved {get; set;}
-    [NotMapped]
-    public int? PageIndex { get; set;}
+    public int? PageIndex { get; set; } = 0;
+    public bool CreatePage { get; set;}
+    public int PFPKey { get; set; }
+    public PFPModel? UserCreated { get; set;}
 }

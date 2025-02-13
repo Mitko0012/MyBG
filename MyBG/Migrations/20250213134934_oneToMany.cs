@@ -5,25 +5,18 @@
 namespace MyBG.Migrations
 {
     /// <inheritdoc />
-    public partial class regions : Migration
+    public partial class oneToMany : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "Regions",
-                table: "Pages",
-                type: "INTEGER",
-                nullable: false,
-                defaultValue: 0);
+
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Regions",
-                table: "Pages");
+
         }
     }
 }

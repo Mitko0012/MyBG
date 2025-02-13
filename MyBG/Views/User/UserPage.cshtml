@@ -5,6 +5,7 @@
 
 <h2>@Model.UserName</h2>
 <img src="@Model.ReturnFile"/>
+<a asp-action="ViewContributions" asp-route-userName="@Model.UserName">Contributions made by @Model.UserName</a>
 @{
 	if(SignInManager.UserManager.GetUserAsync(User).Result.UserName == Model.UserName)
 	{

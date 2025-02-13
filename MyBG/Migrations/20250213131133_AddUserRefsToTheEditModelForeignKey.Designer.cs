@@ -11,8 +11,8 @@ using MyBG.Data;
 namespace MyBG.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250212173845_ChangeOldToNotRequired")]
-    partial class ChangeOldToNotRequired
+    [Migration("20250213131133_AddUserRefsToTheEditModelForeignKey")]
+    partial class AddUserRefsToTheEditModelForeignKey
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -311,18 +311,25 @@ namespace MyBG.Migrations
                     b.Property<bool>("Approved")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("CreatePage")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("NewText")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("OldText")
-                        .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("PFPKey")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("PageModelKey")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("PFPKey");
 
                     b.HasIndex("PageModelKey");
 
@@ -576,6 +583,12 @@ namespace MyBG.Migrations
 
             modelBuilder.Entity("MyBG.Models.EditModel", b =>
                 {
+                    b.HasOne("MyBG.Models.PFPModel", "UserCreated")
+                        .WithMany("Contributions")
+                        .HasForeignKey("PFPKey")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MyBG.Models.PageModel", "PageToEdit")
                         .WithMany("Edits")
                         .HasForeignKey("PageModelKey")
@@ -583,6 +596,8 @@ namespace MyBG.Migrations
                         .IsRequired();
 
                     b.Navigation("PageToEdit");
+
+                    b.Navigation("UserCreated");
                 });
 
             modelBuilder.Entity("MyBG.Models.TransportWay", b =>
@@ -605,6 +620,11 @@ namespace MyBG.Migrations
                         .HasForeignKey("UsersLikedId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MyBG.Models.PFPModel", b =>
+                {
+                    b.Navigation("Contributions");
                 });
 
             modelBuilder.Entity("MyBG.Models.PageModel", b =>

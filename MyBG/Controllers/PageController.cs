@@ -147,7 +147,22 @@ namespace MyBG.Controllers
                 {
                     return RedirectToAction("Create");
                 }
+                PFPModel user = _context.PFPs.Include(x => x.Contributions).FirstOrDefault(x => x.UserName == _manager.GetUserAsync(User).Result.UserName);
+                EditModel firstEdit = new EditModel()
+                {
+                    Approved = false,
+                    OldText = "",
+                    NewText = page.TextBody,
+                    PageToEdit = page,
+                    PageModelKey = page.Id,
+                    CreatePage = true,
+                    UserCreated = user,
+                };
+                page.Edits.Add(firstEdit);
                 _context.Pages.Add(page);
+                firstEdit.PFPKey = user.Id;
+                user.Contributions.Add(firstEdit);
+                _context.Edits.Add(firstEdit);
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }

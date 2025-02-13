@@ -14,6 +14,7 @@ namespace MyBG.Models
         public List<PageModel> PagesLiked { get; set; } = [];
         public List<CommentModel> CommentsLiked { get; set; } = new List<CommentModel>();
         public List<ForumQuestion> UpvotedForums { get; set; } = new List<ForumQuestion>();
+        public List<EditModel> Contributions { get; set; } = new List<EditModel>();
         public int PageLikeId { get; set; }
         public string? ReturnFile
         {

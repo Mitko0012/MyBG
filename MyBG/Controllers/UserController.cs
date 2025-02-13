@@ -33,4 +33,20 @@ public class UserController : Controller
         }
         return View(userDataModel);
     }
+
+    [Authorize]
+    public IActionResult ViewContributions(string userName)
+    {
+        PFPModel userDataModel = _ctx.PFPs.Include(x => x.Contributions).ThenInclude(x => x.PageToEdit).FirstOrDefault(x => x.UserName == userName);
+        if (!ModelState.IsValid || userDataModel == null)
+        {
+            return RedirectToAction("Index", "Page");
+        }
+        UserContribsModel model = new UserContribsModel()
+        {
+            Edits = userDataModel.Contributions,
+            UserName = userDataModel.UserName
+        };
+        return View(model);
+    }
 }

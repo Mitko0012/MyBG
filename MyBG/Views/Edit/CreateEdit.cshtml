@@ -3,9 +3,9 @@
 <div>
 	<h1>Submit a new page edit for page @Model.PageToEdit.Title</h1>
 	<hr />
-	<form asp-action="PostEdit" asp-route-pageId="@Model.PageModelKey" enctype="multipart/form-data">
+	<form asp-action="PostEdit" asp-route-pageId="@Model.PageModelKey" enctype="multipart/form-data" method="post">
 		<label>Text content</label>
-		<textarea name="NewText">@Model.OldText</textarea>
+		<textarea asp-for="NewText">@Model.OldText</textarea>
 		<button type="submit">Submit edit</button>
 	</form>
 </div>

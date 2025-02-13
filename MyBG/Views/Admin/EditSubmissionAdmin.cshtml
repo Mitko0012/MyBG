@@ -1,9 +1,28 @@
 ﻿@model EditModel
 
 <div id="create-div">
-	<h1>Edit submission for page @Model.PageToEdit.Title</h1>
+	@if (Model.CreatePage)
+	{
+		<h1>Submission for creation of page @Model.PageToEdit.Title</h1>
+		<p>Description: @Model.PageToEdit.Summary</p>
+	}
+	else
+	{
+		<h1>Edit submission for page @Model.PageToEdit.Title</h1>
+	}
+	<p>Submission created by @Model.UserCreated.UserName</p>
+	
 	<h3>Content before the edit</h3>
-	<p id="OldTextP">@Model.OldText</p>
+	@{
+		if (Model.CreatePage)
+		{ 
+			<p>This submission creates the page</p>
+		}
+		else
+		{	
+			<p id="OldTextP">@Model.OldText</p>
+		}
+	}
 	<h3>Content after the edit</h3>
 	<p id="NewTextP">@Model.NewText</p>
 	<a asp-action="EditSubmissionApprove" asp-route-id="@Model.ID">Approve</a>

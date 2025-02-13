@@ -34,6 +34,10 @@ namespace MyBG.Data
                         .WithMany(x => x.Edits)
                         .HasForeignKey(x => x.PageModelKey);
 
+            modelBuilder.Entity<PFPModel>()
+                        .HasMany(x => x.Contributions)
+                        .WithOne(x => x.UserCreated)
+                        .HasForeignKey(x => x.PFPKey);
         }
     }
 }
