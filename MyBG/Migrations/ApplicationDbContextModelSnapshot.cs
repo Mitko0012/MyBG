@@ -367,6 +367,26 @@ namespace MyBG.Migrations
                     b.ToTable("Posts");
                 });
 
+            modelBuilder.Entity("MyBG.Models.InboxMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("UserSourceId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserSourceId");
+
+                    b.ToTable("Messages");
+                });
+
             modelBuilder.Entity("MyBG.Models.PFPModel", b =>
                 {
                     b.Property<int>("Id")
@@ -625,6 +645,17 @@ namespace MyBG.Migrations
                     b.Navigation("UserCreated");
                 });
 
+            modelBuilder.Entity("MyBG.Models.InboxMessage", b =>
+                {
+                    b.HasOne("MyBG.Models.PFPModel", "UserSource")
+                        .WithMany("Inbox")
+                        .HasForeignKey("UserSourceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserSource");
+                });
+
             modelBuilder.Entity("MyBG.Models.TransportWay", b =>
                 {
                     b.HasOne("MyBG.Models.PageModel", null)
@@ -650,6 +681,8 @@ namespace MyBG.Migrations
             modelBuilder.Entity("MyBG.Models.PFPModel", b =>
                 {
                     b.Navigation("Contributions");
+
+                    b.Navigation("Inbox");
                 });
 
             modelBuilder.Entity("MyBG.Models.PageModel", b =>

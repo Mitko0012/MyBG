@@ -13,6 +13,7 @@ namespace MyBG.Data
         public DbSet<ForumQuestion> Posts { get; set; }
         public DbSet<TransportWay> TransportWays { get; set; }
         public DbSet<EditModel> Edits {get; set;}
+        public DbSet<InboxMessage> Messages { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -38,6 +39,13 @@ namespace MyBG.Data
                         .HasMany(x => x.Contributions)
                         .WithOne(x => x.UserCreated)
                         .HasForeignKey(x => x.PFPKey);
+
+            modelBuilder.Entity<PFPModel>()
+                        .HasMany(x => x.Inbox)
+                        .WithOne(x => x.UserSource);
+
+            modelBuilder.Entity<ForumQuestion>()
+                        .HasMany(x => x.LikedUser);
         }
     }
 }

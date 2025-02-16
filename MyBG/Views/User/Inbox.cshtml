@@ -1,0 +1,6 @@
+﻿@model PFPModel
+
+@foreach(InboxMessage message in Model.Inbox)
+{
+	<p>@message.Message</p>
+}

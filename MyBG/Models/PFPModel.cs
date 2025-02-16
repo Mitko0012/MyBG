@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyBG.Models
@@ -15,6 +16,7 @@ namespace MyBG.Models
         public List<CommentModel> CommentsLiked { get; set; } = new List<CommentModel>();
         public List<ForumQuestion> UpvotedForums { get; set; } = new List<ForumQuestion>();
         public List<EditModel> Contributions { get; set; } = new List<EditModel>();
+        public List<InboxMessage> Inbox { get; set; } = new List<InboxMessage>();
         public int PageLikeId { get; set; }
         public string? ReturnFile
         {

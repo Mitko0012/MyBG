@@ -14,18 +14,23 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using MyBG.Models;
+using System.Security.Cryptography;
+using MyBG.Data;
 
 namespace MyBG.Areas.Identity.Pages.Account
 {
-    public class LoginModel : PageModel
+    public class LoginModel : Microsoft.AspNetCore.Mvc.RazorPages.PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly ApplicationDbContext _ctx;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, ApplicationDbContext ctx)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _ctx = ctx;
         }
 
         /// <summary>
@@ -103,6 +108,7 @@ namespace MyBG.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
+            PFPModel pfp = _ctx.PFPs.FirstOrDefault(x => x.UserName == Input.Username);
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
@@ -111,6 +117,11 @@ namespace MyBG.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                if(pfp.IsDeleted)
+                {
+                    ModelState.AddModelError(string.Empty, "User has been removed.");
+                    return Page();
+                }
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");

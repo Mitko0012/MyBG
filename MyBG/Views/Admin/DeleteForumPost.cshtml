@@ -1,0 +1,10 @@
+﻿@model MyBG.Models.DeclinePostModel
+
+@{
+	<h1>Are you sure you want to delete this post?</h1>
+	<form method="post" asp-route-id="@Model.Post.Id" enctype="multipart/form-data" asp-action="DeleteForumPostConfirm">
+		<p>Message for creator of submission</p>
+		<textarea asp-for="DeclineMessage"></textarea>
+		<button type="submit">Delete post</button>
+	</form>
+}

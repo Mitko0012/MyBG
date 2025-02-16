@@ -14,6 +14,7 @@
 		<a href="~/Identity/Account/Manage">Change PFP</a>
 		<a href="~/Identity/Account/Manage/Password">Change password</a>
 		<a href="~/Identity/Account/Logout">Log out</a>
+		<a asp-action="Inbox">Inbox</a>
 		if (SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin"))
 		{
 			<a href="~/Admin">Admin controls</a>

@@ -1,0 +1,19 @@
+﻿@model MyBG.Models.ApproveModel
+
+@{
+	if(Model.EditModel.CreatePage) 
+	{
+		<h1>Are you sure you want to approve this submission for creation of page @Model.EditModel.PageToEdit.Title ?</h1>
+	}
+	else
+	{
+		<h1> Are you sure you want to approve this submission for edit of page @Model.EditModel.PageToEdit.Title ?</h1>
+	}
+	<form method="post" asp-route-id="@Model.EditModel.ID" enctype="multipart/form-data" asp-action="ConfirmApprove">
+		<p>Message for creator of submission</p>
+		<textarea asp-for="MessageForApproved"></textarea>
+		<p>Message for creators of submissions for the same page</p>
+		<textarea asp-for="MessageForDeclined"></textarea>
+		<button type="submit">Approve submission</button>
+	</form>
+}

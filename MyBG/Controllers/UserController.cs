@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Composition.Convention;
 using System.Diagnostics;
 using System.IO.Compression;
 using System.Linq;
@@ -18,9 +19,11 @@ namespace MyBG.Controllers;
 public class UserController : Controller
 {
     ApplicationDbContext _ctx;
-    public UserController(ApplicationDbContext ctx)
+    SignInManager<IdentityUser> _manager;
+    public UserController(ApplicationDbContext ctx, SignInManager<IdentityUser> manager)
     {
         _ctx = ctx;
+        _manager = manager;
     }
 
     [Authorize]
@@ -48,6 +51,17 @@ public class UserController : Controller
             Edits = userDataModel.Contributions.Where(x => x.Approved).ToList(),
             UserName = userDataModel.UserName
         };
+        return View(model);
+    }
+
+    [Authorize]
+    public IActionResult Inbox()
+    {
+        PFPModel model = _ctx.PFPs.Where(x => !x.IsDeleted).Include(x => x.Inbox).FirstOrDefault(x => x.UserName == _manager.UserManager.GetUserAsync(User).Result.UserName);
+        if(model == null)
+        {
+            return RedirectToAction("Index", "Page");
+        }
         return View(model);
     }
 }

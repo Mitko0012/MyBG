@@ -1,0 +1,8 @@
+﻿@model CommentDeleteMessage
+
+<form method="post" asp-route-id="@Model.Id" enctype="multipart/form-data" asp-action="DeleteCommentConfirm">
+	<h1>Are you sure you want to delete this comment?</h1>
+	<p>Message to creator of comment</p>
+	<textarea asp-for="Message"></textarea>
+	<button type="submit">Confirm deletion</button>
+</form>
