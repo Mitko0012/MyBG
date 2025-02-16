@@ -24,63 +24,64 @@ public class EditController : Controller
 
     [Authorize]
     public IActionResult ViewEdit(int pageId, int editIndex)
-        {
-        PageModel page = _ctx.Pages.Include(x => x.Edits).ThenInclude(x => x.UserCreated).FirstOrDefault(x => x.Id == pageId);
-        List<EditModel> approvedEdits = page.Edits.Where(x => x.Approved).ToList();
+    {
+        PageModel? page = _ctx.Pages.Include(x => x.Edits).ThenInclude(x => x.UserCreated).FirstOrDefault(x => x.Id == pageId);
+        List<EditModel> approvedEdits = page.Edits.Where(x => x.Approved && !x.IsDeleted).ToList();
         EditModel edit = approvedEdits[editIndex - 1];
-        if(!ModelState.IsValid)
+        if (!ModelState.IsValid || page == null || edit == null)
         {
             return RedirectToAction("Index", "Page");
         }
         return View(edit);
     }
-    
+
     [Authorize]
     public IActionResult CreateEdit(int pageId)
     {
-        EditModel model = new EditModel();
-        PageModel page = _ctx.Pages.Include(x => x.Edits).FirstOrDefault(x => x.Id == pageId);
-        model.PageToEdit = page;
-        model.PageModelKey = page.Id;
-        model.OldText = model.PageToEdit.TextBody;
-        if (!ModelState.IsValid)
+        EditModel? model = new EditModel();
+        PageModel? page = _ctx.Pages.Include(x => x.Edits).FirstOrDefault(x => x.Id == pageId);
+        if (!ModelState.IsValid || page == null || model == null)
         {
             return RedirectToAction("Index", "Page");
         }
+        model.PageToEdit = page;
+        model.PageModelKey = page.Id;
+        model.OldText = model.PageToEdit.TextBody;
         return View(model);
     }
     [Authorize]
     [HttpPost]
     public IActionResult PostEdit(EditModel model, int pageId)
     {
-        PageModel page = _ctx.Pages.Include(x => x.Edits).FirstOrDefault(x => x.Id == pageId);
+        PageModel? page = _ctx.Pages.Include(x => x.Edits).FirstOrDefault(x => x.Id == pageId);
         model.PageToEdit = page;
         model.PageModelKey = pageId;
         model.OldText = model.PageToEdit.TextBody;
-        PFPModel user = _ctx.PFPs.Include(x => x.Contributions).FirstOrDefault(x => x.UserName == _manager.UserManager.GetUserAsync(User).Result.UserName);
+        PFPModel? user = _ctx.PFPs.Include(x => x.Contributions).FirstOrDefault(x => x.UserName == _manager.UserManager.GetUserAsync(User).Result.UserName);
         model.UserCreated = user;
-        if (!ModelState.IsValid)
+        if (!ModelState.IsValid || page == null || model == null)
         {
-            return RedirectToAction("ViewEdits", new {id = pageId});
+            return RedirectToAction("ViewEdits", new { id = pageId });
         }
         model.PageToEdit = page;
         model.PageModelKey = pageId;
         model.OldText = page.TextBody;
         _ctx.Edits.Add(model);
         _ctx.SaveChanges();
-        return RedirectToAction("ViewEdits", new {pageId = model.PageModelKey});
+        return RedirectToAction("ViewEdits", new { pageId = model.PageModelKey });
     }
 
     [Authorize]
     public IActionResult ViewEdits(int pageId)
     {
         ViewEditsModel model = new ViewEditsModel();
-        PageModel pageModel = _ctx.Pages.Include(x => x.Edits).FirstOrDefault(x => x.Id == pageId);
-        model.Edits = pageModel.Edits.Where(x => x.Approved).ToList();
-        if(!ModelState.IsValid)
+        PageModel? pageModel = _ctx.Pages.Include(x => x.Edits).FirstOrDefault(x => x.Id == pageId);
+        pageModel.Edits = pageModel.Edits.Where(x => !x.IsDeleted).ToList();
+        if (!ModelState.IsValid || model == null || pageModel == null)
         {
             return RedirectToAction("Index", "Page");
         }
+        model.Edits = pageModel.Edits.Where(x => x.Approved && !x.IsDeleted).ToList();
         return View(model);
     }
 }

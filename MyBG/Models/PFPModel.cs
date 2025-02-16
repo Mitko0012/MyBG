@@ -36,5 +36,6 @@ namespace MyBG.Models
                 _returnFile = value;
             }
         }
+        public bool IsDeleted { get; set; } = false;
     }
 }

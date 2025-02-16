@@ -26,5 +26,6 @@ namespace MyBG.Models
         public String CommentCurrent { get; set; } = "";
         [NotMapped]
         public int CommentCount { get; set; } = 10;
+        public bool IsDeleted { get; set; } = false;
     }
 }

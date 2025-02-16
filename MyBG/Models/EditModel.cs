@@ -17,4 +17,5 @@ public class EditModel
     public bool CreatePage { get; set;}
     public int PFPKey { get; set; }
     public PFPModel? UserCreated { get; set;}
+    public bool IsDeleted { get; set; } = false;
 }

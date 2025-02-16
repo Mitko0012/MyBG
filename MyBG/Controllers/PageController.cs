@@ -70,13 +70,18 @@ namespace MyBG.Controllers
         public async Task<IActionResult> PageViewer(int id, int? replyCount)
         {
             IdentityUser user = await _manager.GetUserAsync(User);
-            PageModel model = _context.Pages.Include(p => p.UsersLiked)
+            PageModel model = _context.Pages.Where(x => !x.IsDeleted).Include(p => p.UsersLiked)
                                             .Include(p => p.Comments)
                                                 .ThenInclude(p => p.User)
                                             .Include(p => p.Comments)
                                                 .ThenInclude(p => p.LikedUser)
                                             .Include(p => p.TransportWays)
                                             .FirstOrDefault(p => p.Id == id);
+            if (model == null || user == null)
+            {
+                return RedirectToAction("index");
+            }
+            model.Comments = model.Comments.Where(x => !x.IsDeleted).ToList();
             if (replyCount != null)
             {
                 model.CommenntsToDisplay = replyCount.Value;
@@ -85,7 +90,6 @@ namespace MyBG.Controllers
             {
                 model.CommenntsToDisplay = 10;
             }
-            _page = model;
             if (replyCount != null)
             {
                 model.CommenntsToDisplay = (int)replyCount;
@@ -94,6 +98,7 @@ namespace MyBG.Controllers
             {
                 return RedirectToAction("Index");
             }
+            _page = model;
             foreach (var item in model.Comments)
             {
                 item.PFP = _context.PFPs.FirstOrDefault(x => x.UserName == item.User.UserName);
@@ -124,7 +129,7 @@ namespace MyBG.Controllers
         [HttpPost]
         public IActionResult CreatePost(PageModel page)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || page == null)
             {
                 return RedirectToAction("Create");
             }
@@ -174,9 +179,9 @@ namespace MyBG.Controllers
         public async Task<IActionResult> LikePost(int id, int replyCount)
         {
             IdentityUser startUser = await _manager.GetUserAsync(User);
-            PFPModel user = _context.PFPs.Include(x => x.PagesLiked)
+            PFPModel user = _context.PFPs.Where(x => !x.IsDeleted).Include(x => x.PagesLiked)
                                          .FirstOrDefault(x => x.UserName == startUser.UserName);
-            PageModel model = _context.Pages.Include(p => p.UsersLiked)
+            PageModel model = _context.Pages.Where(x => !x.IsDeleted).Include(p => p.UsersLiked)
                                             .Include(p => p.Comments)
                                             .FirstOrDefault(p => p.Id == id);
             if (model == null || user == null)
@@ -201,10 +206,10 @@ namespace MyBG.Controllers
         public async Task<IActionResult> PostComment(string comment, int id, int replyCount)
         {
             IdentityUser user = await _manager.GetUserAsync(User);
-            PageModel model = _context.Pages.Include(p => p.UsersLiked)
+            PageModel model = _context.Pages.Where(x => !x.IsDeleted).Include(p => p.UsersLiked)
                                             .Include(p => p.Comments)
                                             .FirstOrDefault(p => p.Id == id);
-            PFPModel pfp = _context.PFPs.FirstOrDefault(x => x.UserName == user.UserName);
+            PFPModel pfp = _context.PFPs.Where(x => !x.IsDeleted).FirstOrDefault(x => x.UserName == user.UserName);
             CommentModel comment1 = new CommentModel() { Text = comment, User = user, PageId = id };
             if (model == null || user == null || comment1 == null || pfp == null)
             {
@@ -223,9 +228,9 @@ namespace MyBG.Controllers
         public async Task<IActionResult> LikeComment(int id, int replyCount)
         {
             IdentityUser sourceUser = await _manager.GetUserAsync(User);
-            PFPModel user = _context.PFPs.Include(p => p.CommentsLiked)
+            PFPModel user = _context.PFPs.Where(x => !x.IsDeleted).Include(p => p.CommentsLiked)
                             .FirstOrDefault(x => x.UserName == sourceUser.UserName);
-            CommentModel model = _context.Comments.Include(p => p.LikedUser)
+            CommentModel model = _context.Comments.Where(x => !x.IsDeleted).Include(p => p.LikedUser)
                                             .FirstOrDefault(p => p.Id == id);
             if (user == null || model == null)
             {

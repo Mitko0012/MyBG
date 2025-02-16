@@ -26,19 +26,19 @@ public class UserController : Controller
     [Authorize]
     public IActionResult UserPage(string userName)
     {
-        PFPModel userDataModel = _ctx.PFPs.Include(x => x.Contributions).FirstOrDefault(x => x.UserName == userName);
-        userDataModel.Contributions = userDataModel.Contributions.Where(x => x.Approved).ToList();
+        PFPModel userDataModel = _ctx.PFPs.Where(x => !x.IsDeleted).Include(x => x.Contributions).FirstOrDefault(x => x.UserName == userName);
         if (!ModelState.IsValid || userDataModel == null)
         {
             return RedirectToAction("Index", "Page");
         }
+        userDataModel.Contributions = userDataModel.Contributions.Where(x => x.Approved && !x.IsDeleted).ToList();
         return View(userDataModel);
     }
 
     [Authorize]
     public IActionResult ViewContributions(string userName)
     {
-        PFPModel userDataModel = _ctx.PFPs.Include(x => x.Contributions).ThenInclude(x => x.PageToEdit).FirstOrDefault(x => x.UserName == userName);
+        PFPModel userDataModel = _ctx.PFPs.Where(x => !x.IsDeleted).Include(x => x.Contributions).ThenInclude(x => x.PageToEdit).FirstOrDefault(x => x.UserName == userName);
         if (!ModelState.IsValid || userDataModel == null)
         {
             return RedirectToAction("Index", "Page");

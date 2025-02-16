@@ -58,5 +58,6 @@ namespace MyBG.Models
         }
         [Required]
         public string VerifyTransport {  get; set; }
+        public bool IsDeleted { get; set; } = false;
     }
 }

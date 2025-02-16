@@ -39,15 +39,15 @@ namespace MyBG.Controllers
         public IActionResult EditSubmissions()
         {
             ViewEditsModel cont = new ViewEditsModel();
-            cont.Edits = _dbContext.Edits.Where((x) => !x.Approved).Include(x => x.PageToEdit).Include(x => x.UserCreated).ToList();
+            cont.Edits = _dbContext.Edits.Where((x) => !x.Approved && !x.IsDeleted).Include(x => x.PageToEdit).Include(x => x.UserCreated).ToList();
             return View(cont);
         }
 
         [Authorize(Roles = "Admin")]
         public IActionResult EditSubmissionAdmin(int id)
         {
-            EditModel submission = _dbContext.Edits.Where(x => !x.Approved).Include(x => x.PageToEdit).Include(x => x.UserCreated).FirstOrDefault(x => x.ID == id);
-            if(!ModelState.IsValid)
+            EditModel? submission = _dbContext.Edits.Where(x => !x.Approved && !x.IsDeleted).Include(x => x.PageToEdit).Include(x => x.UserCreated).FirstOrDefault(x => x.ID == id);
+            if (!ModelState.IsValid || submission == null)
             {
                 return RedirectToAction("Index");
             }
@@ -57,9 +57,9 @@ namespace MyBG.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult EditSubmissionApprove(int id)
         {
-            PFPModel user = _dbContext.PFPs.Include(x => x.Contributions).FirstOrDefault(x => x.UserName == _manager.UserManager.GetUserAsync(User).Result.UserName);
-            EditModel model = _dbContext.Edits.Where(x => !x.Approved).Include(x => x.PageToEdit).FirstOrDefault(x => x.ID == id);
-            if(!ModelState.IsValid)
+            PFPModel? user = _dbContext.PFPs.Include(x => x.Contributions).FirstOrDefault(x => x.UserName == _manager.UserManager.GetUserAsync(User).Result.UserName);
+            EditModel? model = _dbContext.Edits.Where(x => !x.Approved && !x.IsDeleted).Include(x => x.PageToEdit).FirstOrDefault(x => x.ID == id);
+            if(!ModelState.IsValid || model == null || user == null)
             {
                 return RedirectToAction("Index");
             }
@@ -73,7 +73,7 @@ namespace MyBG.Controllers
             _dbContext.SaveChanges();
             foreach (EditModel edit in _dbContext.Edits.Where(x => x.Approved == false && x.PageToEdit.Title == model.PageToEdit.Title))
             {
-                _dbContext.Edits.Remove(edit);
+                edit.IsDeleted = true;
             }
             _dbContext.SaveChanges();
             return RedirectToAction("Index");
@@ -81,13 +81,16 @@ namespace MyBG.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult EditSubmissionDecline(int id)
         {
-            EditModel model = _dbContext.Edits.Where(x => !x.Approved).Include(x => x.PageToEdit).FirstOrDefault(x => x.ID == id);
-            if(!ModelState.IsValid)
+            EditModel? model = _dbContext.Edits.Where(x => !x.Approved && !x.IsDeleted).Include(x => x.PageToEdit).FirstOrDefault(x => x.ID == id);
+            if(!ModelState.IsValid || model == null)
             {
                 return RedirectToAction("Index");
             }
-            _dbContext.Edits.Remove(model);
-            _dbContext.Pages.Remove(model.PageToEdit);
+            model.IsDeleted = true;
+            if(model.CreatePage)
+            {
+                model.PageToEdit.IsDeleted = true;
+            }
             _dbContext.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -95,12 +98,16 @@ namespace MyBG.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult DeleteForumPost(int id)
         {
-            ForumQuestion post = _dbContext.Posts.Find(id);
+            ForumQuestion? post = _dbContext.Posts.Where(x => !x.IsDeleted).Include(x => x.Comment).FirstOrDefault(x => x.Id == id);
             if (post == null)
             {
                 return RedirectToAction("Index", "Page");
             }
-            _dbContext.Posts.Remove(post); 
+            post.IsDeleted = true;
+            foreach(CommentModel comment in post.Comment)
+            {
+                comment.IsDeleted = true;
+            }
             _dbContext.SaveChanges();
             return RedirectToAction("Index", "Forum");
         }
@@ -108,12 +115,12 @@ namespace MyBG.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult DeleteComment(int id)
         {
-            CommentModel comment = _dbContext.Comments.Find(id);
+            CommentModel? comment = _dbContext.Comments.Where(x => !x.IsDeleted).FirstOrDefault(x => x.Id == id);
             if (comment == null)
             {
                 return RedirectToAction("Index", "Page");
             }
-            _dbContext.Comments.Remove(comment);
+            comment.IsDeleted = true;
             _dbContext.SaveChanges();
             return RedirectToAction("PageViewer", "Page", new {id = comment.PageId});
         }
@@ -121,12 +128,12 @@ namespace MyBG.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult DeleteCommentFromPost(int id)
         {
-            CommentModel comment = _dbContext.Comments.Find(id);
+            CommentModel? comment = _dbContext.Comments.Find(id);
             if (comment == null)
             {
                 return RedirectToAction("Index", "Page");
             }
-            _dbContext.Comments.Remove(comment);
+            comment.IsDeleted = true;
             _dbContext.SaveChanges();
             return RedirectToAction("PostViewer", "Forum", new { id = comment.PostId });
         }
@@ -134,14 +141,13 @@ namespace MyBG.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult DeleteUser(string userName)
         {
-            PFPModel model = _dbContext.PFPs.FirstOrDefault(p => p.UserName == userName);
-            IdentityUser user = _dbContext.Users.FirstOrDefault(u => u.UserName == userName);
+            PFPModel? model = _dbContext.PFPs.FirstOrDefault(p => p.UserName == userName);
+            IdentityUser? user = _dbContext.Users.FirstOrDefault(u => u.UserName == userName);
             if(user == null || model == null || _manager.UserManager.GetRolesAsync(user).Result.Contains("Admin"))
             {
                 return RedirectToAction("Index", "Page");
             }
-            _dbContext.PFPs.Remove(model);
-            _dbContext.Users.Remove(user);
+            model.IsDeleted = true;
             _dbContext.SaveChanges();
             return RedirectToAction("Users");
         }

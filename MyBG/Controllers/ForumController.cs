@@ -21,7 +21,7 @@ namespace MyBG.Controllers
         public IActionResult Index(string? sortingType, string? searchString)
         {
             ForumContainer model = new ForumContainer();
-            model.ForumPosts = _ctx.Posts.Include(x => x.LikedUser).ToList();
+            model.ForumPosts = _ctx.Posts.Where(x => !x.IsDeleted).Include(x => x.LikedUser).ToList();
             if (sortingType == null)
                 sortingType = "NewestFirst";
             if(searchString == null)
@@ -56,7 +56,7 @@ namespace MyBG.Controllers
         public IActionResult PostForum(ForumQuestion question)
         {
             question.Date = DateTime.Today;
-            if(!ModelState.IsValid) 
+            if(!ModelState.IsValid || question == null) 
             {
                 return RedirectToAction("Add");
             }
@@ -67,11 +67,12 @@ namespace MyBG.Controllers
         [Authorize]
         public ActionResult PostViewer(int id, int? commentDisplayCount)
         {
-            ForumQuestion question = _ctx.Posts.Include(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.User).FirstOrDefault(x => x.Id == id);
+            ForumQuestion? question = _ctx.Posts.Where(x => !x.IsDeleted).Include(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.User).FirstOrDefault(x => x.Id == id);
             if (!ModelState.IsValid || question == null)
             {
                 return RedirectToAction("Index");
             }
+            question.Comment = question.Comment.Where(x => !x.IsDeleted).ToList();
             if (commentDisplayCount != null)
             {
                 question.CommentCount = (int)commentDisplayCount;
@@ -86,10 +87,10 @@ namespace MyBG.Controllers
         [HttpPost]
         public async Task<IActionResult> LikePost(int id, int replyCount)
         {
-            ForumQuestion question = _ctx.Posts.Include(x => x.LikedUser).Include(x => x.Comment).FirstOrDefault(x => x.Id == id);
+            ForumQuestion question = _ctx.Posts.Where(x => !x.IsDeleted).Include(x => x.LikedUser).Include(x => x.Comment).FirstOrDefault(x => x.Id == id);
             IdentityUser currentUser = await _manager.GetUserAsync(User);
             PFPModel model = _ctx.PFPs.FirstOrDefault(x => x.UserName == currentUser.UserName);
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || currentUser == null || model == null || question == null)
             {
                 return RedirectToAction("Index");
             }
@@ -108,19 +109,19 @@ namespace MyBG.Controllers
         [HttpPost]
         public async Task<IActionResult> CommentPost(string CommentCurrent, int id)
         {
-            ForumQuestion postModel = _ctx.Posts.Find(id);
+            ForumQuestion postModel = _ctx.Posts.Where(x => !x.IsDeleted).FirstOrDefault(x => x.Id == id);
             CommentModel commentModel = new CommentModel();
             IdentityUser startUser = await _manager.GetUserAsync(User);
             PFPModel model = _ctx.PFPs.FirstOrDefault(x => x.UserName == startUser.UserName);
+            if (!ModelState.IsValid || postModel == null || commentModel == null || startUser == null || model == null)
+            {
+                return RedirectToAction("PostViewer", new { id = id });
+            }
             commentModel.PostId = id;
             commentModel.PageId = 0;
             commentModel.Text = CommentCurrent;
             commentModel.User = startUser;
             commentModel.PFP = model;
-            if (!ModelState.IsValid)
-            {
-                return RedirectToAction("PostViewer", new {id = id});
-            }
             postModel.Comment.Add(commentModel);
             _ctx.Comments.Add(commentModel);
             _ctx.SaveChanges();
@@ -130,10 +131,10 @@ namespace MyBG.Controllers
         [HttpPost]
         public async Task<IActionResult> LikeComment(int id, int replyCount)
         {
-            CommentModel comment = _ctx.Comments.Include(x => x.LikedUser).FirstOrDefault(x => x.Id == id);
+            CommentModel comment = _ctx.Comments.Where(x => !x.IsDeleted).Include(x => x.LikedUser).FirstOrDefault(x => x.Id == id);
             IdentityUser user = await _manager.GetUserAsync(User);
             PFPModel model = _ctx.PFPs.FirstOrDefault(x => x.UserName == user.UserName);
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || user == null || comment == null || model == null)
             {
                 return RedirectToAction("PageViewer", new { id = comment.PostId });
             }

@@ -17,5 +17,6 @@ namespace MyBG.Models
         public List<ForumQuestion> PostedOnForums { get; set; } = new List<ForumQuestion>();
         public int? PageId { get; set; }
         public int? PostId { get; set; }
+        public bool IsDeleted { get; set; } = false;
     }
 }

@@ -279,6 +279,9 @@ namespace MyBG.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int?>("PageId")
                         .HasColumnType("INTEGER");
 
@@ -309,6 +312,9 @@ namespace MyBG.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("CreatePage")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("NewText")
@@ -345,6 +351,9 @@ namespace MyBG.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("Date");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -366,6 +375,9 @@ namespace MyBG.Migrations
 
                     b.Property<byte[]>("Image")
                         .HasColumnType("BLOB");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("PageLikeId")
                         .HasColumnType("INTEGER");
@@ -391,6 +403,9 @@ namespace MyBG.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("CommentId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("INTEGER");
 
                     b.Property<double>("Lat")
