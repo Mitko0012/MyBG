@@ -52,8 +52,6 @@ namespace MyBG.Data
                         await manager.AddToRoleAsync(adminUser, "Admin");
                     }
                 }
-                context.Pages.Add(new Models.PageModel { Title = "Test-Town", Summary = "ee", TextBody = "Test-Text" , PageImageArr = [1] });
-                context.Pages.Add(new Models.PageModel { Title = "Test-Town", Summary = "ee", TextBody = "Test-Text", PageImageArr = [1] });
                 context.SaveChanges();
             }
         }

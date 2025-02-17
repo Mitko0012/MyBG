@@ -1,6 +1,7 @@
 ﻿@model EditModel
 
 <div>
+	<a asp-controller="Page" asp-action="PageViewer" asp-route-id="@Model.PageToEdit.Id">Back</a>
 	<h1>Submit a new page edit for page @Model.PageToEdit.Title</h1>
 	<hr />
 	<form asp-action="PostEdit" asp-route-pageId="@Model.PageModelKey" enctype="multipart/form-data" method="post">

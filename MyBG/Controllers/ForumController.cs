@@ -56,7 +56,8 @@ namespace MyBG.Controllers
         public IActionResult PostForum(ForumQuestion question)
         {
             question.Date = DateTime.Today;
-            if(!ModelState.IsValid || question == null) 
+            question.User = _manager.GetUserAsync(User).Result;
+            if(question == null) 
             {
                 return RedirectToAction("Add");
             }
@@ -67,11 +68,12 @@ namespace MyBG.Controllers
         [Authorize]
         public ActionResult PostViewer(int id, int? commentDisplayCount)
         {
-            ForumQuestion? question = _ctx.Posts.Where(x => !x.IsDeleted).Include(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.User).FirstOrDefault(x => x.Id == id);
+            ForumQuestion? question = _ctx.Posts.Where(x => !x.IsDeleted).Include(x => x.User).Include(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.User).FirstOrDefault(x => x.Id == id);
             if (!ModelState.IsValid || question == null)
             {
                 return RedirectToAction("Index");
             }
+            question.Pfp = _ctx.PFPs.Where(x => !x.IsDeleted).FirstOrDefault(x => x.UserName == question.User.UserName);
             question.Comment = question.Comment.Where(x => !x.IsDeleted).ToList();
             if (commentDisplayCount != null)
             {

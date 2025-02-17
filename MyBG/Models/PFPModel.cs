@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
+using MyBG.Data;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyBG.Models
@@ -39,5 +40,28 @@ namespace MyBG.Models
             }
         }
         public bool IsDeleted { get; set; } = false;
+        public Nationality Nationality { get; set; }
+        [NotMapped]
+        public string GetNationality
+        {
+            get
+            {
+                switch (Nationality)
+                {
+                    case Nationality.Bulgarian:
+                        return "Bulgarian";
+                        break;
+                    case Nationality.Foreigner:
+                        return "Foreigner";
+                        break;
+                    case Nationality.ForeignerInBulgaria:
+                        return "Foreigner living in Bulgaria";
+                        break;
+                    default:
+                        return " ";
+                        break;
+                }
+            }
+        }
     }
 }

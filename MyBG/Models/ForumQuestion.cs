@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyBG.Models
@@ -27,5 +28,11 @@ namespace MyBG.Models
         [NotMapped]
         public int CommentCount { get; set; } = 10;
         public bool IsDeleted { get; set; } = false;
+        [Required]
+        public IdentityUser User { get; set; }
+        [Required]
+        public string? ForeignKey { get; set; } = "User1";
+        [NotMapped]
+        public PFPModel Pfp { get; set; }
     }
 }

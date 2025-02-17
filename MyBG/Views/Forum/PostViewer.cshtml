@@ -3,6 +3,9 @@
 @inject SignInManager<IdentityUser> SignInManager
 
 <h1>@Model.Title</h1>
+<div class="comment-user-data">
+	<a class="comment-username" asp-controller="User" asp-action="UserPage" asp-route-userName="@Model.Pfp.UserName">@Model.Pfp.UserName</a>
+</div>
 <p>@Model.Text</p>
 <p>@Model.LikedUser.Count</p>
 <form asp-action="LikePost" asp-route-id="@Model.Id" method="Post">
@@ -18,7 +21,9 @@
 	int count = 1;
 	foreach(CommentModel comment in Model.Comment)
 	{
-		<p>@comment.PFP.UserName</p>
+		<div class="comment-user-data">
+			<a class="comment-username" asp-controller="User" asp-action="UserPage" asp-route-userName="@comment.PFP.UserName">@comment.PFP.UserName</a>
+		</div>
 		<img src="@comment.PFP.ReturnFile"/>
 		<p>@comment.Text</p>
 		<form enctype="multipart/form-data" method="post" asp-action="LikeComment" asp-route-replyCount="@Model.CommentCount"asp-route-id="@comment.Id">

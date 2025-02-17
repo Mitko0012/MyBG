@@ -2,6 +2,10 @@
 
 
 @{
+	if(Model.Edits.Count > 0)
+	{
+		<a asp-action="PageViewer" asp-controller="Page" asp-route-id="@Model.Edits[0].PageToEdit.Id">Back</a>
+	}
 	foreach (EditModel model1 in Model.Edits)
 	{
 		<div class="editDiv">

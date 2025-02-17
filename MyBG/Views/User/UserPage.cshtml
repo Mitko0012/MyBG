@@ -5,6 +5,7 @@
 
 <h2>@Model.UserName</h2>
 <img src="@Model.ReturnFile"/>
+<p>@Model.GetNationality</p>
 <p>@Model.Contributions.Count</p>
 <p>Contributions made </p>
 <a asp-action="ViewContributions" asp-route-userName="@Model.UserName">View contributions</a>

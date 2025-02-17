@@ -351,6 +351,10 @@ namespace MyBG.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("Date");
 
+                    b.Property<string>("ForeignKey")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("INTEGER");
 
@@ -363,6 +367,8 @@ namespace MyBG.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ForeignKey");
 
                     b.ToTable("Posts");
                 });
@@ -397,6 +403,9 @@ namespace MyBG.Migrations
                         .HasColumnType("BLOB");
 
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Nationality")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("PageLikeId")
@@ -643,6 +652,17 @@ namespace MyBG.Migrations
                     b.Navigation("PageToEdit");
 
                     b.Navigation("UserCreated");
+                });
+
+            modelBuilder.Entity("MyBG.Models.ForumQuestion", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("ForeignKey")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MyBG.Models.InboxMessage", b =>

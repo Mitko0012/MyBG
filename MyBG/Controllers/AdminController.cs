@@ -190,18 +190,18 @@ namespace MyBG.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult DeleteCommentConfirm(int id, CommentDeleteMessage message)
+        public IActionResult DeleteCommentConfirm(int id, CommentDeleteMessage messagePassed)
         {
             CommentModel? comment = _dbContext.Comments.Where(x => !x.IsDeleted).Include(x => x.User).FirstOrDefault(x => x.Id == id);
             comment.PFP = _dbContext.PFPs.Where(x => !x.IsDeleted).FirstOrDefault(x => x.UserName == comment.User.UserName);
-            if (comment == null || message == null || comment.PFP == null)
+            if (comment == null || messagePassed == null || comment.PFP == null)
             {
                 return RedirectToAction("Index", "Page");
             }
             comment.IsDeleted = true;
             InboxMessage message1 = new InboxMessage()
             {
-                Message = message.Message
+                Message = messagePassed.Message
             };
             _dbContext.Messages.Add(message1);
             comment.PFP.Inbox.Add(message1);
@@ -221,7 +221,7 @@ namespace MyBG.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult DeleteCommentFromPostConfirm(int id, CommentPostDeleteMessage message)
+        public IActionResult DeleteCommentFromPostConfirm(int id, CommentPostDeleteMessage messagePassed)
         {
             CommentModel? comment = _dbContext.Comments.Include(x => x.User).FirstOrDefault(x => x.Id == id);
             comment.PFP = _dbContext.PFPs.Where(x => !x.IsDeleted).FirstOrDefault(x => x.UserName == comment.User.UserName);
@@ -231,7 +231,7 @@ namespace MyBG.Controllers
             }
             InboxMessage message1 = new InboxMessage()
             {
-                Message = message.Message
+                Message = messagePassed.Message
             };
             _dbContext.Messages.Add(message1);
             comment.PFP.Inbox.Add(message1);

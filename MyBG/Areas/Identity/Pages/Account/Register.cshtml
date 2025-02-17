@@ -27,6 +27,13 @@
                 <input asp-for="Input.ConfirmPassword" class="log-input" autocomplete="new-password" aria-required="true"/>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
+            <p>I am a:</p>
+            <label for="bulgarianNat">Bulgarian</label>
+            <input type="radio" id="bulgarianNat" asp-for="Input.Nationality" value="0"/>
+            <label for="foreignNat">Foreigner</label>
+            <input type="radio" checked id="foreignNat" asp-for="Input.Nationality" value="1" />
+            <label for="foreignInBgNat">Foreigner living in Bulgaria</label>
+            <input type="radio" id="foreignInBgNat" asp-for="Input.Nationality" value="2" />
             <button id="logreg-button" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
     </div>

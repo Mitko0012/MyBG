@@ -43,9 +43,11 @@ namespace MyBG.Data
             modelBuilder.Entity<PFPModel>()
                         .HasMany(x => x.Inbox)
                         .WithOne(x => x.UserSource);
-
             modelBuilder.Entity<ForumQuestion>()
-                        .HasMany(x => x.LikedUser);
+                        .HasOne(x => x.User)
+                        .WithMany()
+                        .HasForeignKey(x => x.ForeignKey)
+                        .OnDelete(DeleteBehavior.SetNull); 
         }
     }
 }
