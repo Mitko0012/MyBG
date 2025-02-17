@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using MyBG.Data;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyBG.Models
 {
@@ -7,9 +8,10 @@ namespace MyBG.Models
         public int Id { get; set; }
         public List<PageModel> Pages { get; set; }
         [NotMapped]
-        public string? DisplayType { get; set; }
+        public string DisplayType { get; set; }
         [NotMapped]
-        public string? SearchString { get; set; }
-        public MyBG.Data.Regions? Region { get; set; }
+        public string SearchString { get; set; }
+        public MyBG.Data.Regions Region { get; set; }
+        public MyBG.Data.DestinationType DestinationType { get; set; }
     }
 }

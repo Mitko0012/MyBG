@@ -1,10 +1,10 @@
-﻿@model MyBG.Models.PageModelContainer
+@model MyBG.Models.PageModelContainer
 
 @{
 	ViewData["Title"] = "Home Page";
 }
 
-<form asp-action="Index" asp-route-displayType="@Model.DisplayType" asp-route-region="@((int)Model.Region)" id="searchField">
+<form asp-action="Index" asp-route-displayType="@Model.DisplayType" id="searchField">
 	<select asp-for="DisplayType" oninput="showOrHideSearch()" id="searchSelect">
 		<option value="MostLikes">Most Likes</option>
 		<option value="Region">Region</option>

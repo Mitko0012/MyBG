@@ -163,8 +163,9 @@ namespace MyBG.Controllers
         [HttpPost]
         public IActionResult DeleteForumPostConfirm(int id, DeclinePostModel approve)
         {
-            ForumQuestion? post = _dbContext.Posts.Where(x => !x.IsDeleted).Include(x => x.Comment).FirstOrDefault(x => x.Id == id);
-            if (post == null)
+            ForumQuestion? post = _dbContext.Posts.Where(x => !x.IsDeleted).Include(x => x.Comment).Include(x => x.User).FirstOrDefault(x => x.Id == id);
+            PFPModel model = _dbContext.PFPs.Where(x => !x.IsDeleted).FirstOrDefault(x => x.UserName == post.User.UserName);
+            if (post == null || model == null)
             {
                 return RedirectToAction("Index", "Page");
             }
@@ -173,6 +174,9 @@ namespace MyBG.Controllers
             {
                 comment.IsDeleted = true;
             }
+            InboxMessage message = new InboxMessage();
+            message.Message = approve.DeclineMessage;
+            model.Inbox.Add(message);
             _dbContext.SaveChanges();
             return RedirectToAction("Index", "Forum");
         }
@@ -214,7 +218,7 @@ namespace MyBG.Controllers
         {
             CommentPostDeleteMessage message = new CommentPostDeleteMessage()
             {
-                Id = id
+                Id = id,
             };
             return View(message);
         }

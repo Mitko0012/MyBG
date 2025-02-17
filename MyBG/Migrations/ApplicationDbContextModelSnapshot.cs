@@ -434,6 +434,9 @@ namespace MyBG.Migrations
                     b.Property<int>("CommentId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("DestinationType")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("INTEGER");
 

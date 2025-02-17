@@ -28,18 +28,17 @@ namespace MyBG.Controllers
         }
 
         [Authorize]
-        public IActionResult Index(string displayType, string? searchString, int region)
+        public IActionResult Index(string displayType, string? searchString, int region, int type)
         {
             PageModelContainer container = new PageModelContainer();
             if (displayType == null)
             {
                 displayType = "MostLikes";
             }
-            else if (displayType != "Search" && displayType != "MostLikes" && displayType != "Region")
+            else if (displayType != "Search" && displayType != "MostLikes" && displayType != "Region" && displayType != "Destination")
             {
                 return RedirectToAction("PageViewer");
             }
-            container.Region = (Regions)region;
             container.Pages = _context.Pages.Include(x => x.UsersLiked).Include(x => x.TransportWays).Where((x) => x.Approved).ToList();
             switch (displayType)
             {
@@ -55,6 +54,9 @@ namespace MyBG.Controllers
                     break;
                 case "Region":
                     container.Pages = container.Pages.Where(x => x.Regions == container.Region).ToList();
+                    break;
+                case "Destination":
+                    container.Pages = container.Pages.Where(x => x.DestinationType == container.DestinationType).ToList();
                     break;
             }
             return View(container);

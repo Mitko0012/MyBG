@@ -26,6 +26,7 @@ function addOption() {
 function showOrHideSearch() {
     let search = document.getElementById("search");
     let region = document.getElementById("regionSelect");
+    let destination = document.getElementById("typeSelect");
     if(searchSelect.value === "Search") {
         search.style.display = "inline";
     }
@@ -37,6 +38,12 @@ function showOrHideSearch() {
     }
     else {
         region.style.display = "none";
+    }
+    if (searchSelect.value === "Destination") {
+        destination.style.display = "inline";
+    }
+    else {
+        destination.style.display = "none";
     }
 }
 
