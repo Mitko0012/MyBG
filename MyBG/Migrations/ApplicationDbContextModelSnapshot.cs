@@ -383,6 +383,10 @@ namespace MyBG.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("UserSourceId")
                         .HasColumnType("INTEGER");
 
@@ -489,9 +493,11 @@ namespace MyBG.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("TransportTime")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("TransportTimeHours")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("TransportTimeMinutes")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("TransportWayType")
                         .HasColumnType("INTEGER");

@@ -6,7 +6,8 @@ namespace MyBG.Models
     {
         public int ID { get; set; }
         public TransportWays TransportWayType { get; set; } = new TransportWays();
-        public string TransportTime { get; set; }
+        public int TransportTimeHours { get; set; }
+        public int TransportTimeMinutes { get; set; }
         public string TransportOrigin { get; set; }
     }
 }

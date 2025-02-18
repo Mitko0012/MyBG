@@ -62,6 +62,18 @@ public class UserController : Controller
         {
             return RedirectToAction("Index", "Page");
         }
+        model.Inbox.Reverse();
         return View(model);
+    }
+
+    [Authorize]
+    public IActionResult InboxMessage(int id)
+    {
+        InboxMessage msg = _ctx.Messages.Include(x => x.UserSource).FirstOrDefault(x => x.Id == id);
+        if(msg == null)
+        {
+            return RedirectToAction("Index", "Page");
+        }
+        return View(msg);
     }
 }
