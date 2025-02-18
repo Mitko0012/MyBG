@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
@@ -28,7 +29,13 @@ namespace MyBG.Controllers
         }
 
         [Authorize]
-        public IActionResult Index(string displayType, string? searchString, int region, int type)
+        [HttpPost]
+        public IActionResult IndexPost(PageModelContainer cont)
+        {
+            return RedirectToAction("Index", new {displayType = cont.DisplayType, searchString = cont.SearchString, region = (int)cont.RegionSelect, type = cont.DisplayType, destinationType = (int)cont.DestinationTypeSelect});
+        }
+        [Authorize]
+        public IActionResult Index(string displayType, string? searchString, int region, int destinationType, int type)
         {
             PageModelContainer container = new PageModelContainer();
             if (displayType == null)
@@ -39,6 +46,9 @@ namespace MyBG.Controllers
             {
                 return RedirectToAction("PageViewer");
             }
+            container.RegionSelect = (Regions)region;
+            container.SearchString = searchString;
+            container.DestinationTypeSelect = (DestinationType)destinationType;
             container.Pages = _context.Pages.Include(x => x.UsersLiked).Include(x => x.TransportWays).Where((x) => x.Approved).ToList();
             switch (displayType)
             {
@@ -53,10 +63,10 @@ namespace MyBG.Controllers
                     container.Pages = container.Pages.OrderBy(x => -x.UsersLiked.Count).ToList();
                     break;
                 case "Region":
-                    container.Pages = container.Pages.Where(x => x.Regions == container.Region).ToList();
+                    container.Pages = container.Pages.Where(x => x.Regions == container.RegionSelect).ToList();
                     break;
                 case "Destination":
-                    container.Pages = container.Pages.Where(x => x.DestinationType == container.DestinationType).ToList();
+                    container.Pages = container.Pages.Where(x => x.DestinationType == container.DestinationTypeSelect).ToList();
                     break;
             }
             return View(container);

@@ -11,7 +11,7 @@ namespace MyBG.Models
         public string DisplayType { get; set; }
         [NotMapped]
         public string SearchString { get; set; }
-        public MyBG.Data.Regions Region { get; set; }
-        public MyBG.Data.DestinationType DestinationType { get; set; }
+        public MyBG.Data.Regions RegionSelect { get; set; }
+        public MyBG.Data.DestinationType DestinationTypeSelect { get; set; }
     }
 }
