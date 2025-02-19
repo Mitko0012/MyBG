@@ -60,5 +60,7 @@ namespace MyBG.Models
         public string VerifyTransport {  get; set; }
         public bool IsDeleted { get; set; } = false;
         public DestinationType DestinationType { get; set; } = DestinationType.Town;
+        public CultureType CultureType { get; set; } = CultureType.Meal;
+        public bool IsCulture {get; set;} = false;
     }
 }

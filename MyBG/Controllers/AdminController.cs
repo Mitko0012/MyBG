@@ -27,20 +27,6 @@ namespace MyBG.Controllers
         {
             return View();
         }
-        [Authorize(Roles = "Admin")]
-        public IActionResult Users()
-        {
-            List<PFPModel> models = new List<PFPModel>();
-            models = _dbContext.PFPs.Where(p => !p.IsDeleted).ToList();
-            Users users = new Users();
-            users.AllUsers = new List<IdentityUser>();
-            foreach (var model in models)
-            {
-                users.AllUsers.Add(_dbContext.Users.FirstOrDefault(x => x.UserName == model.UserName));
-            }
-            users.AllUsers.OrderBy((x) => _manager.UserManager.GetRolesAsync(x).Result.Contains("Admin") ? 0 : 1).ToList();
-            return View(users);
-        }
 
         [Authorize(Roles = "Admin")]
         public IActionResult EditSubmissions()
@@ -92,7 +78,8 @@ namespace MyBG.Controllers
             }
             InboxMessage message = new InboxMessage()
             {
-                Message = approve.MessageForApproved
+                Message = approve.MessageForApproved,
+                Title = "Your submission has been approved!"
             };
             approve.EditModel.UserCreated.Inbox.Add(message);
             _dbContext.Messages.Add(message);
@@ -102,7 +89,8 @@ namespace MyBG.Controllers
                 edit.IsDeleted = true;
                 InboxMessage message2 = new InboxMessage()
                 {
-                    Message = approve.MessageForDeclined
+                    Message = approve.MessageForDeclined,
+                    Title = "Your submission has been declined!"
                 };
                 edit.UserCreated.Inbox.Add(message2);
                 _dbContext.Messages.Add(message2);
@@ -139,7 +127,8 @@ namespace MyBG.Controllers
             }
             InboxMessage message = new InboxMessage()
             {
-                Message = decline.MessageForApproved
+                Message = decline.MessageForApproved,
+                Title = "Your submission has been declined!"
             };
             model.UserCreated.Inbox.Add(message);
             _dbContext.Messages.Add(message);
@@ -176,6 +165,7 @@ namespace MyBG.Controllers
             }
             InboxMessage message = new InboxMessage();
             message.Message = approve.DeclineMessage;
+            message.Title = "Your post has been deleted!";
             model.Inbox.Add(message);
             _dbContext.SaveChanges();
             return RedirectToAction("Index", "Forum");
@@ -205,7 +195,8 @@ namespace MyBG.Controllers
             comment.IsDeleted = true;
             InboxMessage message1 = new InboxMessage()
             {
-                Message = messagePassed.Message
+                Message = messagePassed.Message,
+                Title = "Your comment has been declined!"
             };
             _dbContext.Messages.Add(message1);
             comment.PFP.Inbox.Add(message1);
@@ -235,7 +226,8 @@ namespace MyBG.Controllers
             }
             InboxMessage message1 = new InboxMessage()
             {
-                Message = messagePassed.Message
+                Message = messagePassed.Message,
+                Title = "Your comment has been declined!"
             };
             _dbContext.Messages.Add(message1);
             comment.PFP.Inbox.Add(message1);
@@ -255,7 +247,7 @@ namespace MyBG.Controllers
             }
             model.IsDeleted = true;
             _dbContext.SaveChanges();
-            return RedirectToAction("Users");
+            return RedirectToAction("Index");
         }
     }
 }

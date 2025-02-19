@@ -1,0 +1,27 @@
+@model MyBG.Models.PageModel
+
+<div class="createForm">
+    <br />
+    <form method="post" asp-action="CreateCulture" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+        <h1>Submit a culture page</h1>
+        <br />
+        <label for="titleContainer" class="create-label">Title: </label>
+        <input id ="titleContainer" asp-for="Title" class="create-input"/>
+        <span asp-validation-for="Title" class="text-danger"></span>
+        <label for="descriptionContainer" class="create-label">Description: </label>
+        <input id="descriptionContainer" asp-for="Summary" class="create-input" />
+        <span asp-validation-for="Summary" class="text-danger"></span>
+        <label for="fileCont" class="create-label">Page image:</label>
+        <input id="fileCont" asp-for="PageImage" type="file" />
+        <span asp-validation-for="PageImage" class="text-danger"></span>
+        <label for="textContainer" class="create-label">Page text:</label>
+        <textarea id="textContainer" asp-for="TextBody" class="create-textBody" type=""></textarea>
+        <div asp-validation-for="TextBody" class="text-danger"></div>
+        <button type="submit" class="create-button" value="Submit">Submit</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

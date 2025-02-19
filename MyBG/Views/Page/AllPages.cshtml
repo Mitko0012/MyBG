@@ -5,19 +5,28 @@
 }
 
 <form asp-action="AllPages" asp-route-displayType="@Model.DisplayType" asp-route-region="" id="searchField">
+<form id="searchField" asp-action="IndexPost">
+>>>>>>> 70879685ff5927f7e8ce609a79ac5429cc4107e8:MyBG/Views/Page/Index.cshtml
 	<select asp-for="DisplayType" oninput="showOrHideSearch()" id="searchSelect">
 		<option value="MostLikes">Most Likes</option>
 		<option value="Region">Region</option>
 		<option value="Search">Search</option>
+		<option value="Destination">Destinations</option>
 	</select>
 	<input asp-for="SearchString" id="search"/>
-	<select asp-for="Region" oninput="showOrHideSearch()" id="regionSelect">
+	<select oninput="showOrHideSearch()" asp-for="RegionSelect" id="regionSelect">
 		<option value="0">Southwestern</option>
 		<option value="1">Southern</option>
 		<option value="2">Southeastern</option>
 		<option value="3">Northwestern</option>
 		<option value="4">Northern</option>
 		<option value="5">Northeastern</option>
+	</select>
+	<select oninput="showOrHideSearch()" asp-for="DestinationTypeSelect" id="destinationSelect">
+		<option value="0">Landmark</option>
+		<option value="1">History site</option>
+		<option value="2">Nature site</option>
+		<option value="3">Town</option>
 	</select>
 	<button type="submit">Apply search setting</button>
 	<a asp-action="Create" id="submit-a">Submit a destination</a>

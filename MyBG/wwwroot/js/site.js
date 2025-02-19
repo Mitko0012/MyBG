@@ -12,12 +12,14 @@ function addOption() {
     let travelDiv = document.getElementById("transportWaysDiv");
     let fromInput = document.getElementById("from");
     let timeInput = document.getElementById("time");
+    let minInput = document.getElementById("timeMins");
     let typeDiv = document.getElementById("transportWay");
     travelDiv.innerHTML = travelDiv.innerHTML.concat(`
                                                     <div class="wayDiv"> 
                                                         <input name="TransportWays[${index}].TransportWayType" value="${typeDiv.value}"/>
                                                         <input name="TransportWays[${index}].TransportOrigin" value="${fromInput.value}"/>
-                                                        <input name="TransportWays[${index}].TransportTime" value="${timeInput.value}"/>
+                                                        <input name="TransportWays[${index}].TransportTimeHours" value="${timeInput.value}"/>
+                                                        <input name="TransportWays[${index}].TransportTimeMinutes" value="${minInput.value}"/>
                                                     </div>`);
     transportValid.value = ".";
     index++;
@@ -66,10 +68,12 @@ function reverseUpdatePos(event) {
 }
 
 function initMapDisplay() {
-    map = L.map("map").setView([latInfo.value, longInfo.value], 9);
+    let lat = Number(latInfo.value.replace(",", "."));
+    let long = Number(longInfo.value.replace(",", "."));
+    map = L.map("map").setView([lat, long], 9);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
-    marker = L.marker([latInfo.value, longInfo.value]).addTo(map);
+    marker = L.marker([lat, long]).addTo(map);
 }

@@ -29,7 +29,7 @@
 	@{
 		foreach(TransportWay way in Model.TransportWays)
 		{
-			<p>@($"From: {way.TransportOrigin} Time taken: {way.TransportTime} By: {way.TransportWayType}")</p>
+			<p>@($"From: {way.TransportOrigin} Time taken: {way.TransportTimeHours} hours and {way.TransportTimeMinutes} minutes By: {way.TransportWayType}")</p>
 		}
 	}
 	<h2>@Model.Title displayed on a map</h2>

@@ -1,0 +1,25 @@
+@model MyBG.Models.Users
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<h1>Users</h1>
+
+@{
+    foreach(var user in Model.AllUsers)
+    {
+        if(user != null)
+        {
+            <a asp-controller="User" asp-action="UserPage" asp-route-userName = "@user.UserName">@user.UserName</a>
+            if (!SignInManager.UserManager.GetRolesAsync(user).Result.Contains("Admin") && SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin"))
+            {
+                <a asp-controller="Admin" asp-action="DeleteUser" asp-route-userName="@user.UserName">Delete user</a>
+            }
+        }
+    }
+}
+
+

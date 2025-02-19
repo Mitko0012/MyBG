@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
@@ -28,7 +29,17 @@ namespace MyBG.Controllers
         }
 
         [Authorize]
+<<<<<<< HEAD
         public IActionResult AllPages(string displayType, string? searchString, int region, int type)
+=======
+        [HttpPost]
+        public IActionResult IndexPost(PageModelContainer cont)
+        {
+            return RedirectToAction("Index", new {displayType = cont.DisplayType, searchString = cont.SearchString, region = (int)cont.RegionSelect, type = cont.DisplayType, destinationType = (int)cont.DestinationTypeSelect});
+        }
+        [Authorize]
+        public IActionResult Index(string displayType, string? searchString, int region, int destinationType, int type)
+>>>>>>> 70879685ff5927f7e8ce609a79ac5429cc4107e8
         {
             PageModelContainer container = new PageModelContainer();
             if (displayType == null)
@@ -39,7 +50,10 @@ namespace MyBG.Controllers
             {
                 return RedirectToAction("PageViewer");
             }
-            container.Pages = _context.Pages.Include(x => x.UsersLiked).Include(x => x.TransportWays).Where((x) => x.Approved).ToList();
+            container.RegionSelect = (Regions)region;
+            container.SearchString = searchString;
+            container.DestinationTypeSelect = (DestinationType)destinationType;
+            container.Pages = _context.Pages.Include(x => x.UsersLiked).Include(x => x.TransportWays).Where((x) => x.Approved && x.IsCulture == false).ToList();
             switch (displayType)
             {
                 case "Search":
@@ -53,10 +67,10 @@ namespace MyBG.Controllers
                     container.Pages = container.Pages.OrderBy(x => -x.UsersLiked.Count).ToList();
                     break;
                 case "Region":
-                    container.Pages = container.Pages.Where(x => x.Regions == container.Region).ToList();
+                    container.Pages = container.Pages.Where(x => x.Regions == container.RegionSelect).ToList();
                     break;
                 case "Destination":
-                    container.Pages = container.Pages.Where(x => x.DestinationType == container.DestinationType).ToList();
+                    container.Pages = container.Pages.Where(x => x.DestinationType == container.DestinationTypeSelect).ToList();
                     break;
             }
             return View(container);
@@ -283,6 +297,69 @@ namespace MyBG.Controllers
             }
             _context.SaveChanges();
             return RedirectToAction("PageViewer", new { id = model.PageId, replyCount = replyCount });
+        }
+
+        [Authorize]
+        public IActionResult CreateCulture()
+        {
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult CreateCulture(PageModel model)
+        {
+            if(model == null)
+            {
+                return RedirectToAction("CreateCulture");
+            }
+
+            model.IsCulture = true;
+            model.TransportWays = new List<TransportWay>();
+            model.TransportWays.Add(new TransportWay()
+            {
+                TransportOrigin = "",
+                TransportTimeHours = 0,
+                TransportTimeMinutes = 0
+            });
+            model.Regions = 0;
+            using (var memoryStream = new MemoryStream())
+            {
+                model.PageImage.CopyTo(memoryStream);
+
+                // Upload the file if less than 2 MB
+                if (memoryStream.Length < 2097152)
+                {
+                    model.PageImageArr = memoryStream.ToArray();
+                }
+                else
+                {
+                    ModelState.AddModelError("File", "The file is too large.");
+                    if (!ModelState.IsValid)
+                    {
+                        return RedirectToAction("CreateCulture");
+                    }
+                }
+                PFPModel user = _context.PFPs.Include(x => x.Contributions).FirstOrDefault(x => x.UserName == _manager.GetUserAsync(User).Result.UserName);
+                EditModel firstEdit = new EditModel()
+                {
+                    Approved = false,
+                    OldText = "",
+                    NewText = model.TextBody,
+                    PageToEdit = model,
+                    PageModelKey = model.Id,
+                    CreatePage = true,
+                    UserCreated = user,
+                };
+                model.VerifyTransport = "";
+                model.Edits.Add(firstEdit);
+                _context.Pages.Add(model);
+                firstEdit.PFPKey = user.Id;
+                user.Contributions.Add(firstEdit);
+                _context.Edits.Add(firstEdit);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
         }
     }
 }

@@ -2,5 +2,5 @@
 
 @foreach(InboxMessage message in Model.Inbox)
 {
-	<p>@message.Message</p>
+	<a asp-action="InboxMessage" asp-route-id="@message.Id">@message.Title</a>
 }
