@@ -28,7 +28,7 @@ namespace MyBG.Controllers
         }
 
         [Authorize]
-        public IActionResult Index(string displayType, string? searchString, int region, int type)
+        public IActionResult AllPages(string displayType, string? searchString, int region, int type)
         {
             PageModelContainer container = new PageModelContainer();
             if (displayType == null)
@@ -40,6 +40,41 @@ namespace MyBG.Controllers
                 return RedirectToAction("PageViewer");
             }
             container.Pages = _context.Pages.Include(x => x.UsersLiked).Include(x => x.TransportWays).Where((x) => x.Approved).ToList();
+            switch (displayType)
+            {
+                case "Search":
+                    if (searchString == null)
+                    {
+                        searchString = "";
+                    }
+                    container.Pages = container.Pages.Where(x => x.Title.Contains(searchString)).ToList();
+                    break;
+                case "MostLikes":
+                    container.Pages = container.Pages.OrderBy(x => -x.UsersLiked.Count).ToList();
+                    break;
+                case "Region":
+                    container.Pages = container.Pages.Where(x => x.Regions == container.Region).ToList();
+                    break;
+                case "Destination":
+                    container.Pages = container.Pages.Where(x => x.DestinationType == container.DestinationType).ToList();
+                    break;
+            }
+            return View(container);
+        }
+
+        [Authorize]
+        public IActionResult AllCulture(string displayType, string? searchString, int region, int type)
+        {
+            PageModelContainer container = new PageModelContainer();
+            if (displayType == null)
+            {
+                displayType = "MostLikes";
+            }
+            else if (displayType != "Search" && displayType != "MostLikes" && displayType != "Region" && displayType != "Destination")
+            {
+                return RedirectToAction("PageViewer");
+            }
+            container.Pages = _context.Pages.Include(x => x.UsersLiked).Include(x => x.TransportWays).Where((x) => x.Approved && x.Culture).ToList();
             switch (displayType)
             {
                 case "Search":
