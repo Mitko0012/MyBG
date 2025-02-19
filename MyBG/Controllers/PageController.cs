@@ -49,7 +49,7 @@ namespace MyBG.Controllers
             container.RegionSelect = (Regions)region;
             container.SearchString = searchString;
             container.DestinationTypeSelect = (DestinationType)destinationType;
-            container.Pages = _context.Pages.Include(x => x.UsersLiked).Include(x => x.TransportWays).Where((x) => x.Approved).ToList();
+            container.Pages = _context.Pages.Include(x => x.UsersLiked).Include(x => x.TransportWays).Where((x) => x.Approved && x.IsCulture == false).ToList();
             switch (displayType)
             {
                 case "Search":
@@ -258,6 +258,69 @@ namespace MyBG.Controllers
             }
             _context.SaveChanges();
             return RedirectToAction("PageViewer", new { id = model.PageId, replyCount = replyCount });
+        }
+
+        [Authorize]
+        public IActionResult CreateCulture()
+        {
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult CreateCulture(PageModel model)
+        {
+            if(model == null)
+            {
+                return RedirectToAction("CreateCulture");
+            }
+
+            model.IsCulture = true;
+            model.TransportWays = new List<TransportWay>();
+            model.TransportWays.Add(new TransportWay()
+            {
+                TransportOrigin = "",
+                TransportTimeHours = 0,
+                TransportTimeMinutes = 0
+            });
+            model.Regions = 0;
+            using (var memoryStream = new MemoryStream())
+            {
+                model.PageImage.CopyTo(memoryStream);
+
+                // Upload the file if less than 2 MB
+                if (memoryStream.Length < 2097152)
+                {
+                    model.PageImageArr = memoryStream.ToArray();
+                }
+                else
+                {
+                    ModelState.AddModelError("File", "The file is too large.");
+                    if (!ModelState.IsValid)
+                    {
+                        return RedirectToAction("CreateCulture");
+                    }
+                }
+                PFPModel user = _context.PFPs.Include(x => x.Contributions).FirstOrDefault(x => x.UserName == _manager.GetUserAsync(User).Result.UserName);
+                EditModel firstEdit = new EditModel()
+                {
+                    Approved = false,
+                    OldText = "",
+                    NewText = model.TextBody,
+                    PageToEdit = model,
+                    PageModelKey = model.Id,
+                    CreatePage = true,
+                    UserCreated = user,
+                };
+                model.VerifyTransport = "";
+                model.Edits.Add(firstEdit);
+                _context.Pages.Add(model);
+                firstEdit.PFPKey = user.Id;
+                user.Contributions.Add(firstEdit);
+                _context.Edits.Add(firstEdit);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
         }
     }
 }

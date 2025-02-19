@@ -27,20 +27,6 @@ namespace MyBG.Controllers
         {
             return View();
         }
-        [Authorize(Roles = "Admin")]
-        public IActionResult Users()
-        {
-            List<PFPModel> models = new List<PFPModel>();
-            models = _dbContext.PFPs.Where(p => !p.IsDeleted).ToList();
-            Users users = new Users();
-            users.AllUsers = new List<IdentityUser>();
-            foreach (var model in models)
-            {
-                users.AllUsers.Add(_dbContext.Users.FirstOrDefault(x => x.UserName == model.UserName));
-            }
-            users.AllUsers.OrderBy((x) => _manager.UserManager.GetRolesAsync(x).Result.Contains("Admin") ? 0 : 1).ToList();
-            return View(users);
-        }
 
         [Authorize(Roles = "Admin")]
         public IActionResult EditSubmissions()
@@ -261,7 +247,7 @@ namespace MyBG.Controllers
             }
             model.IsDeleted = true;
             _dbContext.SaveChanges();
-            return RedirectToAction("Users");
+            return RedirectToAction("Index");
         }
     }
 }

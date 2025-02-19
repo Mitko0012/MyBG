@@ -76,4 +76,19 @@ public class UserController : Controller
         }
         return View(msg);
     }
+
+    [Authorize]
+    public IActionResult Users()
+    {
+        List<PFPModel> models = new List<PFPModel>();
+        models = _ctx.PFPs.Where(p => !p.IsDeleted).ToList();
+        Users users = new Users();
+        users.AllUsers = new List<IdentityUser>();
+        foreach (var model in models)
+        {
+            users.AllUsers.Add(_ctx.Users.FirstOrDefault(x => x.UserName == model.UserName));
+        }
+        users.AllUsers.OrderBy((x) => _manager.UserManager.GetRolesAsync(x).Result.Contains("Admin") ? 0 : 1).ToList();
+        return View(users);
+    }
 }

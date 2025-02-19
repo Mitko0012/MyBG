@@ -10,6 +10,7 @@
 <p>Contributions made </p>
 <a asp-action="ViewContributions" asp-route-userName="@Model.UserName">View contributions</a>
 @{
+	<a asp-action="Users">View all users</a>
 	if(SignInManager.UserManager.GetUserAsync(User).Result.UserName == Model.UserName)
 	{
 		<a href="~/Identity/Account/Manage">Change PFP</a>
