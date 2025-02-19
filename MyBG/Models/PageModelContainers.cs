@@ -13,5 +13,6 @@ namespace MyBG.Models
         public string SearchString { get; set; }
         public MyBG.Data.Regions RegionSelect { get; set; }
         public MyBG.Data.DestinationType DestinationTypeSelect { get; set; }
+        public CultureType CultureType { get; set; }
     }
 }

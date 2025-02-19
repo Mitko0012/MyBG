@@ -1,0 +1,34 @@
+﻿@model MyBG.Models.PageModelContainer
+
+@{
+	ViewData["Title"] = "Home Page";
+}
+
+<form id="searchField" asp-action="AllCulturePost">
+	<select asp-for="DisplayType" oninput="showOrHideSearch()" id="searchSelect">
+		<option value="MostLikes">Most Likes</option>
+		<option value="Search">Search</option>
+		<option value="CultureType">Culture type</option>
+	</select>
+	<input asp-for="SearchString" id="search"/>
+	<select asp-for="CultureType">
+		<option value="0">Meal</option>
+		<option value="1">Tradition</option>
+		<option value="2">Dance</option>
+	</select>
+	<button type="submit">Apply search setting</button>
+	<a asp-action="CreateCulture" id="submit-a">Submit a culture page</a>
+</form>
+@{
+	foreach(var pagey in Model.Pages)
+	{
+		if (pagey != null)
+		{
+			<div class="destinationDiv">
+				<h3>@pagey.Title</h3>
+				<p>@pagey.Summary</p>
+				<a asp-action="CulturePage" asp-route-id="@pagey.Id">View page</a>
+			</div>
+		}
+	}
+}

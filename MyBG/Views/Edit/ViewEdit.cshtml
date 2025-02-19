@@ -1,7 +1,7 @@
 ﻿@model EditModel
 
 <div id="create-div">
-	<a asp-controller="Page" asp-action="PageViewer" asp-route-id="@Model.PageToEdit.Id">Back</a>
+	<a asp-action="ViewEdits" asp-route-pageId="@Model.PageToEdit.Id">Back</a>
 	<h1>Edit #@Model.PageIndex of page @Model.PageToEdit.Title</h1>
 	<p>Submission created by </p>
 	<a class="comment-username" asp-controller="User" asp-action="UserPage" asp-route-userName="@Model.UserCreated.UserName">@Model.UserCreated.UserName</a>

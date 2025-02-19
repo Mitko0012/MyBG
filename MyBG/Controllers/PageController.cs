@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyBG.Data;
+using MyBG.Migrations;
 using MyBG.Models;
 using SQLitePCL;
 
@@ -29,17 +30,14 @@ namespace MyBG.Controllers
         }
 
         [Authorize]
-<<<<<<< HEAD
-        public IActionResult AllPages(string displayType, string? searchString, int region, int type)
-=======
         [HttpPost]
         public IActionResult IndexPost(PageModelContainer cont)
         {
             return RedirectToAction("Index", new {displayType = cont.DisplayType, searchString = cont.SearchString, region = (int)cont.RegionSelect, type = cont.DisplayType, destinationType = (int)cont.DestinationTypeSelect});
         }
         [Authorize]
-        public IActionResult Index(string displayType, string? searchString, int region, int destinationType, int type)
->>>>>>> 70879685ff5927f7e8ce609a79ac5429cc4107e8
+        public IActionResult Index(string displayType, string? searchString, int region, int type)
+
         {
             PageModelContainer container = new PageModelContainer();
             if (displayType == null)
@@ -52,7 +50,7 @@ namespace MyBG.Controllers
             }
             container.RegionSelect = (Regions)region;
             container.SearchString = searchString;
-            container.DestinationTypeSelect = (DestinationType)destinationType;
+            container.DestinationTypeSelect = (DestinationType)type;
             container.Pages = _context.Pages.Include(x => x.UsersLiked).Include(x => x.TransportWays).Where((x) => x.Approved && x.IsCulture == false).ToList();
             switch (displayType)
             {
@@ -84,11 +82,14 @@ namespace MyBG.Controllers
             {
                 displayType = "MostLikes";
             }
-            else if (displayType != "Search" && displayType != "MostLikes" && displayType != "Region" && displayType != "Destination")
+            else if (displayType != "Search" && displayType != "MostLikes" && displayType != "CultureType")
             {
                 return RedirectToAction("PageViewer");
             }
-            container.Pages = _context.Pages.Include(x => x.UsersLiked).Include(x => x.TransportWays).Where((x) => x.Approved && x.Culture).ToList();
+            container.Pages = _context.Pages.Include(x => x.UsersLiked).Include(x => x.TransportWays).Where((x) => x.Approved && x.IsCulture).ToList();
+            container.SearchString = searchString;
+            container.CultureType = (CultureType)type;
+            container.RegionSelect = (Regions)region;
             switch (displayType)
             {
                 case "Search":
@@ -101,14 +102,18 @@ namespace MyBG.Controllers
                 case "MostLikes":
                     container.Pages = container.Pages.OrderBy(x => -x.UsersLiked.Count).ToList();
                     break;
-                case "Region":
-                    container.Pages = container.Pages.Where(x => x.Regions == container.Region).ToList();
-                    break;
-                case "Destination":
-                    container.Pages = container.Pages.Where(x => x.DestinationType == container.DestinationType).ToList();
+                case "CultureType":
+                    container.Pages = container.Pages.Where(x => x.CultureType == container.CultureType).ToList();
                     break;
             }
             return View(container);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult AllCulturePost(PageModelContainer cont)
+        {
+            return RedirectToAction("AllCulture", new { displayType = cont.DisplayType, searchString = cont.SearchString, region = (int)cont.RegionSelect,  type = (int)cont.CultureType });
         }
 
         [Authorize]
@@ -121,7 +126,7 @@ namespace MyBG.Controllers
         public async Task<IActionResult> PageViewer(int id, int? replyCount)
         {
             IdentityUser user = await _manager.GetUserAsync(User);
-            PageModel model = _context.Pages.Where(x => !x.IsDeleted).Include(p => p.UsersLiked)
+            PageModel model = _context.Pages.Where(x => !x.IsDeleted && !x.IsCulture).Include(p => p.UsersLiked)
                                             .Include(p => p.Comments)
                                                 .ThenInclude(p => p.User)
                                             .Include(p => p.Comments)
@@ -158,6 +163,60 @@ namespace MyBG.Controllers
             {
                 model.LikedByUser = true;
             }
+            else
+            {
+                model.LikedByUser = false;
+            }
+            if (model != null && model.Approved == true)
+            {
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+        }
+        [Authorize]
+        public IActionResult CulturePage(int id, int? replyCount)
+        {
+            IdentityUser user = _manager.GetUserAsync(User).Result;
+            PageModel model = _context.Pages.Where(x => !x.IsDeleted && x.IsCulture).Include(p => p.UsersLiked)
+                                            .Include(p => p.Comments)
+                                                .ThenInclude(p => p.User)
+                                            .Include(p => p.Comments)
+                                                .ThenInclude(p => p.LikedUser)
+                                            .Include(p => p.TransportWays)
+                                            .FirstOrDefault(p => p.Id == id);
+           if (model == null || user == null)
+            {
+                return RedirectToAction("index");
+            }
+            model.Comments = model.Comments.Where(x => !x.IsDeleted).ToList();
+            if (replyCount != null)
+            {
+                model.CommenntsToDisplay = replyCount.Value;
+            }
+            else
+            {
+                model.CommenntsToDisplay = 10;
+            }   
+            if (replyCount != null)
+            {
+                model.CommenntsToDisplay = (int)replyCount;
+            }
+            if (model == null || user == null)
+            {
+                return RedirectToAction("Index");
+            }
+            _page = model;
+            foreach (var item in model.Comments)
+            {
+                item.PFP = _context.PFPs.FirstOrDefault(x => x.UserName == item.User.UserName);
+            }
+            if (model.UsersLiked.FirstOrDefault(x => x.UserName == user.UserName) != null)
+            {
+                model.LikedByUser = true;
+            }   
             else
             {
                 model.LikedByUser = false;
@@ -250,6 +309,10 @@ namespace MyBG.Controllers
                 model.LikedByUser = true;
             }
             _context.SaveChanges();
+            if(model.IsCulture)
+            {
+                return RedirectToAction("CulturePage", new { id = id, replyCount = replyCount });
+            }
             return RedirectToAction("PageViewer", new { id = id, replyCount = replyCount });
         }
         [Authorize]
@@ -273,6 +336,10 @@ namespace MyBG.Controllers
             _context.Comments.Add(comment1);
             model.Comments.Add(comment1);
             _context.SaveChanges();
+            if (model.IsCulture)
+            {
+                return RedirectToAction("CulturePage", new { id = id, replyCount = replyCount });
+            }
             return RedirectToAction("PageViewer", new { id = id, replyCount = replyCount });
         }
         [Authorize]
@@ -296,6 +363,10 @@ namespace MyBG.Controllers
                 model.LikedUser.Remove(user);
             }
             _context.SaveChanges();
+            if (_context.Pages.Find(model.PageId).IsCulture)
+            {
+                return RedirectToAction("CulturePage", new { id = id, replyCount = replyCount });
+            }
             return RedirectToAction("PageViewer", new { id = model.PageId, replyCount = replyCount });
         }
 

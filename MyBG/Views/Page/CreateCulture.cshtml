@@ -18,6 +18,12 @@
         <label for="textContainer" class="create-label">Page text:</label>
         <textarea id="textContainer" asp-for="TextBody" class="create-textBody" type=""></textarea>
         <div asp-validation-for="TextBody" class="text-danger"></div>
+        <label asp-for="CultureType">Select type of culture page</label>
+        <select asp-for="CultureType">
+            <option value="0">Meal</option>
+            <option value="1">Tradition</option>
+            <option value="2">Dance</option>
+        </select>
         <button type="submit" class="create-button" value="Submit">Submit</button>
     </form>
 </div>
