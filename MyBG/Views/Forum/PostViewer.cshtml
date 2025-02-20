@@ -39,9 +39,28 @@
 		{
 			<a asp-action="DeleteCommentFromPost" asp-controller="Admin" asp-route-id="@comment.Id">Delete comment</a>
 		}
-	}
-	if(Model.Comment.Count > 0 &&  Model.Comment.Count > Model.CommentCount)
-	{
-		<a asp-action="PostViewer" asp-route-id="@Model.Id" asp-route-commentDisplayCount="@(count + 5)">Show 5 more comments</a>
+		<div id="repliesDiv">
+				@foreach(CommentModel reply in comment.Replies)
+				{
+					
+					<img src="@comment.PFP.ReturnFile" class="profile-pic" class="comment-user-data">
+					<div class="comment-user-data">
+						<a class ="comment-username" asp-controller="User" asp-action="UserPage" asp-route-userName="@comment.PFP.UserName">@comment.PFP.UserName</a>
+					</div>
+					<p class="comment-text-data">@reply.Text</p>
+					<form asp-action="LikeComment" asp-route-id="@reply.Id" class="comment-like-div">
+						<p id="commentLikeData">@reply.LikedUser.Count</p>
+						<button type="Submit" id="commentLikeData">Like</button>
+					</form>
+					@if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin"))
+					{
+						<a asp-action="DeleteComment" asp-controller="Admin" asp-route-id="@reply.Id">Delete comment</a>
+					}
+				}
+			</div>
+			<form method="post"asp-action="PostReplyForum" asp-controller="Forum" asp-route-commentId="@comment.Id" enctype="multipart/form-data">
+				<textarea asp-for="CommentCurrent"></textarea>
+				<button type="submit"></button>
+			</form>
 	}
 }

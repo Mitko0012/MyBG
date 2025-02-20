@@ -474,3 +474,11 @@ body {
     color: lightgreen;
     font-size: 1.2em;
 }
+
+.comment-div {
+    display: none;
+}
+
+#repliesDiv {
+    border: 2px solid black;
+}

@@ -47,7 +47,9 @@ namespace MyBG.Data
                         .HasOne(x => x.User)
                         .WithMany()
                         .HasForeignKey(x => x.ForeignKey)
-                        .OnDelete(DeleteBehavior.SetNull); 
+                        .OnDelete(DeleteBehavior.SetNull);
+            modelBuilder.Entity<CommentModel>()
+                        .HasMany(x => x.Replies);
         }
     }
 }

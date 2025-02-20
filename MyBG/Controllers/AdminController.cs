@@ -23,16 +23,18 @@ namespace MyBG.Controllers
             _manager = manager;
         }
         [Authorize(Roles = "Admin")]
-        public IActionResult Index() 
-        {
-            return View();
-        }
-
-        [Authorize(Roles = "Admin")]
         public IActionResult EditSubmissions()
         {
             ViewEditsModel cont = new ViewEditsModel();
-            cont.Edits = _dbContext.Edits.Where((x) => !x.Approved && !x.IsDeleted).Include(x => x.PageToEdit).Include(x => x.UserCreated).ToList();
+            cont.Edits = _dbContext.Edits.Where((x) => !x.Approved && !x.IsDeleted).Include(x => x.PageToEdit).Where(x => !x.PageToEdit.IsCulture).Include(x => x.UserCreated).ToList();
+            return View(cont);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult EditSubmissionsCulture()
+        {
+            ViewEditsModel cont = new ViewEditsModel();
+            cont.Edits = _dbContext.Edits.Where((x) => !x.Approved && !x.IsDeleted).Include(x => x.PageToEdit).Where(x => x.PageToEdit.IsCulture).Include(x => x.UserCreated).ToList();
             return View(cont);
         }
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AspNetCoreGeneratedDocument;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -68,7 +69,7 @@ namespace MyBG.Controllers
         [Authorize]
         public ActionResult PostViewer(int id, int? commentDisplayCount)
         {
-            ForumQuestion? question = _ctx.Posts.Where(x => !x.IsDeleted).Include(x => x.User).Include(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.User).FirstOrDefault(x => x.Id == id);
+            ForumQuestion? question = _ctx.Posts.Where(x => !x.IsDeleted).Include(x => x.User).Include(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.User).Include(x => x.Comment).ThenInclude(x => x.Replies).ThenInclude(x => x.LikedUser).FirstOrDefault(x => x.Id == id);
             if (!ModelState.IsValid || question == null)
             {
                 return RedirectToAction("Index");
@@ -82,6 +83,7 @@ namespace MyBG.Controllers
             foreach (var item in question.Comment)
             {
                 item.PFP = _ctx.PFPs.FirstOrDefault(x => x.UserName == item.User.UserName);
+                item.Replies = item.Replies.Where(x => !x.IsDeleted).ToList();
             }
             return View(question);
         }
@@ -150,6 +152,43 @@ namespace MyBG.Controllers
             }
             _ctx.SaveChanges();
             return RedirectToAction("PostViewer", new { id = comment.PostId, commentDisplayCount = replyCount });
+        }
+
+        [Authorize]
+        public IActionResult PostReply(int commentId, PageModel cmnt) 
+        {
+            CommentModel comment = _ctx.Comments.Where(x => !x.IsDeleted).FirstOrDefault(x => x.Id == commentId);
+            if(comment == null)
+            {
+                return RedirectToAction("Index");
+            }
+            CommentModel reply = new CommentModel()
+            {
+                Text = cmnt.Comment,
+                User = _manager.GetUserAsync(User).Result
+            };
+            comment.Replies.Add(reply);
+            _ctx.Comments.Add(reply);
+            _ctx.SaveChanges();
+            return RedirectToAction();
+        }
+        [Authorize]
+        public IActionResult PostReplyForum(int commentId, ForumQuestion cmnt) 
+        {
+            CommentModel comment = _ctx.Comments.Where(x => !x.IsDeleted).FirstOrDefault(x => x.Id == commentId);
+            if(comment == null)
+            {
+                return RedirectToAction("Index");
+            }
+            CommentModel reply = new CommentModel()
+            {
+                Text = cmnt.CommentCurrent,
+                User = _manager.GetUserAsync(User).Result
+            };
+            comment.Replies.Add(reply);
+            _ctx.Comments.Add(reply);
+            _ctx.SaveChanges();
+            return RedirectToAction();
         }
     }
 }

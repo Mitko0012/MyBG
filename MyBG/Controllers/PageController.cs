@@ -131,6 +131,9 @@ namespace MyBG.Controllers
                                                 .ThenInclude(p => p.User)
                                             .Include(p => p.Comments)
                                                 .ThenInclude(p => p.LikedUser)
+                                            .Include(p => p.Comments)
+                                                .ThenInclude(p => p.Replies)
+                                                .ThenInclude(p => p.LikedUser)
                                             .Include(p => p.TransportWays)
                                             .FirstOrDefault(p => p.Id == id);
             if (model == null || user == null)
@@ -138,17 +141,13 @@ namespace MyBG.Controllers
                 return RedirectToAction("index");
             }
             model.Comments = model.Comments.Where(x => !x.IsDeleted).ToList();
-            if (replyCount != null)
+            if (replyCount != null && replyCount != 0)
             {
                 model.CommenntsToDisplay = replyCount.Value;
             }
             else
             {
-                model.CommenntsToDisplay = 10;
-            }
-            if (replyCount != null)
-            {
-                model.CommenntsToDisplay = (int)replyCount;
+                model.CommenntsToDisplay = 5;
             }
             if (model == null || user == null)
             {
@@ -158,6 +157,7 @@ namespace MyBG.Controllers
             foreach (var item in model.Comments)
             {
                 item.PFP = _context.PFPs.FirstOrDefault(x => x.UserName == item.User.UserName);
+                item.Replies = item.Replies.Where(x => !x.IsDeleted).ToList();
             }
             if (model.UsersLiked.FirstOrDefault(x => x.UserName == user.UserName) != null)
             {
@@ -185,6 +185,9 @@ namespace MyBG.Controllers
                                                 .ThenInclude(p => p.User)
                                             .Include(p => p.Comments)
                                                 .ThenInclude(p => p.LikedUser)
+                                            .Include(p => p.Comments)
+                                                .ThenInclude(p => p.Replies)
+                                                .ThenInclude(p => p.LikedUser)    
                                             .Include(p => p.TransportWays)
                                             .FirstOrDefault(p => p.Id == id);
            if (model == null || user == null)
@@ -192,18 +195,14 @@ namespace MyBG.Controllers
                 return RedirectToAction("index");
             }
             model.Comments = model.Comments.Where(x => !x.IsDeleted).ToList();
-            if (replyCount != null)
-            {
-                model.CommenntsToDisplay = replyCount.Value;
-            }
-            else
-            {
-                model.CommenntsToDisplay = 10;
-            }   
-            if (replyCount != null)
+            if (replyCount != null && replyCount != 0)
             {
                 model.CommenntsToDisplay = (int)replyCount;
             }
+            else
+            {
+                model.CommenntsToDisplay = 5;
+            }   
             if (model == null || user == null)
             {
                 return RedirectToAction("Index");
@@ -212,6 +211,7 @@ namespace MyBG.Controllers
             foreach (var item in model.Comments)
             {
                 item.PFP = _context.PFPs.FirstOrDefault(x => x.UserName == item.User.UserName);
+                item.Replies = item.Replies.Where(x => !x.IsDeleted).ToList();
             }
             if (model.UsersLiked.FirstOrDefault(x => x.UserName == user.UserName) != null)
             {
@@ -363,7 +363,7 @@ namespace MyBG.Controllers
                 model.LikedUser.Remove(user);
             }
             _context.SaveChanges();
-            if (_context.Pages.Find(model.PageId).IsCulture)
+            if (_context.Pages.Find(model.PageId) != null && _context.Pages.Find(model.PageId).IsCulture)
             {
                 return RedirectToAction("CulturePage", new { id = id, replyCount = replyCount });
             }

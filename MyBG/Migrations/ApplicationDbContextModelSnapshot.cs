@@ -279,6 +279,9 @@ namespace MyBG.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("CommentModelId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("INTEGER");
 
@@ -296,6 +299,8 @@ namespace MyBG.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CommentModelId");
 
                     b.HasIndex("UserId");
 
@@ -643,6 +648,10 @@ namespace MyBG.Migrations
 
             modelBuilder.Entity("MyBG.Models.CommentModel", b =>
                 {
+                    b.HasOne("MyBG.Models.CommentModel", null)
+                        .WithMany("Replies")
+                        .HasForeignKey("CommentModelId");
+
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
@@ -711,6 +720,11 @@ namespace MyBG.Migrations
                         .HasForeignKey("UsersLikedId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MyBG.Models.CommentModel", b =>
+                {
+                    b.Navigation("Replies");
                 });
 
             modelBuilder.Entity("MyBG.Models.PFPModel", b =>

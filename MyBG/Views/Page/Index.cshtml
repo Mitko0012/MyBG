@@ -1,4 +1,6 @@
+@using Microsoft.AspNetCore.Identity;
 @model MyBG.Models.PageModelContainer
+@inject SignInManager<IdentityUser> SignInManager
 
 @{
 	ViewData["Title"] = "Home Page";
@@ -28,6 +30,10 @@
 	</select>
 	<button type="submit">Apply search setting</button>
 	<a asp-action="Create" id="submit-a">Submit a destination</a>
+	@if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin"))
+	{
+		<a asp-controller="Admin" asp-action="EditSubmissions">View submissions</a>
+	}
 </form>
 @{
 	foreach(var pagey in Model.Pages)
