@@ -14,11 +14,12 @@
 		<option value="CultureType">Culture type</option>
 	</select>
 	<input asp-for="SearchString" id="search"/>
-	<select asp-for="CultureType">
+	<select asp-for="CultureType" id="typeSelect">
 		<option value="0">Meal</option>
 		<option value="1">Tradition</option>
 		<option value="2">Dance</option>
 	</select>
+	<p id="regionSelect"></p>
 	<button type="submit">Apply search setting</button>
 	<a asp-action="CreateCulture" id="submit-a">Submit a culture page</a>
 </form>
@@ -39,3 +40,6 @@
 		}
 	}
 }
+
+<script src="~/js/site.js"></script>
+<script src="~/js/destinationPage.js"></script>

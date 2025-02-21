@@ -32,6 +32,7 @@
 	</form>
 </div>
 @{
+	int index = 0;
 	foreach (CommentModel comment in Model.Comments)
 	{
 		<div class="comment-div">
@@ -48,10 +49,9 @@
 			{
 				<a asp-action="DeleteComment" asp-controller="Admin" asp-route-id="@comment.Id">Delete comment</a>
 			}
-			<div id="repliesDiv">
+			<div class="repliesDiv">
 				@foreach(CommentModel reply in comment.Replies)
 				{
-					
 					<img src="@comment.PFP.ReturnFile" class="profile-pic" class="comment-user-data">
 					<div class="comment-user-data">
 						<a class ="comment-username" asp-controller="User" asp-action="UserPage" asp-route-userName="@comment.PFP.UserName">@comment.PFP.UserName</a>
@@ -67,16 +67,21 @@
 					}
 				}
 			</div>
-			<form method="post"asp-action="PostReply" asp-controller="Forum" asp-route-commentId="@comment.Id" enctype="multipart/form-data">
+			<p onclick="showHideReplies(@index)" class="showHideReplies">Show replies</p>
+			<p class="addReplyButt" onclick="showAddReply(@index)">Add a reply</p>
+			<form class="replyForm" method="post"asp-action="PostReply" asp-controller="Forum" asp-route-commentId="@comment.Id" enctype="multipart/form-data">
 				<textarea asp-for="Comment"></textarea>
 				<button type="submit"></button>
+				<button type="button" class="cancelReply" onclick="hideAddReply(@index)">Cancel</button>
 			</form>
 			<hr />
 		</div>
+		@(index += 1);
 	}
 	<input id="countInput" asp-for="@Model.CommenntsToDisplay"/>
 	<p onclick="expand()" id="showMore">View 5 more comments</p>
 }
 <script src="~/js/site.js"></script>
+<script src="~/js/replies.js"></script>
 <script src="~/js/initDisplayMap.js"></script>
 <script src="~/js/showComments.js"></script>
