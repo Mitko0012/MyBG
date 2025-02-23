@@ -28,6 +28,7 @@
 	<a asp-controller="Edit" asp-action="CreateEdit" asp-route-pageId="@Model.Id">Submit an edit for this page</a>
 	<form method="post" id="comment-post" asp-action="PostComment" asp-route-comment="@Model.Comment" asp-route-id="@Model.Id" asp-route-replyCount="@Model.CommenntsToDisplay" enctype="multipart/form-data">
 		<textarea asp-for="Comment"></textarea>
+		<span asp-validation-for="Comment" class="text-danger"></span>
 		<button type="submit">Upload comment</button>
 	</form>
 </div>
@@ -45,7 +46,7 @@
 				<p id="commentLikeData">@comment.LikedUser.Count</p>
 				<button type="Submit" id="commentLikeData">Like</button>
 			</form>
-			@if (SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin"))
+			@if (SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager"))
 			{
 				<a asp-action="DeleteComment" asp-controller="Admin" asp-route-id="@comment.Id">Delete comment</a>
 			}
@@ -59,9 +60,10 @@
 					<p class="comment-text-data">@reply.Text</p>
 					<form asp-action="LikeComment" asp-route-id="@reply.Id" asp-route-replyCount="@Model.CommenntsToDisplay" class="comment-like-div">
 						<p id="commentLikeData">@reply.LikedUser.Count</p>
+						<span asp-validation-for="Comment" class="text-danger"></span>
 						<button type="Submit" id="commentLikeData">Like</button>
 					</form>
-					@if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin"))
+					@if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager"))
 					{
 						<a asp-action="DeleteComment" asp-controller="Admin" asp-route-id="@reply.Id">Delete comment</a>
 					}

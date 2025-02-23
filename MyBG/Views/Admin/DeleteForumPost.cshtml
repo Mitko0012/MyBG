@@ -5,6 +5,11 @@
 	<form method="post" asp-route-id="@Model.Post.Id" enctype="multipart/form-data" asp-action="DeleteForumPostConfirm">
 		<p>Message for creator of submission</p>
 		<textarea asp-for="DeclineMessage"></textarea>
+		<span asp-validation-for="DeclineMessage" class="text-danger"></span>
 		<button type="submit">Delete post</button>
 	</form>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }

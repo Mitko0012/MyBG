@@ -3,7 +3,6 @@
 <div class="createForm">
     <br />
     <form method="post" asp-action="CreatePost" enctype="multipart/form-data">
-        <div asp-validation-summary="All" class="text-danger" role="alert"></div>
         <h1>Submit a destination</h1>
         <br />
         <label for="titleContainer" class="create-label">Title: </label>
@@ -14,6 +13,7 @@
         <span asp-validation-for="Summary" class="text-danger"></span>
         <label for="fileCont" class="create-label">Page image:</label>
         <input id="fileCont" asp-for="PageImage" type="file" />
+        <span asp-validation-for="PageImage" class="text-danger"></span>
         <label for="region" asp-for="Regions" class="create-label">Region:</label>
         <select asp-for="Regions" class="create-select">
             <option value="0">Southwestern</option>
@@ -30,9 +30,9 @@
             <option value="2">Nature site</option>
             <option value="3">Town</option>
         </select>
-        <span asp-validation-for="PageImage" class="text-danger"></span>
         <label for="textContainer" class="create-label">Page text:</label>
         <textarea id="textContainer" asp-for="TextBody" class="create-textBody" type=""></textarea>
+        <span asp-validation-for="TextBody" class="text-danger"></span>
         <div asp-validation-for="TextBody" class="text-danger"></div>
         <h3>Transport ways</h3>
         <hr />

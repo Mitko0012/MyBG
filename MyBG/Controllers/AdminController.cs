@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO.Compression;
 using System.Reflection;
 using System.Security.Cryptography.Xml;
+using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
@@ -22,7 +23,7 @@ namespace MyBG.Controllers
             _dbContext = context;
             _manager = manager;
         }
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager,Admin")]
         public IActionResult EditSubmissions()
         {
             ViewEditsModel cont = new ViewEditsModel();
@@ -30,7 +31,7 @@ namespace MyBG.Controllers
             return View(cont);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager,Admin")]
         public IActionResult EditSubmissionsCulture()
         {
             ViewEditsModel cont = new ViewEditsModel();
@@ -38,37 +39,39 @@ namespace MyBG.Controllers
             return View(cont);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager,Admin")]
         public IActionResult EditSubmissionAdmin(int id)
         {
             EditModel? submission = _dbContext.Edits.Where(x => !x.Approved && !x.IsDeleted).Include(x => x.PageToEdit).Include(x => x.UserCreated).FirstOrDefault(x => x.ID == id);
             if (!ModelState.IsValid || submission == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Page");
             }
             return View(submission);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager,Admin")]
         public IActionResult EditSubmissionApprove(int id)
         {
             ApproveModel model = new ApproveModel();
-            model.EditModel = _dbContext.Edits.Where(x => !x.IsDeleted).Include(x => x.PageToEdit).FirstOrDefault(x => x.ID == id);
+            model.EditModel = _dbContext.Edits.Where(x => !x.IsDeleted).Include(x => x.PageToEdit).Include(x => x.UserCreated).FirstOrDefault(x => x.ID == id);
             if (model.EditModel == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Page");
             }
+            model.MessageForApproved = $"Dear {model.EditModel.UserCreated.UserName}, we're delighted to announce that your submission for {(model.EditModel.CreatePage? "creation" : "edit")} of page {model.EditModel.PageToEdit.Title} has been approved! You can now see {(model.EditModel.CreatePage? "the page you created": "the updated contents of the page")} on the destinations area!";
+            model.MessageForDeclined = $"Dear {model.EditModel.UserCreated.UserName}, we have reviewed your submission for {(model.EditModel.CreatePage? "creation" : "edit")} of page {model.EditModel.PageToEdit.Title}. Unfortunately, the administrators have decided that another submission for the same page seems more appropriate for our platform. Our team thanks you a lot for your decision to contribute to the platform.";
             return View(model);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager,Admin")]
         [HttpPost]
         public IActionResult ConfirmApprove(int id, ApproveModel approve)
         {
             approve.EditModel = _dbContext.Edits.Where(x => !x.IsDeleted).Include(x => x.PageToEdit).Include(x => x.UserCreated).FirstOrDefault(x => x.ID == id);
             if (approve == null || approve.EditModel == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Page");
             }
             PFPModel? user = _dbContext.PFPs.Include(x => x.Contributions).FirstOrDefault(x => x.UserName == _manager.UserManager.GetUserAsync(User).Result.UserName);
             approve.EditModel.Approved = true;
@@ -98,27 +101,28 @@ namespace MyBG.Controllers
                 _dbContext.Messages.Add(message2);
             }
             _dbContext.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Page");
         }
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager,Admin")]
         public IActionResult EditSubmissionDecline(int id)
         {
             ApproveModel model = new ApproveModel();
-            model.EditModel = _dbContext.Edits.Where(x => !x.IsDeleted).Include(x => x.PageToEdit).FirstOrDefault(x => x.ID == id);
+            model.EditModel = _dbContext.Edits.Where(x => !x.IsDeleted).Include(x => x.PageToEdit).Include(x => x.UserCreated).FirstOrDefault(x => x.ID == id);
             if (model.EditModel == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Page");
             }
+            model.MessageForDeclined = $"Dear {model.EditModel.UserCreated.UserName}, we have reviewed your submission for {(model.EditModel.CreatePage? "creation" : "edit")} of page {model.EditModel.PageToEdit.Title}. Unfortunately, the adminstrators have decided that your submission does not seem appropriate for our platform. Our team thanks you a lot for your decision to contribute to the platform.";
             return View(model);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager,Admin")]
         [HttpPost]
         public IActionResult EditSubmissionDeclineConfirm(int id, ApproveModel decline)
         {
-            EditModel? model = _dbContext.Edits.Where(x => !x.Approved && !x.IsDeleted).Include(x => x.PageToEdit).FirstOrDefault(x => x.ID == id);
+            EditModel? model = _dbContext.Edits.Where(x => !x.Approved && !x.IsDeleted).Include(x => x.PageToEdit).Include(x => x.UserCreated).FirstOrDefault(x => x.ID == id);
             decline.EditModel = model;
-            if (!ModelState.IsValid || model == null || decline == null)
+            if (model == null || decline == null)
             {
                 return RedirectToAction("Index");
             }
@@ -129,33 +133,34 @@ namespace MyBG.Controllers
             }
             InboxMessage message = new InboxMessage()
             {
-                Message = decline.MessageForApproved,
+                Message = decline.MessageForDeclined,
                 Title = "Your submission has been declined!"
             };
             model.UserCreated.Inbox.Add(message);
             _dbContext.Messages.Add(message);
             _dbContext.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Page");
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager,Admin")]
         public IActionResult DeleteForumPost(int id)
         { 
             DeclinePostModel model = new DeclinePostModel();
-            model.Post = _dbContext.Posts.Where(x => !x.IsDeleted).First(x => x.Id == id);
+            model.Post = _dbContext.Posts.Where(x => !x.IsDeleted).Include(x => x.User).First(x => x.Id == id);
             if(model.Post == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Page");
             }
+            model.DeclineMessage = $"Dear {model.Post.User.UserName}, we have reviewed your post \"{model.Post.Title}\". However, the adminstrators have decided that your post does not seem appropriate for our platform.";
             return View(model);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager,Admin")]
         [HttpPost]
         public IActionResult DeleteForumPostConfirm(int id, DeclinePostModel approve)
         {
             ForumQuestion? post = _dbContext.Posts.Where(x => !x.IsDeleted).Include(x => x.Comment).Include(x => x.User).FirstOrDefault(x => x.Id == id);
-            PFPModel model = _dbContext.PFPs.Where(x => !x.IsDeleted).FirstOrDefault(x => x.UserName == post.User.UserName);
+            PFPModel model = _dbContext.PFPs.FirstOrDefault(x => x.UserName == post.User.UserName);
             if (post == null || model == null)
             {
                 return RedirectToAction("Index", "Page");
@@ -174,17 +179,22 @@ namespace MyBG.Controllers
         }
 
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager,Admin")]
         public IActionResult DeleteComment(int id)
         {
+            CommentModel commentModel = _dbContext.Comments.Where(x => !x.IsDeleted).FirstOrDefault(x => x.Id == id);
             CommentDeleteMessage message = new CommentDeleteMessage()
             {
                 Id = id
             };
+            if(commentModel == null)
+            {
+                return RedirectToAction("Index", "Page");
+            }
             return View(message);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager,Admin")]
         [HttpPost]
         public IActionResult DeleteCommentConfirm(int id, CommentDeleteMessage messagePassed)
         {
@@ -198,7 +208,7 @@ namespace MyBG.Controllers
             InboxMessage message1 = new InboxMessage()
             {
                 Message = messagePassed.Message,
-                Title = "Your comment has been declined!"
+                Title = "Your comment has been deleted!"
             };
             _dbContext.Messages.Add(message1);
             comment.PFP.Inbox.Add(message1);
@@ -206,7 +216,7 @@ namespace MyBG.Controllers
             return RedirectToAction("PageViewer", "Page", new { id = comment.PageId });
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager,Admin")]
         public IActionResult DeleteCommentFromPost(int id)
         {
             CommentPostDeleteMessage message = new CommentPostDeleteMessage()
@@ -216,7 +226,7 @@ namespace MyBG.Controllers
             return View(message);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager,Admin")]
         [HttpPost]
         public IActionResult DeleteCommentFromPostConfirm(int id, CommentPostDeleteMessage messagePassed)
         {
@@ -229,7 +239,7 @@ namespace MyBG.Controllers
             InboxMessage message1 = new InboxMessage()
             {
                 Message = messagePassed.Message,
-                Title = "Your comment has been declined!"
+                Title = "Your comment has been deleted!"
             };
             _dbContext.Messages.Add(message1);
             comment.PFP.Inbox.Add(message1);
@@ -238,18 +248,108 @@ namespace MyBG.Controllers
             return RedirectToAction("PostViewer", "Forum", new { id = comment.PostId });
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager,Admin")]
         public IActionResult DeleteUser(string userName)
         {
             PFPModel? model = _dbContext.PFPs.FirstOrDefault(p => p.UserName == userName);
             IdentityUser? user = _dbContext.Users.FirstOrDefault(u => u.UserName == userName);
-            if(user == null || model == null || _manager.UserManager.GetRolesAsync(user).Result.Contains("Admin"))
+            if(user == null || model == null || _manager.UserManager.GetRolesAsync(user).Result.Contains("Admin") || _manager.UserManager.GetRolesAsync(user).Result.Contains("Manager"))
             {
                 return RedirectToAction("Index", "Page");
             }
             model.IsDeleted = true;
             _dbContext.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Page");
+        }
+
+        [Authorize(Roles = "Manager")]
+        public IActionResult AddToAdmin(string userName)
+        {
+            IdentityUser? user = _dbContext.Users.FirstOrDefault(x => x.UserName == userName);
+            PFPModel? model = _dbContext.PFPs.Where(x => !x.IsDeleted).FirstOrDefault(x => x.UserName == userName);
+            AssignAdmin msg = new AssignAdmin();
+            if(user == null || model == null)
+            {
+                return RedirectToAction("Index", "Page");
+            }
+            msg.User = model.UserName;
+            msg.Message = $"Dear {model.UserName}, the My BG team has decided that you seem like an appropriate administrator! You have since been promoted to administrator.";
+            if(_manager.UserManager.GetRolesAsync(user).Result.Contains("User"))
+            {
+                return View(msg);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Page");
+            }
+        }
+
+        [Authorize(Roles = "Manager")]
+        public IActionResult RemoveFromAdmin(string userName)
+        {
+            IdentityUser? user = _dbContext.Users.FirstOrDefault(x => x.UserName == userName);
+            PFPModel? model = _dbContext.PFPs.Where(x => !x.IsDeleted).FirstOrDefault(x => x.UserName == userName);
+            AssignAdmin msg = new AssignAdmin();
+            if(user == null || model == null)
+            {
+                return RedirectToAction("Index", "Page");
+            }
+            msg.User = model.UserName;
+            msg.Message = $"Dear {model.UserName}, the My BG team has decided that you are not using the admistrator controls in an appropriate way. Therefore, we have decided that the best course of action would be to remove your admin role.";
+            if(_manager.UserManager.GetRolesAsync(user).Result.Contains("Admin"))
+            {
+                return View(msg);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Page");
+            }
+        }
+
+        [Authorize(Roles = "Manager")]
+        [HttpPost]
+        public async Task<IActionResult> ConfirmAdminAssign(string user, string message)
+        {
+            PFPModel? model = _dbContext.PFPs.Where(x => !x.IsDeleted).FirstOrDefault(x => x.UserName == user);
+            IdentityUser? user1 = _dbContext.Users.FirstOrDefault(x => x.UserName == user);
+            if(model == null || user == null)
+            {
+                return RedirectToAction("Index", "Page");
+            }
+            await _manager.UserManager.RemoveFromRoleAsync(user1, "User");
+            await _manager.UserManager.AddToRoleAsync(user1, "Admin");
+            InboxMessage msg3 = new InboxMessage()
+            {
+                UserSource = model,
+                Message = message,
+                Title = "You have been promoted to admin!"
+            };
+            model.Inbox.Add(msg3);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index", "Page");
+        }
+
+        [Authorize(Roles = "Manager")]
+        [HttpPost]
+        public async Task<IActionResult> ConfirmAdminRemove(string user, string message)
+        {
+            PFPModel? model = _dbContext.PFPs.Where(x => !x.IsDeleted).FirstOrDefault(x => x.UserName == user);
+            IdentityUser? user1 = _dbContext.Users.FirstOrDefault(x => x.UserName == user);
+            if(model == null || user == null)
+            {
+                return RedirectToAction("Index", "Page");
+            }
+            await _manager.UserManager.RemoveFromRoleAsync(user1, "Admin");
+            await _manager.UserManager.AddToRoleAsync(user1, "User");
+            InboxMessage msg3 = new InboxMessage()
+            {
+                UserSource = model,
+                Message = message,
+                Title = "You have been removed from the admin role!"
+            };
+            model.Inbox.Add(msg3);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index", "Page");
         }
     }
 }

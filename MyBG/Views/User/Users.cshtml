@@ -14,7 +14,15 @@
         if(user != null)
         {
             <a asp-controller="User" asp-action="UserPage" asp-route-userName = "@user.UserName">@user.UserName</a>
-            if (!SignInManager.UserManager.GetRolesAsync(user).Result.Contains("Admin") && SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin"))
+            if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager") && SignInManager.UserManager.GetRolesAsync(user).Result.Contains("Admin"))
+            {
+                <a asp-controller="Admin" asp-action="RemoveFromAdmin" asp-route-userName="@user.UserName">Remove admin rights</a>
+            }
+            if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager") && SignInManager.UserManager.GetRolesAsync(user).Result.Contains("User"))
+            {
+                <a asp-controller="Admin" asp-action="AddToAdmin" asp-route-userName="@user.UserName">Give admin rights</a>
+            }
+            if (!SignInManager.UserManager.GetRolesAsync(user).Result.Contains("Admin") && !SignInManager.UserManager.GetRolesAsync(user).Result.Contains("Manager") && (SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager")))
             {
                 <a asp-controller="Admin" asp-action="DeleteUser" asp-route-userName="@user.UserName">Delete user</a>
             }

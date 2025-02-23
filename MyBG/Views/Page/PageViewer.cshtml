@@ -39,6 +39,7 @@
 	<a asp-controller="Edit" asp-action="CreateEdit" asp-route-pageId="@Model.Id">Submit an edit for this page</a>
 	<form method="post" id="comment-post" asp-action="PostComment" asp-route-comment="@Model.Comment" asp-route-id="@Model.Id" asp-route-replyCount="@Model.CommenntsToDisplay" enctype="multipart/form-data">
 		<textarea asp-for="Comment"></textarea>
+		<span asp-validation-for="Comment" class="text-danger"></span>
 		<button type="submit">Upload comment</button>
 	</form>
 </div>
@@ -56,7 +57,7 @@
 				<p id="commentLikeData">@comment.LikedUser.Count</p>
 				<button type="Submit" id="commentLikeData">Like</button>
 			</form>
-			@if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin"))
+			@if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager"))
 			{
 				<a asp-action="DeleteComment" asp-controller="Admin" asp-route-id="@comment.Id">Delete comment</a>
 			}
@@ -73,7 +74,7 @@
 						<p id="commentLikeData">@reply.LikedUser.Count</p>
 						<button type="Submit" id="commentLikeData">Like</button>
 					</form>
-					@if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin"))
+					@if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager"))
 					{
 						<a asp-action="DeleteComment" asp-controller="Admin" asp-route-id="@reply.Id">Delete comment</a>
 					}
@@ -83,6 +84,7 @@
 			<p class="addReplyButt" onclick="showAddReply(@index)">Add a reply</p>
 			<form class="replyForm" method="post"asp-action="PostReply" asp-controller="Forum" asp-route-commentId="@comment.Id" enctype="multipart/form-data">
 				<textarea asp-for="Comment"></textarea>
+				<span asp-validation-for="Comment" class="text-danger"></span>
 				<button type="submit"></button>
 				<button type="button" class="cancelReply" onclick="hideAddReply(@index)">Cancel</button>
 			</form>
@@ -98,3 +100,7 @@
 <script src="~/js/replies.js"></script>
 <script src="~/js/initDisplayMap.js"></script>
 <script src="~/js/showComments.js"></script>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -247,6 +247,14 @@ namespace MyBG.Controllers
             {
                 _context.TransportWays.Add(transportWay);
             }
+            foreach(PageModel existingPage in _context.Pages.Where(x => !x.IsCulture && !x.IsDeleted && x.Approved))
+            {
+                if(page.Title == existingPage.Title)
+                {
+                    ModelState.AddModelError("Title", "Another page with the same title exists already.");
+                    break;
+                }
+            }
             using (var memoryStream = new MemoryStream())
             {
                 page.PageImage.CopyTo(memoryStream);
@@ -394,6 +402,13 @@ namespace MyBG.Controllers
                 TransportTimeMinutes = 0
             });
             model.Regions = 0;
+            foreach(PageModel existingPage in _context.Pages.Where(x => x.IsCulture && !x.IsDeleted && x.Approved))
+            {
+                if(model.Title == existingPage.Title)
+                {
+                    ModelState.AddModelError("Title", "Another page with the same title exists already.");
+                }
+            }
             using (var memoryStream = new MemoryStream())
             {
                 model.PageImage.CopyTo(memoryStream);

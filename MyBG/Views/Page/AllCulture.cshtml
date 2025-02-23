@@ -23,7 +23,7 @@
 	<button type="submit">Apply search setting</button>
 	<a asp-action="CreateCulture" id="submit-a">Submit a culture page</a>
 </form>
-@if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin"))
+@if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager"))
 {
 	<a asp-controller="Admin" asp-action="EditSubmissionsCulture">View submissions</a>
 }	

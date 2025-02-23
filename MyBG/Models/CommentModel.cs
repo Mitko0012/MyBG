@@ -7,7 +7,7 @@ namespace MyBG.Models
     public class CommentModel
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Please write your comment")]
         public string Text { get; set; }
         public IdentityUser User { get; set; }  
         [NotMapped]

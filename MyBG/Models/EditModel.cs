@@ -7,7 +7,7 @@ public class EditModel
 {
     public int ID {get; set;}
     public string? OldText {get; set;}
-    [Required]
+    [Required(ErrorMessage = "Please write the new text content")]
     public string NewText {get; set;}
     public PageModel? PageToEdit {get; set;}
     [Required]

@@ -8,14 +8,14 @@ namespace MyBG.Models
     public class PageModel
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Please write a title for your page")]
         public string? Title { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Please write the text contents for your page")]
         public string? TextBody { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Please write a short description of what your page is about")]
         public string? Summary { get; set; }
         [NotMapped]
-        [Required]
+        [Required(ErrorMessage = "Please upload an image for the page")]
         public IFormFile? PageImage { get; set; }
         public byte[]? PageImageArr { get; set; }
         public List<PFPModel> UsersLiked { get; set; } = [];
@@ -26,7 +26,7 @@ namespace MyBG.Models
         public List<CommentModel> Comments { get; set; } = new List<CommentModel>();
         public int CommentId { get; set; }
         [NotMapped]
-        public string? Comment { get; set; } = "";
+        public string? Comment { get; set; }
         [NotMapped]
         public int CommenntsToDisplay { get; set; } = 10;
         [Required]
@@ -56,7 +56,7 @@ namespace MyBG.Models
                 _returnFile = value;
             }
         }
-        [Required]
+        [Required(ErrorMessage = "Please add at least one transport way")]
         public string VerifyTransport {  get; set; }
         public bool IsDeleted { get; set; } = false;
         public DestinationType DestinationType { get; set; } = DestinationType.Town;

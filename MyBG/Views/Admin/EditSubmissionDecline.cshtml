@@ -11,7 +11,12 @@
 	}
 	<form method="post" asp-route-id="@Model.EditModel.ID" enctype="multipart/form-data" asp-action="EditSubmissionDeclineConfirm">
 		<p>Message for creator of submission</p>
-		<textarea asp-for="MessageForApproved"></textarea>
-		<button type="submit">Approve submission</button>
+		<textarea asp-for="MessageForDeclined"></textarea>
+		<span asp-validation-for="MessageForDeclined" class="text-danger"></span>
+		<button type="submit">Decline submission</button>
 	</form>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }

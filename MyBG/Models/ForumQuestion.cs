@@ -7,9 +7,9 @@ namespace MyBG.Models
     public class ForumQuestion
     {
         public int Id { get; set; } 
-        [Required]
+        [Required(ErrorMessage = "Please write the title for your post")]
         public string Title { get; set; }
-        [Required] 
+        [Required(ErrorMessage = "Please write your post")] 
         public string Text { get; set; }
         public List<PFPModel> LikedUser { get; set; } = new List<PFPModel>();
         public List<CommentModel> Comment { get; set; } = new List<CommentModel>();

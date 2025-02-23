@@ -3,7 +3,6 @@
 <div class="createForm">
     <br />
     <form method="post" asp-action="CreateCulture" enctype="multipart/form-data">
-        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
         <h1>Submit a culture page</h1>
         <br />
         <label for="titleContainer" class="create-label">Title: </label>
@@ -17,7 +16,7 @@
         <span asp-validation-for="PageImage" class="text-danger"></span>
         <label for="textContainer" class="create-label">Page text:</label>
         <textarea id="textContainer" asp-for="TextBody" class="create-textBody" type=""></textarea>
-        <div asp-validation-for="TextBody" class="text-danger"></div>
+        <span asp-validation-for="TextBody" class="text-danger"></span>
         <label asp-for="CultureType">Select type of culture page</label>
         <select asp-for="CultureType">
             <option value="0">Meal</option>

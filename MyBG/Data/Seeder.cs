@@ -18,7 +18,7 @@ namespace MyBG.Data
             {
                 UserManager<IdentityUser> manager = serviceProvider.GetService<UserManager<IdentityUser>>();
                 RoleManager<IdentityRole> roleManager = serviceProvider.GetService<RoleManager<IdentityRole>>();
-                var roles = new[] { "Admin", "User" }; // List of roles to create
+                var roles = new[] { "Manager", "Admin", "User" }; // List of roles to create
 
                 if (context.Users.Any())
                 {
@@ -32,13 +32,12 @@ namespace MyBG.Data
                     }
                 }
 
-                var adminUser = await manager.FindByEmailAsync("User1");
+                var adminUser = await manager.FindByNameAsync("Manager");
                 if (adminUser == null)
                 {
                     adminUser = new IdentityUser
                     {
-                        UserName = "User1",
-                        Email = "User1"
+                        UserName = "Manager"
                     };
 
                     // Create the admin user
@@ -49,7 +48,7 @@ namespace MyBG.Data
                     if (result.Succeeded)
                     {
                         // Assign the user to the Admin role
-                        await manager.AddToRoleAsync(adminUser, "Admin");
+                        await manager.AddToRoleAsync(adminUser, "Manager");
                     }
                 }
                 context.SaveChanges();

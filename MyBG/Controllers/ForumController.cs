@@ -74,7 +74,7 @@ namespace MyBG.Controllers
             {
                 return RedirectToAction("Index");
             }
-            question.Pfp = _ctx.PFPs.Where(x => !x.IsDeleted).FirstOrDefault(x => x.UserName == question.User.UserName);
+            question.Pfp = _ctx.PFPs.FirstOrDefault(x => x.UserName == question.User.UserName);
             question.Comment = question.Comment.Where(x => !x.IsDeleted).ToList();
             if (commentDisplayCount != null)
             {

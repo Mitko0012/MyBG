@@ -15,6 +15,7 @@
 	<label for="commentInput">Post comment</label>
 	<br />
 	<input id="commentInput" asp-for="CommentCurrent"/>
+	<span asp-validation-for="Comment" class="text-danger"></span>
 	<button type="submit">Post a comment</button>
 </form>
 @{
@@ -36,7 +37,7 @@
 		{
 			break;
 		}
-		@if (SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin"))
+		@if (SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager"))
 		{
 			<a asp-action="DeleteCommentFromPost" asp-controller="Admin" asp-route-id="@comment.Id">Delete comment</a>
 		}
@@ -63,6 +64,7 @@
 			<p class="addReplyButt" onclick="showAddReply(@index)">Add a reply</p>
 			<form class="replyForm" ssmethod="post"asp-action="PostReplyForum" asp-controller="Forum" asp-route-commentId="@comment.Id" enctype="multipart/form-data">
 				<textarea asp-for="CommentCurrent"></textarea>
+				<span asp-validation-for="Comment" class="text-danger"></span>
 				<button type="submit"></button>
 				<button type="button" class="cancelReply" onclick="hideAddReply(@index)">Cancel</button>
 			</form>
