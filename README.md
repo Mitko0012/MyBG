@@ -3,9 +3,9 @@ A web app created in ASP.NET Core MVC designed to help foreigners explore Bulgai
 
 ### Components
 #### Pages
-Any user can submit a page about a destination in Bulgaria. The admins have to approve the content on the page first before it could be made visible.
+Any user can submit a page about a destination or a culture mark in Bulgaria. The page contains information about the page, like general information, type of destination/culture and the destination on a map and how to get there on the destination pages. The admins have to approve the content on the page first before it could be made visible. Users can comment and like the page.
 #### Forum
 A forum where users can post questions about the app or a specific destinations. Other users can reply to the user on the forum
 #### Roles
-Currently there are 2 roles in this app: User and Admin.
-The user can add page submissions, and the admin can approve or disapprove them. In the latest alpha build there is yet no way for admins to make users, all admins are hard-coded. In the future the admins will be able to make users admins. I'm also considering a head-admin role.
+There are 3 roles: User, Admin and Manager
+The user can add page submissions, and the admin can approve or decline them. The admin can delete comments and forum posts deemed inappropriate. There is one manager who has all the powers as the admins, but can also give and take admin permissions of users.
