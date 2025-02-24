@@ -134,6 +134,9 @@ namespace MyBG.Controllers
                                             .Include(p => p.Comments)
                                                 .ThenInclude(p => p.Replies)
                                                 .ThenInclude(p => p.LikedUser)
+                                            .Include(p => p.Comments)
+                                                .ThenInclude(p => p.Replies)
+                                                .ThenInclude(p => p.User)
                                             .Include(p => p.TransportWays)
                                             .FirstOrDefault(p => p.Id == id);
             if (model == null || user == null)
@@ -158,6 +161,10 @@ namespace MyBG.Controllers
             {
                 item.PFP = _context.PFPs.FirstOrDefault(x => x.UserName == item.User.UserName);
                 item.Replies = item.Replies.Where(x => !x.IsDeleted).ToList();
+                foreach(var reply in item.Replies)
+                {
+                    reply.PFP = _context.PFPs.FirstOrDefault(x => x.UserName == reply.User.UserName);
+                }
             }
             if (model.UsersLiked.FirstOrDefault(x => x.UserName == user.UserName) != null)
             {
@@ -187,7 +194,10 @@ namespace MyBG.Controllers
                                                 .ThenInclude(p => p.LikedUser)
                                             .Include(p => p.Comments)
                                                 .ThenInclude(p => p.Replies)
-                                                .ThenInclude(p => p.LikedUser)    
+                                                .ThenInclude(p => p.LikedUser)
+                                            .Include(p => p.Comments)
+                                                .ThenInclude(p => p.Replies)
+                                                .ThenInclude(p => p.User)    
                                             .Include(p => p.TransportWays)
                                             .FirstOrDefault(p => p.Id == id);
            if (model == null || user == null)
@@ -212,6 +222,10 @@ namespace MyBG.Controllers
             {
                 item.PFP = _context.PFPs.FirstOrDefault(x => x.UserName == item.User.UserName);
                 item.Replies = item.Replies.Where(x => !x.IsDeleted).ToList();
+                foreach(var reply in item.Replies)
+                {
+                    reply.PFP = _context.PFPs.FirstOrDefault(x => x.UserName == reply.User.UserName);
+                }
             }
             if (model.UsersLiked.FirstOrDefault(x => x.UserName == user.UserName) != null)
             {

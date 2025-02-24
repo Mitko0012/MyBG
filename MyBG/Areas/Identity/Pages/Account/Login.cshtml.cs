@@ -112,16 +112,16 @@ namespace MyBG.Areas.Identity.Pages.Account
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
+            if(pfp != null && pfp.IsDeleted)
+            {
+                ModelState.AddModelError(string.Empty, "User has been removed.");
+                return Page();
+            }
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-                if(pfp.IsDeleted)
-                {
-                    ModelState.AddModelError(string.Empty, "User has been removed.");
-                    return Page();
-                }
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");

@@ -13,7 +13,9 @@ builder.Services.AddScoped<PageModel, MyBG.Areas.Identity.Pages.Account.Register
     options.UseSqlite(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => { options.SignIn.RequireConfirmedAccount = true; options.SignIn.RequireConfirmedAccount = false; }).AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+builder.Services.AddDefaultIdentity<IdentityUser>(options => { options.SignIn.RequireConfirmedAccount = true; options.SignIn.RequireConfirmedAccount = false;}).AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+builder.Services.Configure<SecurityStampValidatorOptions>(o => 
+                   o.ValidationInterval = TimeSpan.Zero);
 builder.Services.AddControllersWithViews();
 
 

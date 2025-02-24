@@ -18,6 +18,7 @@ namespace MyBG.Models
         public List<ForumQuestion> UpvotedForums { get; set; } = new List<ForumQuestion>();
         public List<EditModel> Contributions { get; set; } = new List<EditModel>();
         public List<InboxMessage> Inbox { get; set; } = new List<InboxMessage>();
+        public List<int> SavedPages {get; set;} = new List<int>();
         public int PageLikeId { get; set; }
         public string? ReturnFile
         {

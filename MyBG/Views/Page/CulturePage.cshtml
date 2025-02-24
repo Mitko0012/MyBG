@@ -21,6 +21,7 @@
 				}
 			}
 		</form>
+		<a asp-action="SavePage" asp-controller="User" asp-route-pageId="@Model.Id">Save page</a>
 	</div>
 	<img src="@Model.ReturnFile" id="page-image" />
 	<p id="regionDisplay">@Model.CultureType</p>
@@ -34,6 +35,7 @@
 </div>
 @{
 	int index = 0;
+	int commentIndex = 0;
 	foreach (CommentModel comment in Model.Comments)
 	{
 		<div class="comment-div">
@@ -50,12 +52,20 @@
 			{
 				<a asp-action="DeleteComment" asp-controller="Admin" asp-route-id="@comment.Id">Delete comment</a>
 			}
+			<p class="addReplyButt" onclick="showAddReply(@index)">Add a reply</p>
+			<form class="replyForm" method="post"asp-action="PostReply" asp-controller="Forum" asp-route-commentId="@comment.Id" enctype="multipart/form-data">
+				<textarea asp-for="Comment" class="reply-area"></textarea>
+				<span asp-validation-for="Comment" class="text-danger"></span>
+				<button type="submit"></button>
+				<button type="button" class="cancelReply" onclick="hideAddReply(@index)">Cancel</button>
+			</form>
+			@(index += 1);
 			<div class="repliesDiv">
 				@foreach(CommentModel reply in comment.Replies)
 				{
-					<img src="@comment.PFP.ReturnFile" class="profile-pic" class="comment-user-data">
+					<img src="@reply.PFP.ReturnFile" class="profile-pic" class="comment-user-data">
 					<div class="comment-user-data">
-						<a class ="comment-username" asp-controller="User" asp-action="UserPage" asp-route-userName="@comment.PFP.UserName">@comment.PFP.UserName</a>
+						<a class ="comment-username" asp-controller="User" asp-action="UserPage" asp-route-userName="@reply.PFP.UserName">@reply.PFP.UserName</a>
 					</div>
 					<p class="comment-text-data">@reply.Text</p>
 					<form asp-action="LikeComment" asp-route-id="@reply.Id" asp-route-replyCount="@Model.CommenntsToDisplay" class="comment-like-div">
@@ -67,23 +77,26 @@
 					{
 						<a asp-action="DeleteComment" asp-controller="Admin" asp-route-id="@reply.Id">Delete comment</a>
 					}
+					<p class="addReplyButt" onclick="showAddReply(@index)">Add a reply</p>
+					<form class="replyForm" method="post"asp-action="PostReply" asp-controller="Forum" asp-route-commentId="@comment.Id" enctype="multipart/form-data">
+						<textarea asp-for="Comment" class="reply-area"></textarea>
+						<span asp-validation-for="Comment" class="text-danger"></span>
+						<button type="submit"></button>
+						<button type="button" class="cancelReply" onclick="hideAddReply(@index)">Cancel</button>
+					</form>
+					@(index += 1);
 				}
 			</div>
-			<p onclick="showHideReplies(@index)" class="showHideReplies">Show replies</p>
-			<p class="addReplyButt" onclick="showAddReply(@index)">Add a reply</p>
-			<form class="replyForm" method="post"asp-action="PostReply" asp-controller="Forum" asp-route-commentId="@comment.Id" enctype="multipart/form-data">
-				<textarea asp-for="Comment"></textarea>
-				<button type="submit"></button>
-				<button type="button" class="cancelReply" onclick="hideAddReply(@index)">Cancel</button>
-			</form>
+			<p onclick="showHideReplies(@commentIndex)" class="showHideReplies">Show replies</p>
+			@(commentIndex += 1);
 			<hr />
 		</div>
-		@(index += 1);
 	}
 	<input id="countInput" asp-for="@Model.CommenntsToDisplay"/>
 	<p onclick="expand()" id="showMore">View 5 more comments</p>
 }
 <script src="~/js/site.js"></script>
-<script src="~/js/replies.js"></script>
-<script src="~/js/initDisplayMap.js"></script>
+<script src="~/js/mention.js"></script>
+<script src="~/js/reply.js"></script>
+<script src="~/js/initDisplayMap.js" onload="fillMentions()"></script>
 <script src="~/js/showComments.js"></script>

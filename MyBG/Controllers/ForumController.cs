@@ -69,7 +69,7 @@ namespace MyBG.Controllers
         [Authorize]
         public ActionResult PostViewer(int id, int? commentDisplayCount)
         {
-            ForumQuestion? question = _ctx.Posts.Where(x => !x.IsDeleted).Include(x => x.User).Include(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.User).Include(x => x.Comment).ThenInclude(x => x.Replies).ThenInclude(x => x.LikedUser).FirstOrDefault(x => x.Id == id);
+            ForumQuestion? question = _ctx.Posts.Where(x => !x.IsDeleted).Include(x => x.User).Include(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.User).Include(x => x.Comment).ThenInclude(x => x.Replies).ThenInclude(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.Replies).ThenInclude(x => x.User).FirstOrDefault(x => x.Id == id);
             if (!ModelState.IsValid || question == null)
             {
                 return RedirectToAction("Index");
@@ -84,6 +84,10 @@ namespace MyBG.Controllers
             {
                 item.PFP = _ctx.PFPs.FirstOrDefault(x => x.UserName == item.User.UserName);
                 item.Replies = item.Replies.Where(x => !x.IsDeleted).ToList();
+                foreach(var reply in item.Replies)
+                {
+                    reply.PFP = _ctx.PFPs.FirstOrDefault(x => x.UserName == reply.User.UserName);
+                }
             }
             return View(question);
         }

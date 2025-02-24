@@ -42,7 +42,7 @@ namespace MyBG.Controllers
         [Authorize(Roles = "Manager,Admin")]
         public IActionResult EditSubmissionAdmin(int id)
         {
-            EditModel? submission = _dbContext.Edits.Where(x => !x.Approved && !x.IsDeleted).Include(x => x.PageToEdit).Include(x => x.UserCreated).FirstOrDefault(x => x.ID == id);
+            EditModel? submission = _dbContext.Edits.Where(x => !x.Approved && !x.IsDeleted).Include(x => x.PageToEdit).Include(x => x.UserCreated).Include(x => x.PageToEdit).ThenInclude(x => x.TransportWays).FirstOrDefault(x => x.ID == id);
             if (!ModelState.IsValid || submission == null)
             {
                 return RedirectToAction("Index", "Page");
@@ -60,7 +60,7 @@ namespace MyBG.Controllers
                 return RedirectToAction("Index", "Page");
             }
             model.MessageForApproved = $"Dear {model.EditModel.UserCreated.UserName}, we're delighted to announce that your submission for {(model.EditModel.CreatePage? "creation" : "edit")} of page {model.EditModel.PageToEdit.Title} has been approved! You can now see {(model.EditModel.CreatePage? "the page you created": "the updated contents of the page")} on the destinations area!";
-            model.MessageForDeclined = $"Dear {model.EditModel.UserCreated.UserName}, we have reviewed your submission for {(model.EditModel.CreatePage? "creation" : "edit")} of page {model.EditModel.PageToEdit.Title}. Unfortunately, the administrators have decided that another submission for the same page seems more appropriate for our platform. Our team thanks you a lot for your decision to contribute to the platform.";
+            model.MessageForDeclined = $"Dear user of My BG, we have reviewed your submission for {(model.EditModel.CreatePage? "creation" : "edit")} of page {model.EditModel.PageToEdit.Title}. Unfortunately, the administrators have decided that another submission for the same page seems more appropriate for our platform. Our team thanks you a lot for your decision to contribute to the platform.";
             return View(model);
         }
 
@@ -89,7 +89,7 @@ namespace MyBG.Controllers
             approve.EditModel.UserCreated.Inbox.Add(message);
             _dbContext.Messages.Add(message);
            _dbContext.SaveChanges();
-            foreach (EditModel edit in _dbContext.Edits.Where(x => x.Approved == false && x.PageToEdit.Title == approve.EditModel.PageToEdit.Title))
+            foreach (EditModel edit in _dbContext.Edits.Include(x => x.UserCreated).Where(x => x.Approved == false && x.PageToEdit.Title == approve.EditModel.PageToEdit.Title))
             {
                 edit.IsDeleted = true;
                 InboxMessage message2 = new InboxMessage()
@@ -182,7 +182,7 @@ namespace MyBG.Controllers
         [Authorize(Roles = "Manager,Admin")]
         public IActionResult DeleteComment(int id)
         {
-            CommentModel commentModel = _dbContext.Comments.Where(x => !x.IsDeleted).FirstOrDefault(x => x.Id == id);
+            CommentModel? commentModel = _dbContext.Comments.Where(x => !x.IsDeleted).Include(x => x.User).FirstOrDefault(x => x.Id == id);
             CommentDeleteMessage message = new CommentDeleteMessage()
             {
                 Id = id
@@ -191,6 +191,7 @@ namespace MyBG.Controllers
             {
                 return RedirectToAction("Index", "Page");
             }
+            message.Message = $"Dear {commentModel.User.UserName}, we have reviewd your comment \"{commentModel.Text}\" and we have decided that it does not seem appropriate for our platform. Your comment has since been removed.";
             return View(message);
         }
 
@@ -199,7 +200,7 @@ namespace MyBG.Controllers
         public IActionResult DeleteCommentConfirm(int id, CommentDeleteMessage messagePassed)
         {
             CommentModel? comment = _dbContext.Comments.Where(x => !x.IsDeleted).Include(x => x.User).FirstOrDefault(x => x.Id == id);
-            comment.PFP = _dbContext.PFPs.Where(x => !x.IsDeleted).FirstOrDefault(x => x.UserName == comment.User.UserName);
+            comment.PFP = _dbContext.PFPs.FirstOrDefault(x => x.UserName == comment.User.UserName);
             if (comment == null || messagePassed == null || comment.PFP == null)
             {
                 return RedirectToAction("Index", "Page");
@@ -219,10 +220,16 @@ namespace MyBG.Controllers
         [Authorize(Roles = "Manager,Admin")]
         public IActionResult DeleteCommentFromPost(int id)
         {
+            CommentModel? comment = _dbContext.Comments.Include(x => x.User).FirstOrDefault(x => x.Id == id);
             CommentPostDeleteMessage message = new CommentPostDeleteMessage()
             {
                 Id = id,
             };
+            if(comment == null)
+            {
+                return RedirectToAction("Index", "Page");
+            }
+            message.Message = $"Dear {comment.User.UserName}, we have reviewd your comment \"{comment.Text}\" and we have decided that it does not seem appropriate for our platform. Your comment has since been removed.";
             return View(message);
         }
 
@@ -231,7 +238,7 @@ namespace MyBG.Controllers
         public IActionResult DeleteCommentFromPostConfirm(int id, CommentPostDeleteMessage messagePassed)
         {
             CommentModel? comment = _dbContext.Comments.Include(x => x.User).FirstOrDefault(x => x.Id == id);
-            comment.PFP = _dbContext.PFPs.Where(x => !x.IsDeleted).FirstOrDefault(x => x.UserName == comment.User.UserName);
+            comment.PFP = _dbContext.PFPs.FirstOrDefault(x => x.UserName == comment.User.UserName);
             if (comment == null || comment.User == null || comment.PFP == null)
             {
                 return RedirectToAction("Index", "Page");
@@ -258,6 +265,7 @@ namespace MyBG.Controllers
                 return RedirectToAction("Index", "Page");
             }
             model.IsDeleted = true;
+            _manager.UserManager.UpdateSecurityStampAsync(user);
             _dbContext.SaveChanges();
             return RedirectToAction("Index", "Page");
         }
@@ -324,6 +332,7 @@ namespace MyBG.Controllers
                 Message = message,
                 Title = "You have been promoted to admin!"
             };
+            await _manager.UserManager.UpdateSecurityStampAsync(user1);
             model.Inbox.Add(msg3);
             _dbContext.SaveChanges();
             return RedirectToAction("Index", "Page");
@@ -347,6 +356,7 @@ namespace MyBG.Controllers
                 Message = message,
                 Title = "You have been removed from the admin role!"
             };
+            await _manager.UserManager.UpdateSecurityStampAsync(user1);
             model.Inbox.Add(msg3);
             _dbContext.SaveChanges();
             return RedirectToAction("Index", "Page");

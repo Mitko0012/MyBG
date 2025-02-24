@@ -4,7 +4,7 @@
 
 <h1>@Model.Title</h1>
 <div class="comment-user-data">
-	<a class="comment-username" asp-controller="User" asp-action="UserPage" asp-route-userName="@Model.Pfp.UserName">@Model.Pfp.UserName</a>
+	<a class="post-username" asp-controller="User" asp-action="UserPage" asp-route-userName="@Model.Pfp.UserName">@Model.Pfp.UserName</a>
 </div>
 <p>@Model.Text</p>
 <p>@Model.LikedUser.Count</p>
@@ -21,13 +21,14 @@
 @{
 	int count = 1;
 	int index = 0;
+	int comments = 0;
 	foreach(CommentModel comment in Model.Comment)
 	{
 		<div class="comment-user-data">
 			<a class="comment-username" asp-controller="User" asp-action="UserPage" asp-route-userName="@comment.PFP.UserName">@comment.PFP.UserName</a>
 		</div>
 		<img src="@comment.PFP.ReturnFile"/>
-		<p>@comment.Text</p>
+		<p class="comment-text-data">@comment.Text</p>
 		<form enctype="multipart/form-data" method="post" asp-action="LikeComment" asp-route-replyCount="@Model.CommentCount"asp-route-id="@comment.Id">
 			<p>@comment.LikedUser.Count</p>
 			<button type="submit"></button>
@@ -41,13 +42,21 @@
 		{
 			<a asp-action="DeleteCommentFromPost" asp-controller="Admin" asp-route-id="@comment.Id">Delete comment</a>
 		}
+		<p class="addReplyButt" onclick="showAddReply(@index)">Add a reply</p>
+		<form class="replyForm" ssmethod="post"asp-action="PostReplyForum" asp-controller="Forum" asp-route-commentId="@comment.Id" enctype="multipart/form-data">
+			<textarea asp-for="CommentCurrent" class="reply-area"></textarea>
+			<span asp-validation-for="Comment" class="text-danger"></span>
+			<button type="submit"></button>
+			<button type="button" class="cancelReply" onclick="hideAddReply(@index)">Cancel</button>
+		</form>
+		@(index += 1);
 		<div class="repliesDiv">
 				@foreach(CommentModel reply in comment.Replies)
 				{
 					
-					<img src="@comment.PFP.ReturnFile" class="profile-pic" class="comment-user-data">
+					<img src="@reply.PFP.ReturnFile" class="profile-pic" class="comment-user-data">
 					<div class="comment-user-data">
-						<a class ="comment-username" asp-controller="User" asp-action="UserPage" asp-route-userName="@comment.PFP.UserName">@comment.PFP.UserName</a>
+						<a class ="comment-username" asp-controller="User" asp-action="UserPage" asp-route-userName="@reply.PFP.UserName">@reply.PFP.UserName</a>
 					</div>
 					<p class="comment-text-data">@reply.Text</p>
 					<form asp-action="LikeComment" asp-route-id="@reply.Id" class="comment-like-div">
@@ -58,21 +67,23 @@
 					{
 						<a asp-action="DeleteComment" asp-controller="Admin" asp-route-id="@reply.Id">Delete comment</a>
 					}
+					<p class="addReplyButt" onclick="showAddReply(@index)">Add a reply</p>
+					<form class="replyForm" method="post"asp-action="PostReply" asp-controller="Forum" asp-route-commentId="@comment.Id" enctype="multipart/form-data">
+						<textarea asp-for="Comment" class="reply-area"></textarea>
+						<span asp-validation-for="Comment" class="text-danger"></span>
+						<button type="submit"></button>
+						<button type="button" class="cancelReply" onclick="hideAddReply(@index)">Cancel</button>
+					</form>
+					@(index += 1);
 				}
 			</div>
-			<p onclick="showHideReplies(@index)" class="showHideReplies">Show replies</p>
-			<p class="addReplyButt" onclick="showAddReply(@index)">Add a reply</p>
-			<form class="replyForm" ssmethod="post"asp-action="PostReplyForum" asp-controller="Forum" asp-route-commentId="@comment.Id" enctype="multipart/form-data">
-				<textarea asp-for="CommentCurrent"></textarea>
-				<span asp-validation-for="Comment" class="text-danger"></span>
-				<button type="submit"></button>
-				<button type="button" class="cancelReply" onclick="hideAddReply(@index)">Cancel</button>
-			</form>
-			@(index += 1);
+			<p onclick="showHideReplies(@comments)" class="showHideReplies">Show replies</p>
+			@(comments += 1);
 	}
 }
 
 <script src="~/js/site.js"></script>
-<script src="~/js/replies.js"></script>
-<script src="~/js/initDisplayMap.js"></script>
+<script src="~/js/mention.js"></script>
+<script src="~/js/reply.js"></script>
+<script src="~/js/initDisplayMap.js" onload="fillMentions()"></script>
 <script src="~/js/showComments.js"></script>

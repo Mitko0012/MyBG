@@ -91,4 +91,49 @@ public class UserController : Controller
         users.AllUsers.OrderBy((x) => _manager.UserManager.GetRolesAsync(x).Result.Contains("Admin") ? 0 : 1).ToList();
         return View(users);
     }
+
+    [Authorize]
+    public IActionResult SavePage(int pageId)
+    {
+        PageModel? model = _ctx.Pages.Where(x => !x.IsDeleted && x.Approved).FirstOrDefault(x => x.Id == pageId);
+        PFPModel? pfp = _ctx.PFPs.Where(x => !x.IsDeleted).FirstOrDefault(x => x.UserName == _manager.UserManager.GetUserAsync(User).Result.UserName);
+        if(model == null || pfp == null)
+        {
+            return RedirectToAction("Index", "Page");
+        }
+        if(pfp.SavedPages.Contains(model.Id))
+        {
+            pfp.SavedPages.Remove(model.Id);
+        } 
+        else
+        {
+            pfp.SavedPages.Add(model.Id);
+        }
+        _ctx.SaveChanges();
+        if(model.IsCulture)
+        {
+            return RedirectToAction("CulturePage", "Page", new {id = pageId});
+        }
+        else
+        {
+            return RedirectToAction("PageViewer", "Page", new {id = pageId});
+        }
+    }
+    [Authorize]
+    public IActionResult ViewSaved()
+    {
+        PFPModel? model = _ctx.PFPs.Where(x => !x.IsDeleted).FirstOrDefault(x => x.UserName == _manager.UserManager.GetUserAsync(User).Result.UserName);
+        if(model == null)
+        {
+            return RedirectToAction("Index", "Page");
+        }
+        SavedPages page = new SavedPages();
+        List<PageModel> pages = new List<PageModel>();
+        foreach(int i in model.SavedPages)
+        {
+            pages.Add(_ctx.Pages.Find(i));
+        }
+        page.Pages = pages;
+        return View(page);
+    }
 }

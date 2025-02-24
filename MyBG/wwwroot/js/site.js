@@ -1,5 +1,4 @@
-﻿let index = 0;
-let map;
+﻿let map;
 let marker;
 let xInput = document.getElementById("xInput");
 let yInput = document.getElementById("yInput");
@@ -7,23 +6,6 @@ let latInfo = document.getElementById("latInfo");
 let longInfo = document.getElementById("longInfo");
 let transportValid = document.getElementById("verify-transport");
 const searchSelect = document.getElementById("searchSelect");
-
-function addOption() {
-    let travelDiv = document.getElementById("transportWaysDiv");
-    let fromInput = document.getElementById("from");
-    let timeInput = document.getElementById("time");
-    let minInput = document.getElementById("timeMins");
-    let typeDiv = document.getElementById("transportWay");
-    travelDiv.innerHTML = travelDiv.innerHTML.concat(`
-                                                    <div class="wayDiv"> 
-                                                        <input name="TransportWays[${index}].TransportWayType" value="${typeDiv.value}"/>
-                                                        <input name="TransportWays[${index}].TransportOrigin" value="${fromInput.value}"/>
-                                                        <input name="TransportWays[${index}].TransportTimeHours" value="${timeInput.value}"/>
-                                                        <input name="TransportWays[${index}].TransportTimeMinutes" value="${minInput.value}"/>
-                                                    </div>`);
-    transportValid.value = ".";
-    index++;
-}
 
 function showOrHideSearch() {
     let search = document.getElementById("search");

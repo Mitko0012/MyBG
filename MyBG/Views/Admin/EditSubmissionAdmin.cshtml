@@ -25,6 +25,15 @@
 	}
 	<h3>Content after the edit</h3>
 	<p id="NewTextP">@Model.NewText</p>
+	@if(Model.CreatePage && !Model.PageToEdit.IsCulture)
+	{
+		foreach(TransportWay way in Model.PageToEdit.TransportWays)
+		{
+			<p>From: @way.TransportOrigin</p>
+			<p>By: @way.TransportWayType</p>
+			<p>Time takem: @way.TransportTimeHours and @way.TransportTimeMinutes</p>
+		}
+	}
 	<a asp-action="EditSubmissionApprove" asp-route-id="@Model.ID">Approve</a>
 	<a asp-action="EditSubmissionDecline" asp-route-id="@Model.ID">Decline</a>
 </div>

@@ -423,6 +423,10 @@ namespace MyBG.Migrations
                     b.Property<string>("ReturnFile")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("SavedPages")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("UserName")
                         .HasColumnType("TEXT");
 
