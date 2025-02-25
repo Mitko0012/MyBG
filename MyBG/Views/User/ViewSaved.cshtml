@@ -1,6 +1,11 @@
 @model MyBG.Models.SavedPages;
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> Manager
+
 
 <h1>Your saved pages</h1>
+
+<a class="link" asp-route-userName="@Manager.UserManager.GetUserAsync(User).Result.UserName" asp-action="UserPage">Back</a>
 
 @{
 	foreach(var pagey in Model.Pages)
@@ -12,11 +17,11 @@
 				<p>@pagey.Summary</p>
                 @if(pagey.IsCulture)
                 {
-                    <a asp-action="CulturePage" asp-controller="Page" asp-route-id="@pagey.Id">View page</a>
+                    <a asp-action="CulturePage" asp-controller="Page" class="submit-a" asp-route-id="@pagey.Id">View page</a>
                 }
                 else
                 {
-                    <a asp-action="PageViewer" asp-controller="Page" asp-route-id="@pagey.Id">View page</a>
+                    <a asp-action="PageViewer" asp-controller="Page" class="submit-a" asp-route-id="@pagey.Id">View page</a>
                 }
             </div>
 		}

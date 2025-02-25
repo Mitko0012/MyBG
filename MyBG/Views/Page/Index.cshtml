@@ -29,10 +29,10 @@
 		<option value="3">Town</option>
 	</select>
 	<button type="submit">Apply search setting</button>
-	<a asp-action="Create" id="submit-a">Submit a destination</a>
+	<a asp-action="Create" class="submit-a">Submit a destination</a>
 	@if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager"))
 	{
-		<a asp-controller="Admin" asp-action="EditSubmissions">View submissions</a>
+		<a asp-controller="Admin" asp-action="EditSubmissions" class="submit-a">View submissions</a>
 	}
 </form>
 @{
@@ -43,7 +43,7 @@
 			<div class="destinationDiv">
 				<h3>@pagey.Title</h3>
 				<p>@pagey.Summary</p>
-				<a asp-action="PageViewer" asp-route-id="@pagey.Id">View page</a>
+				<a asp-action="PageViewer" asp-route-id="@pagey.Id" class="submit-a">View page</a>
 			</div>
 		}
 	}

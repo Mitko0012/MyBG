@@ -6,19 +6,26 @@
         <h1>Submit a culture page</h1>
         <br />
         <label for="titleContainer" class="create-label">Title: </label>
+        <p class="create-label-description">The title of the page</p>
         <input id ="titleContainer" asp-for="Title" class="create-input"/>
         <span asp-validation-for="Title" class="text-danger"></span>
         <label for="descriptionContainer" class="create-label">Description: </label>
+        <p class="create-label-description">A short description (no more than 5 words)</p>
         <input id="descriptionContainer" asp-for="Summary" class="create-input" />
         <span asp-validation-for="Summary" class="text-danger"></span>
-        <label for="fileCont" class="create-label">Page image:</label>
-        <input id="fileCont" asp-for="PageImage" type="file" />
+        <label for="fileCont" class="create-label">Image:</label>
+        <p class="create-label-description">An image of the topic of the page</p>
+        <label for="fileCont" class="create-file-button">Upload file</label>
+        <input id="fileCont" asp-for="PageImage" type="file" class="file-hidden" accept=".jpg,.png,.jpeg" />
+        <p id="input-msg" class="create-label-description"></p>
         <span asp-validation-for="PageImage" class="text-danger"></span>
         <label for="textContainer" class="create-label">Page text:</label>
+        <p class="create-label-description">The main text of the page</p>
         <textarea id="textContainer" asp-for="TextBody" class="create-textBody" type=""></textarea>
         <span asp-validation-for="TextBody" class="text-danger"></span>
-        <label asp-for="CultureType">Select type of culture page</label>
-        <select asp-for="CultureType">
+        <label asp-for="CultureType" class="create-label">Type</label>
+        <p class="create-label-description">The type of the culture page</p>
+        <select asp-for="CultureType" class="create-input">
             <option value="0">Meal</option>
             <option value="1">Tradition</option>
             <option value="2">Dance</option>
@@ -26,6 +33,8 @@
         <button type="submit" class="create-button" value="Submit">Submit</button>
     </form>
 </div>
+
+<script src="~/js/create.js"></script>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

@@ -3,14 +3,18 @@
 @{
     ViewData["Title"] = "Log out";
 }
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> Manager
 
 <header>
     <h1>@ViewData["Title"]</h1>
+    <a class="link" asp-route-userName="@Manager.UserManager.GetUserAsync(User).Result.UserName" asp-controller="User" asp-action="UserPage">Back</a>
+    <p class="user-text">Are you sure you want to log out?</p>
     @{
         if (User.Identity?.IsAuthenticated ?? false)
         {
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-                <button type="submit" class="nav-link btn btn-link text-dark">Click here to Logout</button>
+                <button type="submit" class="create-button">Click here to Logout</button>
             </form>
         }
         else

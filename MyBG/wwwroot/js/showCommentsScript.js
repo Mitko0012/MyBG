@@ -1,3 +1,5 @@
+let comments = document.getElementsByClassName("comment-div-parent");
+
 function expand() {
     let count = Number(document.getElementById("countInput").value);
     showComments(count);
@@ -5,7 +7,6 @@ function expand() {
 }
 
 function showComments(count) {
-    let comments = document.getElementsByClassName("comment-div");
     for(let i = 0; i < count; i++) {
         if(i >= comments.length - 1 || comments.length === 0) {
             document.getElementById("showMore").style.display = "none";
@@ -14,6 +15,14 @@ function showComments(count) {
         }
         comments[i].style.display = "block";
     }
+}
+
+function hidePostButtonRepky(index) {
+
+}
+
+function hidePostButtonComment(index) {
+    
 }
 
 expand()

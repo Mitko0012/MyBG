@@ -1,6 +1,7 @@
 @model InboxMessage
-
 <div>
     <h1>@Model.Title</h1>
+    <a class="link" asp-action="Inbox">Back</a>
+    <br>
     <p>@Model.Message</p>
 </div>

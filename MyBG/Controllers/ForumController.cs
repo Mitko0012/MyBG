@@ -67,7 +67,7 @@ namespace MyBG.Controllers
             return RedirectToAction("Index");
         }
         [Authorize]
-        public ActionResult PostViewer(int id, int? commentDisplayCount)
+        public ActionResult PostViewer(int id)
         {
             ForumQuestion? question = _ctx.Posts.Where(x => !x.IsDeleted).Include(x => x.User).Include(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.User).Include(x => x.Comment).ThenInclude(x => x.Replies).ThenInclude(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.Replies).ThenInclude(x => x.User).FirstOrDefault(x => x.Id == id);
             if (!ModelState.IsValid || question == null)
@@ -76,10 +76,6 @@ namespace MyBG.Controllers
             }
             question.Pfp = _ctx.PFPs.FirstOrDefault(x => x.UserName == question.User.UserName);
             question.Comment = question.Comment.Where(x => !x.IsDeleted).ToList();
-            if (commentDisplayCount != null)
-            {
-                question.CommentCount = (int)commentDisplayCount;
-            }
             foreach (var item in question.Comment)
             {
                 item.PFP = _ctx.PFPs.FirstOrDefault(x => x.UserName == item.User.UserName);
@@ -93,7 +89,7 @@ namespace MyBG.Controllers
         }
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> LikePost(int id, int replyCount)
+        public async Task<IActionResult> LikePost(int id)
         {
             ForumQuestion question = _ctx.Posts.Where(x => !x.IsDeleted).Include(x => x.LikedUser).Include(x => x.Comment).FirstOrDefault(x => x.Id == id);
             IdentityUser currentUser = await _manager.GetUserAsync(User);
@@ -111,12 +107,16 @@ namespace MyBG.Controllers
                 question.LikedUser.Remove(model);
             }
             _ctx.SaveChanges();
-            return RedirectToAction("PostViewer", new { id = id , replyCount = replyCount});
+            return RedirectToAction("PostViewer", new { id = id});
         }
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> CommentPost(string CommentCurrent, int id)
         {
+            if(CommentCurrent == null)
+            {
+                CommentCurrent = "";
+            }
             ForumQuestion postModel = _ctx.Posts.Where(x => !x.IsDeleted).FirstOrDefault(x => x.Id == id);
             CommentModel commentModel = new CommentModel();
             IdentityUser startUser = await _manager.GetUserAsync(User);
@@ -137,7 +137,7 @@ namespace MyBG.Controllers
         }
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> LikeComment(int id, int replyCount)
+        public async Task<IActionResult> LikeComment(int id)
         {
             CommentModel comment = _ctx.Comments.Where(x => !x.IsDeleted).Include(x => x.LikedUser).FirstOrDefault(x => x.Id == id);
             IdentityUser user = await _manager.GetUserAsync(User);
@@ -155,13 +155,17 @@ namespace MyBG.Controllers
                 comment.LikedUser.Add(model);
             }
             _ctx.SaveChanges();
-            return RedirectToAction("PostViewer", new { id = comment.PostId, commentDisplayCount = replyCount });
+            return RedirectToAction("PostViewer", new { id = comment.PostId});
         }
 
         [Authorize]
         public IActionResult PostReply(int commentId, PageModel cmnt) 
         {
             CommentModel comment = _ctx.Comments.Where(x => !x.IsDeleted).FirstOrDefault(x => x.Id == commentId);
+            if(cmnt.Comment == null)
+            {
+                cmnt.Comment = "";
+            }
             if(comment == null)
             {
                 return RedirectToAction("Index");
@@ -174,7 +178,14 @@ namespace MyBG.Controllers
             comment.Replies.Add(reply);
             _ctx.Comments.Add(reply);
             _ctx.SaveChanges();
-            return RedirectToAction();
+            if(cmnt.IsCulture)
+            {
+                return RedirectToAction("CulturePage", "Page", new {id = comment.Pages[0].Id});
+            }
+            else
+            {
+                return RedirectToAction("PageViewer", "Page", new {id = comment.Id});
+            }
         }
         [Authorize]
         public IActionResult PostReplyForum(int commentId, ForumQuestion cmnt) 
@@ -192,7 +203,7 @@ namespace MyBG.Controllers
             comment.Replies.Add(reply);
             _ctx.Comments.Add(reply);
             _ctx.SaveChanges();
-            return RedirectToAction();
+            return RedirectToAction("PostViewer", new {id = comment.PostedOnForums[0].Id});
         }
     }
 }

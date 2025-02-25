@@ -6,15 +6,21 @@
         <h1>Submit a destination</h1>
         <br />
         <label for="titleContainer" class="create-label">Title: </label>
+        <p class="create-label-description">The title of the page</p>
         <input id ="titleContainer" asp-for="Title" class="create-input"/>
         <span asp-validation-for="Title" class="text-danger"></span>
         <label for="descriptionContainer" class="create-label">Description: </label>
+        <p class="create-label-description">A short description (no more than 5 words)</p>
         <input id="descriptionContainer" asp-for="Summary" class="create-input" />
         <span asp-validation-for="Summary" class="text-danger"></span>
-        <label for="fileCont" class="create-label">Page image:</label>
-        <input id="fileCont" asp-for="PageImage" type="file" />
+        <label for="fileCont" class="create-label">Destination image:</label>
+        <p class="create-label-description">An image of the destination</p>
+        <label class="create-file-button" for="fileCont">Upload file</label>
+        <input id="fileCont" asp-for="PageImage" type="file" class="file-hidden" accept=".jpg,.png,.jpeg" />
+        <p id="input-msg" class="create-label-description"></p>
         <span asp-validation-for="PageImage" class="text-danger"></span>
         <label for="region" asp-for="Regions" class="create-label">Region:</label>
+        <p class="create-label-description">The region where the destination is located</p>
         <select asp-for="Regions" class="create-select">
             <option value="0">Southwestern</option>
             <option value="1">Southern</option>
@@ -24,6 +30,7 @@
             <option value="5">Northeastern</option>
         </select>
         <label asp-for="DestinationType" class="create-label">Type of destination:</label>
+        <p class="create-label-description">The type of the destination</p>
         <select asp-for="DestinationType" class="create-select">
             <option value="0">Landmark</option>
             <option value="1">Historical site</option>
@@ -31,20 +38,22 @@
             <option value="3">Town</option>
         </select>
         <label for="textContainer" class="create-label">Page text:</label>
+        <p class="create-label-description">The main text of the page</p>
         <textarea id="textContainer" asp-for="TextBody" class="create-textBody" type=""></textarea>
         <span asp-validation-for="TextBody" class="text-danger"></span>
         <div asp-validation-for="TextBody" class="text-danger"></div>
         <h3>Transport ways</h3>
-        <hr />
+        <p class="create-label-description" id="transportway-warning">You haven't added any transport ways. Please do so using the menu underneath.</p>
         <span asp-validation-for="TransportWays" class="text-danger"></span>
-    	<div id="transportWaysDiv"></div>
+    	<hr />
+        <div id="transportWaysDiv"></div>
     	<h4>Add a new transport way</h4>
         <label for="from" class="create-label">From</label>
     	<input id="from" class="create-input"/>
         <label for="time" class="create-label">Hours taken</label>
-    	<input id="time" class="create-input" />
+    	<input id="time" type="number" min="0" value="0" class="create-input" />
         <label for="time" class="create-label">Minutes taken</label>
-    	<input id="timeMins" class="create-input" />
+    	<input id="timeMins" type="number" min="0" value="0" max="60" class="create-input" />
         <label for="transportWay" class="create-label">Transport way</label>
         <select id="transportWay" class="create-input">
     		<option value="0">Car</option>
@@ -52,20 +61,21 @@
     		<option value="2">Bus</option>
     		<option value="3">Plane</option>
     	</select>
-        <input asp-for="VerifyTransport" id="verify-transport" value=""/>
+        <input asp-for="VerifyTransport" id="verify-transport" value="" class="hidden"/>
         <span asp-validation-for="VerifyTransport" class="text-danger"></span>
         <button type="button" class="create-button" onclick="addTransportWay()">Add option</button>
         <h3>Point to your destination on the map</h3>
         <hr />
         <div id="map"></div>
         <p>Or, input exact geographic coordinates</p>
-        <input id="xInput" type="number" asp-for="Lat" value="42.766109" oninput="reverseUpdatePos()" />
-        <input id="yInput" type="number" asp-for="Long" value="25.238556" oninput="reverseUpdatePos()" />
+        <input id="xInput" type="number" name="Lat" asp-for="Lat" value="42.766109" class="create-input" oninput="reverseUpdatePos()" />
+        <input id="yInput" type="number" name="Long" asp-for="Long" value="25.238556" class="create-input" oninput="reverseUpdatePos()" />
         <button type="submit" class="create-button" value="Submit">Submit</button>
     </form>
     <script src="~/js/addOption.js"></script>
     <script src="~/js/site.js"></script>
     <script src="~/js/initEditMap.js"></script>
+    <script src="~/js/create.js"></script>
 </div>
 
 @section Scripts {

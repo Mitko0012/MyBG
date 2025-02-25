@@ -21,11 +21,11 @@
 	</select>
 	<p id="regionSelect"></p>
 	<button type="submit">Apply search setting</button>
-	<a asp-action="CreateCulture" id="submit-a">Submit a culture page</a>
+	<a asp-action="CreateCulture" class="submit-a" id="submit-a">Submit a culture page</a>
 </form>
 @if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager"))
 {
-	<a asp-controller="Admin" asp-action="EditSubmissionsCulture">View submissions</a>
+	<a asp-controller="Admin" asp-action="EditSubmissionsCulture" class="submit-a">View submissions</a>
 }	
 @{
 	foreach(var pagey in Model.Pages)
@@ -35,7 +35,7 @@
 			<div class="destinationDiv">
 				<h3>@pagey.Title</h3>
 				<p>@pagey.Summary</p>
-				<a asp-action="CulturePage" asp-route-id="@pagey.Id">View page</a>
+				<a asp-action="CulturePage" asp-route-id="@pagey.Id" class="submit-a">View page</a>
 			</div>
 		}
 	}

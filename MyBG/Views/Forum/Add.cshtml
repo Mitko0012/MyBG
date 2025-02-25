@@ -1,15 +1,13 @@
 ﻿@model ForumQuestion;
-<h1>Add new post</h1>
+<h1>Create a new post</h1>
 <form asp-action="PostForum" enctype="multipart/form-data" method="post">
-	<label for="TitleForum"></label>
-	<br />
-	<input id="TitleForum" asp-for="Title"/>
+	<label for="TitleForum" class="create-label">Title</label>
+	<input id="TitleForum" class="create-input" asp-for="Title"/>
 	<span asp-validation-for="Title" class="text-danger"></span>
-	<label for="TextForum"></label>
-	<br />
-	<input id="TextForum" asp-for="Text" />
+	<label for="TextForum" class="create-label">Your post</label>
+	<textarea id="TextForum" asp-for="Text" class="create-textBody"></textarea>
 	<span asp-validation-for="Text" class="text-danger"></span>
-	<button type="Submit">Submit the post</button>
+	<button type="Submit" class="create-button">Submit the post</button>
 </form>
 
 @section Scripts {

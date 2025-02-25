@@ -2,25 +2,22 @@
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 
-
-<h2>@Model.UserName</h2>
-<img src="@Model.ReturnFile"/>
-<p>@Model.GetNationality</p>
-<p>@Model.Contributions.Count</p>
-<p>Contributions made </p>
-<a asp-action="ViewContributions" asp-route-userName="@Model.UserName">View contributions</a>
+<div class="contrib-data">
+	<img src="@Model.ReturnFile" class="userpage-pfp"/>
+	<p class="page-username">@Model.UserName</p>
+	<p class="page-nationality">@Model.GetNationality</p>
+	<p class="contrib-number">@Model.Contributions.Count</p>
+	<p class="contrib-label">Contributions made </p>
+</div>
+<a asp-action="ViewContributions" class="submit-a" asp-route-userName="@Model.UserName">View contributions</a>
+<a class="submit-a" asp-action="Users">View all users</a>
 @{
-	<a asp-action="Users">View all users</a>
 	if(SignInManager.UserManager.GetUserAsync(User).Result.UserName == Model.UserName)
 	{
-		<a href="~/Identity/Account/Manage">Change PFP</a>
-		<a href="~/Identity/Account/Manage/ChangePassword">Change password</a>
-		<a href="~/Identity/Account/Logout">Log out</a>
-		<a asp-action="Inbox">Inbox</a>
-		<a asp-action="ViewSaved">My saved pages</a>
-		if (SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin"))
-		{
-			<a href="~/Admin">Admin controls</a>
-		}
+		<a asp-action="Inbox" class="page-control-button">Inbox</a>
+		<a asp-action="ViewSaved" class="page-control-button">My saved pages</a>
+		<a href="~/Identity/Account/Manage" class="page-control-button">Change PFP</a>
+		<a href="~/Identity/Account/Manage/ChangePassword" class="page-control-button">Change password</a>
+		<a href="~/Identity/Account/Logout" class="page-control-button">Log out</a>
 	}
 }

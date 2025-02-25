@@ -2,12 +2,10 @@
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 
-
+<a asp-action="Index" class="link backButton">Back</a>
 <div class="page-display">
-	<a asp-action="Index">Back</a>
 	<h1>@Model.Title</h1>
-	<a asp-action="ViewEdits" asp-controller="Edit" asp-route-pageId="@Model.Id">View edit history</a>
-	<div class="like-div">
+		<div class="like-div">
 		<form method="post" asp-action="LikePost" asp-route-id="@Model.Id" enctype="multipart/form-data" asp-route-replyCount="@Model.CommenntsToDisplay">
 			<p class="page-info">Likes: @Model.UsersLiked.Count</p>
 			@{
@@ -26,84 +24,99 @@
 	<img src="@Model.ReturnFile" id="page-image"/>
 	<p id="regionDisplay">Region: @Model.Regions Bulgaria</p>
 	<p id="page-info">@Model.TextBody</p>
+	<hr />
 	<h2>How to get there</h2>
 	@{
 		foreach(TransportWay way in Model.TransportWays)
 		{
-			<p>@($"From: {way.TransportOrigin} Time taken: {way.TransportTimeHours} hours and {way.TransportTimeMinutes} minutes By: {way.TransportWayType}")</p>
+			<p class="TransportWayDisplay">@($"{way.TransportWayType} From {way.TransportOrigin}: {way.TransportTimeHours}:{way.TransportTimeMinutes}")</p>
 		}
 	}
+	<hr />
 	<h2>@Model.Title displayed on a map</h2>
 	<div id="map"></div>
-	<input id="latInfo" value="@Model.Lat" />
-	<input id="longInfo" value="@Model.Long" />
-	<a asp-controller="Edit" asp-action="CreateEdit" asp-route-pageId="@Model.Id">Submit an edit for this page</a>
-	<form method="post" id="comment-post" asp-action="PostComment" asp-route-comment="@Model.Comment" asp-route-id="@Model.Id" asp-route-replyCount="@Model.CommenntsToDisplay" enctype="multipart/form-data">
-		<textarea asp-for="Comment"></textarea>
-		<span asp-validation-for="Comment" class="text-danger"></span>
-		<button type="submit">Upload comment</button>
-	</form>
+	<input id="latInfo" value="@Model.Lat" class="hidden" />
+	<input id="longInfo" value="@Model.Long" class="hidden" />
+	<hr />
+	<a asp-action="ViewEdits" asp-controller="Edit" asp-route-pageId="@Model.Id" class="editLink">View edit history</a>
+	<a asp-controller="Edit" asp-action="CreateEdit" asp-route-pageId="@Model.Id" class="editLink">Submit an edit for this page</a>
+	<hr>
 </div>
+<label for="commentInput" class="comment-label">Post a comment</label>
+<form method="post" id="comment-post" asp-action="PostComment" asp-route-comment="@Model.Comment" asp-route-id="@Model.Id" asp-route-replyCount="@Model.CommenntsToDisplay" enctype="multipart/form-data">
+	<textarea asp-for="Comment" class="comment-area"></textarea>
+	<span asp-validation-for="Comment" class="text-danger"></span>
+	<br />
+	<button type="submit" class="comment-button">Upload comment</button>
+</form>
 @{
 	int index = 0;
 	int commentIndex = 0;
 	foreach (CommentModel comment in Model.Comments)
 	{
-		<div class="comment-div">
-			<img src="@comment.PFP.ReturnFile" class="profile-pic" class="comment-user-data">
-			<div class="comment-user-data">
-				<a class ="comment-username" asp-controller="User" asp-action="UserPage" asp-route-userName="@comment.PFP.UserName">@comment.PFP.UserName</a>
+		<div class="comment-div-parent">
+			<hr />
+			<div class="comment-div">
+				<div class="comment-user-data">
+					<img src="@comment.PFP.ReturnFile" class="profile-pic" />
+				</div>
+				<div class="comment-user-data-name">
+					<a class="comment-username" asp-controller="User" asp-action="UserPage" asp-route-userName="@comment.PFP.UserName">@comment.PFP.UserName</a>
+				</div>
+				<p class="comment-text-data">@comment.Text</p>
+				<form asp-action="LikeComment" asp-route-id="@comment.Id" asp-route-replyCount="@Model.CommenntsToDisplay" class="comment-like-div">
+					<p id="commentLikeData">@comment.LikedUser.Count</p>
+					<button type="Submit" id="commentLikeData">Like</button>
+				</form>
 			</div>
-			<p class="comment-text-data">@comment.Text</p>
-			<form asp-action="LikeComment" asp-route-id="@comment.Id" asp-route-replyCount="@Model.CommenntsToDisplay" class="comment-like-div">
-				<p id="commentLikeData">@comment.LikedUser.Count</p>
-				<button type="Submit" id="commentLikeData">Like</button>
-			</form>
 			@if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager"))
 			{
-				<a asp-action="DeleteComment" asp-controller="Admin" asp-route-id="@comment.Id">Delete comment</a>
+				<a asp-action="DeleteComment" asp-controller="Admin" asp-route-id="@comment.Id" class="admin-button">Delete comment</a>
 			}
-			<p class="addReplyButt" onclick="showAddReply(@index)">Add a reply</p>
-			<form class="replyForm" method="post"asp-action="PostReply" asp-controller="Forum" asp-route-commentId="@comment.Id" enctype="multipart/form-data">
-				<textarea asp-for="Comment" class="reply-area"></textarea>
-				<span asp-validation-for="Comment" class="text-danger"></span>
-				<button type="submit"></button>
-				<button type="button" class="cancelReply" onclick="hideAddReply(@index)">Cancel</button>
-			</form>
-			@(index += 1);
-			<div class="repliesDiv">
-				@foreach(CommentModel reply in comment.Replies)
-				{
-					
-					<img src="@reply.PFP.ReturnFile" class="profile-pic" class="comment-user-data">
-					<div class="comment-user-data">
-						<a class ="comment-username" asp-controller="User" asp-action="UserPage" asp-route-userName="@reply.PFP.UserName">@reply.PFP.UserName</a>
-					</div>
-					<p class="comment-text-data">@reply.Text</p>
-					<form asp-action="LikeComment" asp-route-id="@reply.Id" asp-route-replyCount="@Model.CommenntsToDisplay" class="comment-like-div">
-						<p id="commentLikeData">@reply.LikedUser.Count</p>
-						<button type="Submit" id="commentLikeData">Like</button>
-					</form>
-					@if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager"))
+			<p class="addReplyButt show-replies" onclick="showAddReply(@index)">Add a reply</p>
+				<form class="replyForm" method="post"asp-action="PostReply" asp-route-isculture="false" asp-controller="Forum" asp-route-commentId="@comment.Id" asp-route-id="@Model.Id" enctype="multipart/form-data">
+					<textarea asp-for="Comment" class="reply-area"></textarea>
+					<span asp-validation-for="Comment" class="text-danger"></span>
+					<button class="comment-button" type="submit">Post reply</button>
+					<button class="comment-button" type="button" class="cancelReply" onclick="hideAddReply(@index)">Cancel</button>
+				</form>
+				<p class="hidden">@(index += 1);</p>
+				<div class="repliesDiv">
+					@foreach(CommentModel reply in comment.Replies)
 					{
-						<a asp-action="DeleteComment" asp-controller="Admin" asp-route-id="@reply.Id">Delete comment</a>
+						<hr />
+						<div class="flex-reply">
+							<div class="comment-user-data">	
+								<img src="@reply.PFP.ReturnFile" class="profile-pic">
+							</div>
+							<div class="comment-user-data-name">
+								<a class ="comment-username" asp-controller="User" asp-action="UserPage" asp-route-userName="@reply.PFP.UserName">@reply.PFP.UserName</a>
+							</div>
+							<p class="comment-text-data">@reply.Text</p>
+							<form asp-action="LikeComment" asp-route-id="@reply.Id" asp-route-replyCount="@Model.CommenntsToDisplay" class="comment-like-div">
+								<p id="commentLikeData">@reply.LikedUser.Count</p>
+								<button type="Submit" id="commentLikeData">Like</button>
+							</form>
+						</div>
+						@if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager"))
+						{
+							<a asp-action="DeleteComment" asp-controller="Admin" asp-route-id="@reply.Id" class="admin-button">Delete comment</a>
+						}
+						<p class="addReplyButt show-replies" onclick="showAddReply(@index)">Add a reply</p>
+						<form class="replyForm" method="post"asp-action="PostReply" asp-route-id="@Model.Id" asp-route-isculture="false" asp-controller="Forum" asp-route-commentId="@comment.Id" enctype="multipart/form-data">
+							<textarea asp-for="Comment" class="reply-area"></textarea>
+							<span asp-validation-for="Comment" class="text-danger"></span>
+							<button class="comment-button" type="submit">Post reply</button>
+							<button class="comment-button" type="button" class="cancelReply" onclick="hideAddReply(@index)">Cancel</button>
+						</form>
+						<p class="hidden">@(index += 1);</p>
 					}
-					<p class="addReplyButt" onclick="showAddReply(@index)">Add a reply</p>
-					<form class="replyForm" method="post"asp-action="PostReply" asp-controller="Forum" asp-route-commentId="@comment.Id" enctype="multipart/form-data">
-						<textarea asp-for="Comment" class="reply-area"></textarea>
-						<span asp-validation-for="Comment" class="text-danger"></span>
-						<button type="submit"></button>
-						<button type="button" class="cancelReply" onclick="hideAddReply(@index)">Cancel</button>
-					</form>
-					@(index += 1);
-				}
-			</div>
-			<p onclick="showHideReplies(@commentIndex)" class="showHideReplies">Show replies</p>
-			@(commentIndex += 1);
-			<hr />
+				</div>
+				<p onclick="showHideReplies(@commentIndex)" class="show-replies showHideReplies">Show replies</p>
+				<p class="hidden">@(commentIndex += 1);</p>
 		</div>
 	}
-	<input id="countInput" asp-for="@Model.CommenntsToDisplay"/>
+	<input id="countInput" asp-for="@Model.CommenntsToDisplay" class="hidden"/>
 	<p onclick="expand()" id="showMore">View 5 more comments</p>
 }
 
@@ -111,7 +124,7 @@
 <script src="~/js/mention.js"></script>
 <script src="~/js/reply.js"></script>
 <script src="~/js/initDisplayMap.js" onload="fillMentions()"></script>
-<script src="~/js/showComments.js"></script>
+<script src="~/js/showCommentsScript.js"></script>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

@@ -29,9 +29,7 @@
 	{
 		foreach(TransportWay way in Model.PageToEdit.TransportWays)
 		{
-			<p>From: @way.TransportOrigin</p>
-			<p>By: @way.TransportWayType</p>
-			<p>Time takem: @way.TransportTimeHours and @way.TransportTimeMinutes</p>
+			<p class="TransportWayDisplay">@($"{way.TransportWayType} From {way.TransportOrigin}: {way.TransportTimeHours} hours and {way.TransportTimeMinutes} minutes")</p>
 		}
 	}
 	<a asp-action="EditSubmissionApprove" asp-route-id="@Model.ID">Approve</a>

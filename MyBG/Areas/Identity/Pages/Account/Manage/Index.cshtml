@@ -1,21 +1,25 @@
 ﻿@page
 @model IndexModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> Manager
 
-<div class="createForm">
-    <h1>My account</h1>
-    <div class="col-md-6">
-        <form id="profile-form" method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <p class="account-label">Profile Picture</p>
-                <img src="@Model.PFP.ReturnFile" class="profile-picDetails"/>
-                <p class="account-label"> Upload a new profile picture</p>
-                <input type="file" asp-for="@Model.FormFile" name="FormFile"/>
-                <button type="submit" class="account-button">Update profile picture</button>
-            </div>
-        </form>
-    </div>
+<div class="left-div">
+    <h1>Change profile picture</h1>
+    <a class="link" asp-route-userName="@Manager.UserManager.GetUserAsync(User).Result.UserName" asp-controller="User" asp-action="UserPage">Back</a>
+    <form method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+        <div>
+            <p class="account-label">Current profile Picture</p>
+            <img src="@Model.PFP.ReturnFile" class="userpage-pfp"/>
+            <label class="create-file-button" for="fileCont">Upload file</label>
+            <input id="fileCont" asp-for="@Model.FormFile" type="file" class="file-hidden" accept=".jpg,.png,.jpeg" />
+            <p id="input-msg" class="create-label-description"></p>
+            <button type="submit" class="account-button">Update profile picture</button>
+        </div>
+    </form>
 </div>
+
+<script src="~/js/create.js"></script>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

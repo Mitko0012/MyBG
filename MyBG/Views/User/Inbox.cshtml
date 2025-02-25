@@ -1,6 +1,12 @@
 ﻿@model PFPModel
+@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<IdentityUser> Manager;
 
+<h1>My inbox</h1>
+<a class="link" asp-route-userName="@Manager.UserManager.GetUserAsync(User).Result.UserName" asp-action="UserPage">Back</a>
+<hr />
 @foreach(InboxMessage message in Model.Inbox)
 {
-	<a asp-action="InboxMessage" asp-route-id="@message.Id">@message.Title</a>
+	<a asp-action="InboxMessage" asp-route-id="@message.Id" class="post-title">@message.Title</a>
+	<hr />
 }

@@ -3,24 +3,31 @@
 @inject SignInManager<IdentityUser> SignInManager
 
 <h1>Posts</h1>
+<hr />
 <form asp-action="Index">
-	<select asp-for="SearchType" name="sortingType">
+	<select asp-for="SearchType" oninput="showOrHideSearch()" name="sortingType" id="searchSelect">
 		<option value="NewestFirst">Newest First</option>
 		<option value="MostLiked">Most Liked</option>
 		<option value="Search">Search</option>
 	</select>
-	<input asp-for="SearchString" name="searchString"/>
+	<input asp-for="SearchString" name="searchString" id="search"/>
 	<button type="submit">Apply options</button>
 </form>
+<a asp-action="Add" class="link">Create a new post</a>
 @{
 	foreach(ForumQuestion i in Model.ForumPosts)
 	{
-		<a asp-action="PostViewer" asp-route-id="@i.Id" id="ForumPost">@i.Title</a>
-		<br />
-		if (SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager"))
-		{
-			<a asp-action="DeleteForumPost" asp-controller="Admin" asp-route-id="@i.Id">Delete post</a>
-		}
+		<div>
+			<hr />
+			<a asp-action="PostViewer" asp-route-id="@i.Id" id="ForumPost" class="post-title">@i.Title</a>
+			<br />
+			@if (SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager"))
+			{
+				<a asp-action="DeleteForumPost" asp-controller="Admin" class="admin-button" asp-route-id="@i.Id">Delete post</a>
+			}
+		</div>
 	}
 }
-<a asp-action="Add">Create new post</a>
+
+<script src="~/js/site.js"></script>
+<p onload="showOrHideSearch()"></p>
