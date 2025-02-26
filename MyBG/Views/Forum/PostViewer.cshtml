@@ -3,15 +3,23 @@
 @inject SignInManager<IdentityUser> SignInManager
 
 <h1 id="forum-title">@Model.Title</h1>
-<div class="comment-user-data">
-	<p class="post-username-title">Post made by: </p>
-	<a class="post-username" asp-controller="User" asp-action="UserPage" asp-route-userName="@Model.Pfp.UserName">@Model.Pfp.UserName</a>
+<div>
+	<p class="post-username-title">Post made by: <a class="post-username" asp-controller="User" asp-action="UserPage" asp-route-userName="@Model.Pfp.UserName">@Model.Pfp.UserName</a></p>
 </div>
 <hr>
 <p class="forum-text">@Model.Text</p>
-<p>@Model.LikedUser.Count</p>
-<form asp-action="LikePost" asp-route-id="@Model.Id" method="Post">
-	<button type="submit">Like</button>
+<form asp-action="LikePost"  asp-route-id="@Model.Id" method="Post">
+	@{
+		if (Model.LikedByUser)
+		{
+			<input type="image" class="forum-icon" id="page-like" src="~/textures/like_star.png" />
+		}
+		else
+		{
+			<input type="image" class="forum-icon" id="page-like" src="~/textures/unliked_star.png" />
+		}	
+		<span class="forum-data">@Model.LikedUser.Count</span>
+	}
 </form>
 <hr />
 <form method="post" id="comment-post" asp-action="CommentPost" asp-route-id="@Model.Id" enctype="multipart/form-data" asp-route-replyCount="@Model.CommentCount">
@@ -36,9 +44,16 @@
 					<a class="comment-username" asp-controller="User" asp-action="UserPage" asp-route-userName="@comment.PFP.UserName">@comment.PFP.UserName</a>
 				</div>
 				<p class="comment-text-data">@comment.Text</p>
-				<form asp-action="LikeComment" asp-route-id="@comment.Id" class="comment-like-div">
+				<form asp-action="LikeComment" asp-route-forumId="@Model.Id" asp-route-id="@comment.Id" class="comment-like-div">
 					<p id="commentLikeData">@comment.LikedUser.Count</p>
-					<button type="Submit" id="commentLikeData">Like</button>
+					@if (comment.LikedByUser)
+					{
+						<input type="image" class="comment-icon" src="~/textures/like_star.png" />
+					}
+					else
+					{
+						<input type="image" class="comment-icon" src="~/textures/unliked_star.png" />
+					}
 				</form>
 			</div>
 			@if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager"))
@@ -46,8 +61,8 @@
 				<a asp-action="DeleteComment" asp-controller="Admin" asp-route-id="@comment.Id" class="admin-button">Delete comment</a>
 			}
 			<p class="addReplyButt show-replies" onclick="showAddReply(@index)">Add a reply</p>
-				<form class="replyForm" method="post"asp-action="PostReply" asp-controller="Forum" asp-route-commentId="@comment.Id" enctype="multipart/form-data">
-					<textarea asp-for="Comment" class="reply-area"></textarea>
+				<form class="replyForm" method="post"asp-action="PostReplyForum" asp-route-id="@Model.Id" asp-controller="Forum" asp-route-commentId="@comment.Id" enctype="multipart/form-data">
+					<textarea asp-for="CommentCurrent" class="reply-area"></textarea>
 					<span asp-validation-for="Comment" class="text-danger"></span>
 					<button class="comment-button" type="submit">Post reply</button>
 					<button class="comment-button" type="button" class="cancelReply" onclick="hideAddReply(@index)">Cancel</button>
@@ -65,9 +80,16 @@
 								<a class ="comment-username" asp-controller="User" asp-action="UserPage" asp-route-userName="@reply.PFP.UserName">@reply.PFP.UserName</a>
 							</div>
 							<p class="comment-text-data">@reply.Text</p>
-							<form asp-action="LikeComment" asp-route-id="@reply.Id" class="comment-like-div">
+							<form asp-action="LikeComment" asp-route-forumId="@Model.Id" asp-route-forumId="@Model.Id" asp-route-id="@reply.Id" class="comment-like-div">
 								<p id="commentLikeData">@reply.LikedUser.Count</p>
-								<button type="Submit" id="commentLikeData">Like</button>
+								@if (reply.LikedByUser)
+								{
+									<input type="image" class="comment-icon" src="~/textures/like_star.png" />
+								}
+								else
+								{
+									<input type="image" class="comment-icon" src="~/textures/unliked_star.png" />
+								}
 							</form>
 						</div>
 						@if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager"))
@@ -75,8 +97,8 @@
 							<a asp-action="DeleteComment" asp-controller="Admin" asp-route-id="@reply.Id" class="admin-button">Delete comment</a>
 						}
 						<p class="addReplyButt show-replies" onclick="showAddReply(@index)">Add a reply</p>
-						<form class="replyForm" method="post"asp-action="PostReply" asp-controller="Forum" asp-route-commentId="@comment.Id" enctype="multipart/form-data">
-							<textarea asp-for="Comment" class="reply-area"></textarea>
+						<form class="replyForm" method="post"asp-action="PostReplyForum" asp-route-id="@Model.Id" asp-controller="Forum" asp-route-commentId="@comment.Id" enctype="multipart/form-data">
+							<textarea asp-for="CommentCurrent" class="reply-area"></textarea>
 							<span asp-validation-for="Comment" class="text-danger"></span>
 							<button class="comment-button" type="submit">Post reply</button>
 							<button class="comment-button" type="button" class="cancelReply" onclick="hideAddReply(@index)">Cancel</button>

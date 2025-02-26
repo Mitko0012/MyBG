@@ -69,7 +69,7 @@ public class UserController : Controller
     [Authorize]
     public IActionResult InboxMessage(int id)
     {
-        InboxMessage msg = _ctx.Messages.Include(x => x.UserSource).FirstOrDefault(x => x.Id == id);
+        InboxMessage msg = _ctx.Messages.Include(x => x.UserSource).Where(x => x.UserSource.UserName == _manager.UserManager.GetUserAsync(User).Result.UserName).FirstOrDefault(x => x.Id == id);
         if(msg == null)
         {
             return RedirectToAction("Index", "Page");
@@ -88,7 +88,7 @@ public class UserController : Controller
         {
             users.AllUsers.Add(_ctx.Users.FirstOrDefault(x => x.UserName == model.UserName));
         }
-        users.AllUsers.OrderBy((x) => _manager.UserManager.GetRolesAsync(x).Result.Contains("Admin") ? 0 : 1).ToList();
+        users.AllUsers.OrderBy((x) => _manager.UserManager.GetRolesAsync(x).Result.Contains("Manager") ? 0 : _manager.UserManager.GetRolesAsync(x).Result.Contains("Admin") ? 1 : 2).ToList();
         return View(users);
     }
 

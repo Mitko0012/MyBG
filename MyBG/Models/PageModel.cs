@@ -57,10 +57,14 @@ namespace MyBG.Models
             }
         }
         [Required(ErrorMessage = "Please add at least one transport way")]
-        public string VerifyTransport {  get; set; }
+        public string VerifyTransport { get; set; }
         public bool IsDeleted { get; set; } = false;
         public DestinationType DestinationType { get; set; } = DestinationType.Town;
         public CultureType CultureType { get; set; } = CultureType.Meal;
         public bool IsCulture {get; set;} = false;
+        [NotMapped]
+        public double Scroll = 0;
+        [NotMapped]
+        public bool Saved = false;
     }
 }

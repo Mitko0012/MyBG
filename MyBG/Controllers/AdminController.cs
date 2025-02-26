@@ -256,7 +256,7 @@ namespace MyBG.Controllers
         }
 
         [Authorize(Roles = "Manager,Admin")]
-        public IActionResult DeleteUser(string userName)
+        public async Task<IActionResult> DeleteUser(string userName)
         {
             PFPModel? model = _dbContext.PFPs.FirstOrDefault(p => p.UserName == userName);
             IdentityUser? user = _dbContext.Users.FirstOrDefault(u => u.UserName == userName);
@@ -265,7 +265,22 @@ namespace MyBG.Controllers
                 return RedirectToAction("Index", "Page");
             }
             model.IsDeleted = true;
-            _manager.UserManager.UpdateSecurityStampAsync(user);
+            await _manager.UserManager.UpdateSecurityStampAsync(user);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index", "Page");
+        }
+
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> DeleteAdminUser(string userName)
+        {
+            PFPModel? model = _dbContext.PFPs.FirstOrDefault(p => p.UserName == userName);
+            IdentityUser? user = _dbContext.Users.FirstOrDefault(u => u.UserName == userName);
+            if(user == null || model == null || _manager.UserManager.GetRolesAsync(user).Result.Contains("User") || _manager.UserManager.GetRolesAsync(user).Result.Contains("Manager"))
+            {
+                return RedirectToAction("Index", "Page");
+            }
+            model.IsDeleted = true;
+            await _manager.UserManager.UpdateSecurityStampAsync(user);
             _dbContext.SaveChanges();
             return RedirectToAction("Index", "Page");
         }

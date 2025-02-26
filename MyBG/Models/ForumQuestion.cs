@@ -34,5 +34,7 @@ namespace MyBG.Models
         public string? ForeignKey { get; set; } = "User1";
         [NotMapped]
         public PFPModel Pfp { get; set; }
+        [NotMapped]
+        public bool LikedByUser { get; set; }
     }
 }

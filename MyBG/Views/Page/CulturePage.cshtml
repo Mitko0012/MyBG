@@ -3,24 +3,35 @@
 @inject SignInManager<IdentityUser> SignInManager
 
 
-<a asp-action="AllCulture" class="link backButton">Back</a>
+<a asp-action="AllCulture" class="link backButton"><img src="~/Textures/arrow.png" class="back-icon" /> Back</a>
 <div class="page-display">
 	<h1>@Model.Title</h1>
-		<div class="like-div">
-		<form method="post" asp-action="LikePost" asp-route-id="@Model.Id" enctype="multipart/form-data" asp-route-replyCount="@Model.CommenntsToDisplay">
-			<p class="page-info">Likes: @Model.UsersLiked.Count</p>
-			@{
-				if (Model.LikedByUser)
-				{
-					<button type="submit">Unlike</button>
+	<div class="like-div">
+		<div class="filler"></div>
+		<form method="post" class="page-control class="like-container" asp-action="LikePost" asp-route-id="@Model.Id" enctype="multipart/form-data" asp-route-replyCount="@Model.CommenntsToDisplay">
+			<div class="like-container">
+				@{
+					if (Model.LikedByUser)
+					{
+						<input type="image" class="page-icon" id="page-like" src="~/textures/like_star.png" />
+					}
+					else
+					{
+						<input type="image" class="page-icon" id="page-like" src="~/textures/unliked_star.png" />
+					}	
+					<p class="like-page-data">@Model.UsersLiked.Count</p>
 				}
-				else
-				{
-					<button type="submit">Like</button>
-				}
-			}
+			</div>
 		</form>
-		<a asp-action="SavePage" asp-controller="User" asp-route-pageId="@Model.Id">Save page</a>
+		@if (Model.Saved)
+		{
+			<a asp-action="SavePage" class="page-control" asp-controller="User" asp-route-pageId="@Model.Id"><input type="image" class="page-icon" src="~/textures/saved.png" /></a>
+		}
+		else
+		{
+			<a asp-action="SavePage" class="page-control" asp-controller="User" asp-route-pageId="@Model.Id"><input type="image" class="page-icon" src="~/textures/unsaved.png" /></a>
+		}	
+		<div class="filler"></div>
 	</div>
 	<img src="@Model.ReturnFile" id="page-image" />
 	<p id="regionDisplay">@Model.CultureType</p>
@@ -52,9 +63,16 @@
 					<a class="comment-username" asp-controller="User" asp-action="UserPage" asp-route-userName="@comment.PFP.UserName">@comment.PFP.UserName</a>
 				</div>
 				<p class="comment-text-data">@comment.Text</p>
-				<form asp-action="LikeComment" asp-route-id="@comment.Id" asp-route-replyCount="@Model.CommenntsToDisplay" class="comment-like-div">
+				<form asp-action="LikeComment" asp-route-id="@comment.Id" asp-route-pageid="@Model.Id" asp-route-replyCount="@Model.CommenntsToDisplay" class="comment-like-div">
 					<p id="commentLikeData">@comment.LikedUser.Count</p>
-					<button type="Submit" id="commentLikeData">Like</button>
+					@if (comment.LikedByUser)
+					{
+						<input type="image" class="comment-icon" src="~/textures/like_star.png" />
+					}
+					else
+					{
+						<input type="image" class="comment-icon" src="~/textures/unliked_star.png" />
+					}
 				</form>
 			</div>
 			@if (SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager"))
@@ -62,7 +80,7 @@
 				<a asp-action="DeleteComment" asp-controller="Admin" asp-route-id="@comment.Id" class="admin-button">Delete comment</a>
 			}
 			<p class="addReplyButt show-replies" onclick="showAddReply(@index)">Add a reply</p>
-			<form class="replyForm" method="post"asp-action="PostReply" asp-controller="Forum" asp-route-commentId="@comment.Id" enctype="multipart/form-data">
+			<form class="replyForm" method="post"asp-action="PostReply" asp-controller="Forum" asp-route-isculture="true" asp-route-commentId="@comment.Id" asp-route-id="@Model.Id" enctype="multipart/form-data">
 				<textarea asp-for="Comment" class="reply-area"></textarea>
 				<span asp-validation-for="Comment" class="text-danger"></span>
 				<button class="comment-button" type="submit">Post reply</button>
@@ -81,26 +99,33 @@
 							<a class ="comment-username" asp-controller="User" asp-action="UserPage" asp-route-userName="@reply.PFP.UserName">@reply.PFP.UserName</a>
 						</div>
 						<p class="comment-text-data">@reply.Text</p>
-						<form asp-action="LikeComment" asp-route-id="@reply.Id" asp-route-replyCount="@Model.CommenntsToDisplay" class="comment-like-div">
+						<form asp-action="LikeComment" asp-route-replyCount="@Model.CommenntsToDisplay" asp-route-pageid="@Model.Id" asp-route-id="@reply.Id" class="comment-like-div">
 							<p id="commentLikeData">@reply.LikedUser.Count</p>
-							<button type="Submit" id="commentLikeData">Like</button>
+							@if (reply.LikedByUser)
+							{
+								<input type="image" class="comment-icon" src="~/textures/like_star.png" />
+							}
+							else
+							{
+								<input type="image" class="comment-icon" src="~/textures/unliked_star.png" />
+							}
 						</form>
 					</div>
 					@if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager"))
 					{
-						<a asp-action="DeleteComment" asp-controller="Admin" asp-route-id="@reply.Id" class="admin-button">Delete comment</a>
+						<a asp-action="DeleteComment" asp-controller="Admin" asp-route-commentId="@reply.Id" asp-route-id="@Model.Id" class="admin-button">Delete comment</a>
 					}
-					<p class="addReplyButt" onclick="showAddReply(@index)">Add a reply</p>
-					<form class="replyForm show-replies" method="post"asp-action="PostReply" asp-controller="Forum" asp-route-commentId="@comment.Id" enctype="multipart/form-data">
+					<p class="addReplyButt show-replies" onclick="showAddReply(@index)">Add a reply</p>
+					<form class="replyForm show-replies" method="post"asp-action="PostReply" asp-route-isculture="true" asp-controller="Forum" asp-route-commentId="@comment.Id" enctype="multipart/form-data">
 						<textarea asp-for="Comment" class="reply-area"></textarea>
 						<span asp-validation-for="Comment" class="text-danger"></span>
-						<button class="comment-button" type="submit">Post reply</button>
+						<button class="comment-button" type="submit">Add a reply</button>
 						<button class="comment-button" type="button" class="cancelReply" onclick="hideAddReply(@index)">Cancel</button>
 					</form>
 					<p class="hidden">@(index += 1);</p>
 				}
 			</div>
-			<p onclick="showHideReplies(@commentIndex)" class="showHideReplies">Show replies</p>
+			<p onclick="showHideReplies(@commentIndex)" class="showHideReplies show-replies">Show replies</p>
 			<p class="hidden">@(commentIndex += 1);</p>
 	</div>
 	}

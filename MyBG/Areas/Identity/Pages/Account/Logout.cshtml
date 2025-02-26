@@ -8,7 +8,7 @@
 
 <header>
     <h1>@ViewData["Title"]</h1>
-    <a class="link" asp-route-userName="@Manager.UserManager.GetUserAsync(User).Result.UserName" asp-controller="User" asp-action="UserPage">Back</a>
+    <a class="link" asp-route-userName="@Manager.UserManager.GetUserAsync(User).Result.UserName" asp-controller="User" asp-action="UserPage"><img src="~/Textures/arrow.png" class="back-icon" /> Back</a>
     <p class="user-text">Are you sure you want to log out?</p>
     @{
         if (User.Identity?.IsAuthenticated ?? false)

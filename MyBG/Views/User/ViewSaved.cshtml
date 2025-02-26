@@ -5,7 +5,7 @@
 
 <h1>Your saved pages</h1>
 
-<a class="link" asp-route-userName="@Manager.UserManager.GetUserAsync(User).Result.UserName" asp-action="UserPage">Back</a>
+<a class="link" asp-route-userName="@Manager.UserManager.GetUserAsync(User).Result.UserName" asp-action="UserPage"><img src="~/Textures/arrow.png" class="back-icon" /> Back</a>
 
 @{
 	foreach(var pagey in Model.Pages)

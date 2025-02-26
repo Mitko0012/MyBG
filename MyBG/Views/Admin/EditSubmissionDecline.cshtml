@@ -10,10 +10,10 @@
 		<h1> Are you sure you want to decline this submission for edit of page @Model.EditModel.PageToEdit.Title ?</h1>
 	}
 	<form method="post" asp-route-id="@Model.EditModel.ID" enctype="multipart/form-data" asp-action="EditSubmissionDeclineConfirm">
-		<p>Message for creator of submission</p>
-		<textarea asp-for="MessageForDeclined"></textarea>
+		<p class="user-text">Message for creator of submission</p>
+		<textarea class="message-area" asp-for="MessageForDeclined"></textarea>
 		<span asp-validation-for="MessageForDeclined" class="text-danger"></span>
-		<button type="submit">Decline submission</button>
+		<button type="submit" class="create-button">Decline submission</button>
 	</form>
 }
 

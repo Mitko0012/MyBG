@@ -1,7 +1,7 @@
 @model InboxMessage
 <div>
     <h1>@Model.Title</h1>
-    <a class="link" asp-action="Inbox">Back</a>
+    <a class="link" asp-action="Inbox"><img src="~/Textures/arrow.png" class="back-icon" /> Back</a>
     <br>
-    <p>@Model.Message</p>
+    <p class="user-text">@Model.Message</p>
 </div>

@@ -25,8 +25,9 @@
 </form>
 @if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager"))
 {
-	<a asp-controller="Admin" asp-action="EditSubmissionsCulture" class="submit-a">View submissions</a>
-}	
+	<a asp-controller="Admin" asp-action="EditSubmissionsCulture" class="admin-button-positive">View submissions</a>
+}
+<br />	
 @{
 	foreach(var pagey in Model.Pages)
 	{

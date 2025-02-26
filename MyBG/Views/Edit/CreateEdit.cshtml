@@ -3,7 +3,7 @@
 <div>
 	@if (Model.PageToEdit.IsCulture)
 	{
-		<a asp-action="CulturePage" asp-controller="Page" asp-route-id="@Model.PageToEdit.Id">Back</a>
+		<a asp-action="CulturePage" asp-controller="Page" asp-route-id="@Model.PageToEdit.Id"><img src="~/Textures/arrow.png" class="back-icon" />  Back</a>
 	}
 	else
 	{

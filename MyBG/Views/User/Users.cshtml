@@ -1,31 +1,49 @@
 @model MyBG.Models.Users
 @using Microsoft.AspNetCore.Identity
+@using MyBG.Data
 @inject SignInManager<IdentityUser> SignInManager
+@inject ApplicationDbContext Ctx
 
 @{
     ViewData["Title"] = "Users";
 }
 
 <h1>Users</h1>
-
+<a asp-action="User" class="link"><img src="~/Textures/arrow.png" class="back-icon" /> Back</a>
+<br />
 @{
     foreach(var user in Model.AllUsers)
     {
         if(user != null)
         {
-            <a asp-controller="User" asp-action="UserPage" asp-route-userName = "@user.UserName">@user.UserName</a>
+            <div class="user-div">
+                <div class="comment-user-data">
+                    <img class="profile-pic" src="@Ctx.PFPs.FirstOrDefault(x => x.UserName == user.UserName).ReturnFile" />
+                </div>
+                <div class="comment-user-data-name">
+                    <a asp-controller="User" class="comment-username" asp-action="UserPage" asp-route-userName = "@user.UserName">@user.UserName</a>
+                </div>
+                <div class="comment-user-text">
+                    <p class="user-text">@SignInManager.UserManager.GetRolesAsync(user).Result[0]</p>
+                </div>
+            </div>
             if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager") && SignInManager.UserManager.GetRolesAsync(user).Result.Contains("Admin"))
             {
-                <a asp-controller="Admin" asp-action="RemoveFromAdmin" asp-route-userName="@user.UserName">Remove admin rights</a>
+                <a asp-controller="Admin" class="admin-button" asp-action="RemoveFromAdmin" asp-route-userName="@user.UserName">Remove admin rights</a>
             }
             if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager") && SignInManager.UserManager.GetRolesAsync(user).Result.Contains("User"))
             {
-                <a asp-controller="Admin" asp-action="AddToAdmin" asp-route-userName="@user.UserName">Give admin rights</a>
+                <a asp-controller="Admin" class="admin-button-positive" asp-action="AddToAdmin" asp-route-userName="@user.UserName">Give admin rights</a>
             }
             if (!SignInManager.UserManager.GetRolesAsync(user).Result.Contains("Admin") && !SignInManager.UserManager.GetRolesAsync(user).Result.Contains("Manager") && (SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager")))
             {
-                <a asp-controller="Admin" asp-action="DeleteUser" asp-route-userName="@user.UserName">Delete user</a>
+                <a asp-controller="Admin" class="admin-button" asp-action="DeleteUser" asp-route-userName="@user.UserName">Delete user</a>
             }
+            if (SignInManager.UserManager.GetRolesAsync(user).Result.Contains("Admin") && SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager"))
+            {
+                <a asp-controller="Admin" class="admin-button" asp-action="DeleteAdminUser" asp-route-userName="@user.UserName">Delete user</a>
+            }
+            <hr />
         }
     }
 }

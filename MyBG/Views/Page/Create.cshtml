@@ -43,17 +43,18 @@
         <span asp-validation-for="TextBody" class="text-danger"></span>
         <div asp-validation-for="TextBody" class="text-danger"></div>
         <h3>Transport ways</h3>
-        <p class="create-label-description" id="transportway-warning">You haven't added any transport ways. Please do so using the menu underneath.</p>
-        <span asp-validation-for="TransportWays" class="text-danger"></span>
+        <p class="create-label" id="transportway-warning">You haven't added any transport ways. Please do so using the menu underneath.</p>
+        <input asp-for="VerifyTransport" id="verify-transport" class="hidden"/>
+        <span asp-validation-for="VerifyTransport" class="text-danger"></span>
     	<hr />
         <div id="transportWaysDiv"></div>
     	<h4>Add a new transport way</h4>
         <label for="from" class="create-label">From</label>
     	<input id="from" class="create-input"/>
         <label for="time" class="create-label">Hours taken</label>
-    	<input id="time" type="number" min="0" value="0" class="create-input" />
+    	<input class="create-input" id="time" type="number" min="0" value="0" />
         <label for="time" class="create-label">Minutes taken</label>
-    	<input id="timeMins" type="number" min="0" value="0" max="60" class="create-input" />
+    	<input class="create-input" id="timeMins" type="number" min="0" value="0" max="60" />
         <label for="transportWay" class="create-label">Transport way</label>
         <select id="transportWay" class="create-input">
     		<option value="0">Car</option>
@@ -61,18 +62,17 @@
     		<option value="2">Bus</option>
     		<option value="3">Plane</option>
     	</select>
-        <input asp-for="VerifyTransport" id="verify-transport" value="" class="hidden"/>
-        <span asp-validation-for="VerifyTransport" class="text-danger"></span>
         <button type="button" class="create-button" onclick="addTransportWay()">Add option</button>
-        <h3>Point to your destination on the map</h3>
+        <h3>Location</h3>
+        <p class="create-label">Point to your destination on the map by dragging the cursor</p>
         <hr />
         <div id="map"></div>
-        <p>Or, input exact geographic coordinates</p>
+        <p class="create-label">Or, input exact geographic coordinates</p>
         <input id="xInput" type="number" name="Lat" asp-for="Lat" value="42.766109" class="create-input" oninput="reverseUpdatePos()" />
         <input id="yInput" type="number" name="Long" asp-for="Long" value="25.238556" class="create-input" oninput="reverseUpdatePos()" />
         <button type="submit" class="create-button" value="Submit">Submit</button>
     </form>
-    <script src="~/js/addOption.js"></script>
+    <script src="~/js/addOptions.js"></script>
     <script src="~/js/site.js"></script>
     <script src="~/js/initEditMap.js"></script>
     <script src="~/js/create.js"></script>

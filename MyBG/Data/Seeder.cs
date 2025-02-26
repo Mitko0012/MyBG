@@ -43,6 +43,14 @@ namespace MyBG.Data
                     // Create the admin user
                     var result = await manager.CreateAsync(adminUser, "Abc1234!");
                     var pfp = new PFPModel { UserName = adminUser.UserName };
+                    using(var memoryStream = new MemoryStream())
+                    {
+                        FileStream fileStream = System.IO.File.Open("ServerTextures/DefaultPfp.png", FileMode.Open);
+                        fileStream.CopyTo(memoryStream);
+                        pfp.Image = memoryStream.ToArray();
+                        fileStream.Close();
+                        memoryStream.Close(); 
+                    }
                     context.PFPs.Add(pfp);
 
                     if (result.Succeeded)

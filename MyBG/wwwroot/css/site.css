@@ -192,7 +192,8 @@ body {
 }
 
 .page-display {
-    margin-left: 50%;
+    position: relative;
+    left: 50%;
     transform: translate(-50%);
     text-align: center;
 }
@@ -207,14 +208,14 @@ body {
     text-align: left;
     width: max-content;
     max-width: 80vw;
-    margin-left: 50%;
+    position: relative;
+    left: 50%;
     transform: translate(-50%);
 }
 
 #page-image {
     width: 60vw;
-    margin-left: 50%;
-    transform: translate(-50%);
+    position: relative;
 }
 
 .like-div p {
@@ -247,8 +248,8 @@ body {
     width: 50px;
     height: 50px;
     position: relative;
+    display: block;
     bottom: 10px;
-    border: 4px solid rgb(2, 71, 2);
 }
 
 .comment-text-data {
@@ -287,6 +288,14 @@ body {
 
 #comment-post textarea {
     border: 2px solid rgb(2, 71, 2);
+    border-radius: 5px;
+    width: 60vw;
+    height: 100px;
+    margin: 0px;
+}
+
+.message-area {
+    border: 2px solid rgb(0, 0, 0);
     border-radius: 5px;
     width: 60vw;
     height: 100px;
@@ -342,6 +351,30 @@ body {
     transform:translate(0, -25%);
 }
 
+.navigator-user {
+    text-align: center;
+    flex: 0.5;
+}
+
+.navigator-user a {
+    position: relative;
+    color: white;
+    text-decoration: none;
+    background-color: rgb(2, 71, 2);
+    font-size: 1.8em;
+    display: block;
+}
+
+.navigator-user a:hover {
+    color: wheat;
+}
+
+.account-pfp {
+    margin-top: 10px;
+    width: 100px;
+    height: 100px;
+}
+
 .navigator-text {
     position: relative;
 }
@@ -389,8 +422,9 @@ body {
 
 .navigator-img {
     flex: 0.2;
-    margin-top: 10px;
-    margin-left: 20px;
+    position: relative;
+    top: 10px;
+    left: 20px;
 }
 
 #ProfileA {
@@ -418,7 +452,6 @@ body {
 
 .profile-picDetails {
     width: 156px;
-    border: 3px solid rgb(2, 71, 2);
     display: inline-block;
     margin-bottom: 10px;
 }
@@ -479,7 +512,7 @@ body {
 }
 
 .TransportWayDisplay {
-    font-size: 1.4em;
+    font-size: 1.6em;
     color: black;
 }
 
@@ -515,7 +548,8 @@ body {
 }
 
 .backButton {
-    margin-left: 40px;
+    position: relative;
+    left: 40px;
 }
 
 .hidden {
@@ -527,9 +561,19 @@ body {
     border-radius: 5px;
     color: white;
     text-decoration: none;
-    padding: 3px;
+    padding: 5px;
     margin: 4px;
 }
+
+.admin-button-positive {
+    background-color: rgb(29, 148, 41);
+    border-radius: 5px;
+    color: white;
+    text-decoration: none;
+    padding: 5px;
+    margin: 4px;
+}
+
 
 .show-replies {
     color: rgb(1, 130, 1);
@@ -539,12 +583,19 @@ body {
 
 .show-replies:hover {
     color: rgb(3, 75, 3);
+    cursor: pointer;
 }
 
 .admin-button:hover {
     background-color: rgb(212, 58, 58);
     color: white;
 }
+
+.admin-button-positive:hover {
+    background-color: rgb(37, 91, 23);
+    color: white;
+}
+
 
 .repliesDiv {
     width: 60vw;
@@ -597,9 +648,7 @@ body {
     font-size: 1.1em;
     color: rgb(8, 171, 8);
     text-decoration: none;
-    display: in;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    display: inline;
 }
 
 .post-username:hover {
@@ -624,7 +673,6 @@ body {
 .userpage-pfp {
     width: 150px;
     height: 150px;
-    border: 6px solid rgb(2, 71, 2);
 }
 
 .contrib-data {
@@ -649,7 +697,7 @@ body {
 }
 
 .page-control-button {
-    background-color: rgb(45, 45, 216);
+    background-color: rgb(14, 85, 36);
     color: white;
     padding-left: 10px;
     padding-right: 10px;
@@ -664,7 +712,7 @@ body {
 }
 
 .page-control-button:hover {
-    background-color: rgb(16, 16, 145);
+    background-color: rgb(18, 57, 17);
     color: white;
 }
 
@@ -681,3 +729,103 @@ body {
     position: relative;
     transform: translate(-35%);
 }
+
+.page-icon {
+    width: 50px;
+}
+
+.like-div {
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+}
+
+.page-control {
+    flex-grow: 0.7;
+}
+
+.center {
+    font-size: 2em;
+}
+
+.page-control input {
+    display: block;
+}
+
+.filler {
+    flex-grow: 1;
+}
+
+.like-page-data {
+    display: block;
+    font-size: 1.6em;
+    position: relative;
+    text-align: center;
+}
+
+.like-container {
+    display: block;
+    width: fit-content;
+}
+
+.comment-icon {
+    width: 20px;
+    position: relative;
+    top: 3px;
+}
+
+.forum-icon {
+    position: relative;
+    width: 25px;
+    top: 3px;
+}
+
+.forum-data {
+    position: relative;
+    left: 20px;
+    font-size: 1.4em;
+}
+
+.page-way-icon {
+    width: 35px;
+    position: relative;
+    right: 20px;
+    bottom: 2px;
+}
+
+.back-icon {
+    width: 30px;
+}
+
+.user-div {
+    width: 80vw;
+    display: flex;
+    flex-direction: row;
+}
+
+.main-footer {
+    background-color: rgb(2, 71, 2);
+    display: block;
+    margin-bottom: 0px;
+}
+
+.footer-copyright {
+    color:white;
+    font-size: 1.5em;
+    text-decoration: none;
+}
+
+.footer-copyright:hover {
+    color:wheat;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+  
+.main-content {
+    min-height: 100%;
+    margin-bottom: 50px; 
+}
+  

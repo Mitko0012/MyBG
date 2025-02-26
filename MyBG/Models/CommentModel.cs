@@ -19,5 +19,7 @@ namespace MyBG.Models
         public int? PostId { get; set; }
         public bool IsDeleted { get; set; } = false;
         public List<CommentModel> Replies {get; set;} = new List<CommentModel>(); 
+        [NotMapped]
+        public bool LikedByUser { get; set; } = false;
     }
 }

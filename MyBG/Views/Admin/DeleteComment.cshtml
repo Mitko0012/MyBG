@@ -2,10 +2,10 @@
 
 <form method="post" asp-route-id="@Model.Id" enctype="multipart/form-data" asp-action="DeleteCommentConfirm">
 	<h1>Are you sure you want to delete this comment?</h1>
-	<p>Message to creator of comment</p>
-	<textarea asp-for="Message"></textarea>
+	<p class="user-text">Message to creator of comment</p>
+	<textarea asp-for="Message" class="message-area"></textarea>
 	<span asp-validation-for="Message" class="text-danger"></span>
-	<button type="submit">Confirm deletion</button>
+	<button type="submit" class="create-button">Confirm deletion</button>
 </form>
 
 @section Scripts {

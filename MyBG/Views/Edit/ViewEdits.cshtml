@@ -6,11 +6,11 @@
 	{
 		if (Model.Edits[0].PageToEdit.IsCulture)
 		{
-			<a asp-action="CulturePage" asp-controller="Page" asp-route-id="@Model.Edits[0].PageToEdit.Id">Back</a>
+			<a asp-action="CulturePage" asp-controller="Page" asp-route-id="@Model.Edits[0].PageToEdit.Id"><img src="~/Textures/arrow.png" class="back-icon" />  Back</a>
 		}
 		else
 		{
-			<a asp-action="PageViewer" asp-controller="Page" asp-route-id="@Model.Edits[0].PageToEdit.Id">Back</a>
+			<a asp-action="PageViewer" asp-controller="Page" asp-route-id="@Model.Edits[0].PageToEdit.Id"><img src="~/Textures/arrow.png" class="back-icon" />  Back</a>
 		}
 	}
 	foreach (EditModel model1 in Model.Edits)

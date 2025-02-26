@@ -70,9 +70,18 @@ namespace MyBG.Controllers
         public ActionResult PostViewer(int id)
         {
             ForumQuestion? question = _ctx.Posts.Where(x => !x.IsDeleted).Include(x => x.User).Include(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.User).Include(x => x.Comment).ThenInclude(x => x.Replies).ThenInclude(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.Replies).ThenInclude(x => x.User).FirstOrDefault(x => x.Id == id);
-            if (!ModelState.IsValid || question == null)
+            PFPModel? userModel = _ctx.PFPs.Where(x => !x.IsDeleted).FirstOrDefault(x => x.UserName == _manager.GetUserAsync(User).Result.UserName);
+            if (!ModelState.IsValid || question == null || userModel == null)
             {
                 return RedirectToAction("Index");
+            }
+            if (question.LikedUser.FirstOrDefault(x => x.UserName == userModel.UserName) != null)
+            {
+                question.LikedByUser = true;
+            }   
+            else
+            {
+                question.LikedByUser = false;
             }
             question.Pfp = _ctx.PFPs.FirstOrDefault(x => x.UserName == question.User.UserName);
             question.Comment = question.Comment.Where(x => !x.IsDeleted).ToList();
@@ -80,9 +89,25 @@ namespace MyBG.Controllers
             {
                 item.PFP = _ctx.PFPs.FirstOrDefault(x => x.UserName == item.User.UserName);
                 item.Replies = item.Replies.Where(x => !x.IsDeleted).ToList();
+                if (item.LikedUser.FirstOrDefault(x => x.UserName == userModel.UserName) != null)
+                {
+                    item.LikedByUser = true;
+                }
+                else
+                {
+                    item.LikedByUser = false;
+                }
                 foreach(var reply in item.Replies)
                 {
                     reply.PFP = _ctx.PFPs.FirstOrDefault(x => x.UserName == reply.User.UserName);
+                    if (reply.LikedUser.FirstOrDefault(x => x.UserName == userModel.UserName) != null)
+                    {
+                        reply.LikedByUser = true;
+                    }
+                    else
+                    {
+                        reply.LikedByUser = false;
+                    }
                 }
             }
             return View(question);
@@ -137,7 +162,7 @@ namespace MyBG.Controllers
         }
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> LikeComment(int id)
+        public async Task<IActionResult> LikeComment(int id, int forumId)
         {
             CommentModel comment = _ctx.Comments.Where(x => !x.IsDeleted).Include(x => x.LikedUser).FirstOrDefault(x => x.Id == id);
             IdentityUser user = await _manager.GetUserAsync(User);
@@ -155,7 +180,7 @@ namespace MyBG.Controllers
                 comment.LikedUser.Add(model);
             }
             _ctx.SaveChanges();
-            return RedirectToAction("PostViewer", new { id = comment.PostId});
+            return RedirectToAction("PostViewer", new { id = forumId});
         }
 
         [Authorize]
@@ -180,11 +205,11 @@ namespace MyBG.Controllers
             _ctx.SaveChanges();
             if(cmnt.IsCulture)
             {
-                return RedirectToAction("CulturePage", "Page", new {id = comment.Pages[0].Id});
+                return RedirectToAction("CulturePage", "Page", new {id = cmnt.Id});
             }
             else
             {
-                return RedirectToAction("PageViewer", "Page", new {id = comment.Id});
+                return RedirectToAction("PageViewer", "Page", new {id = cmnt.Id});
             }
         }
         [Authorize]
@@ -203,7 +228,7 @@ namespace MyBG.Controllers
             comment.Replies.Add(reply);
             _ctx.Comments.Add(reply);
             _ctx.SaveChanges();
-            return RedirectToAction("PostViewer", new {id = comment.PostedOnForums[0].Id});
+            return RedirectToAction("PostViewer", new {id = cmnt.Id});
         }
     }
 }

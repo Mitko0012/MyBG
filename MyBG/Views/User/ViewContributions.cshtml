@@ -1,6 +1,9 @@
 ﻿@model UserContribsModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> Manager
 
 <h1>Contributions made by @Model.UserName</h1>
+<a class="link" asp-route-userName="@Model.UserName" asp-action="UserPage"><img src="~/Textures/arrow.png" class="back-icon" /> Back</a>
 <hr />
 @{
 	
@@ -8,7 +11,7 @@
 	{
 		<div class="editDiv">
 			<h3>Edit #@model1.PageIndex for @model1.PageToEdit.Title</h3>
-			<a class="edit-redirect" asp-controller="Edit" asp-action="ViewEdit" asp-route-pageId="@model1.PageToEdit.Id" asp-route-editIndex="@model1.PageIndex">View edit</a>
+			<a class="submit-a" asp-controller="Edit" asp-action="ViewEdit" asp-route-pageId="@model1.PageToEdit.Id" asp-route-editIndex="@model1.PageIndex">View edit</a>
 		</div>
 	}
 }

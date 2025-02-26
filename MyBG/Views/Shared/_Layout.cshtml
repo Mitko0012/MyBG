@@ -1,5 +1,12 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using Microsoft.AspNetCore.Identity;
+@using Microsoft.EntityFrameworkCore;
+@using MyBG.Data;
 @inject SignInManager<IdentityUser> SignInManager
+@inject ApplicationDbContext _context;
+@{
+    ViewBag.Context = _context;
+    ApplicationDbContext? Context = ViewBag.Context as ApplicationDbContext;
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,39 +25,48 @@
             crossorigin=""></script>
 </head>
 <body>
-    @{
-        if (SignInManager != null && SignInManager.IsSignedIn(User))
-        {
-            <header id="navHed">
-                    <div id="flexDiv">
-                        <div class="navigator-img">
-                            <img id="logoNav" src="~/Textures/Logo.png"/>
-                            <p class="titleNav">My BG</p>
+    <div class="main-content">
+        @{
+            if (SignInManager != null && Context != null && SignInManager.IsSignedIn(User))
+            {
+                <header id="navHed">
+                        <div id="flexDiv">
+                            <div class="navigator-img">
+                                <img id="logoNav" src="~/Textures/Logo.png"/>
+                                <p class="titleNav">My BG</p>
+                            </div>
+                            <div class="navigator-flex">
+                                <a asp-area="" asp-controller="Page" asp-action="Index">Destinations</a>
+                            </div>
+                            <div class="navigator-flex">
+                                <a asp-area="" asp-controller="Forum" asp-action="Index">Forum</a>
+                            </div>
+                            <div class="navigator-flex">
+                                <a asp-area="" asp-controller="Page" asp-action="AllCulture">Culture</a>
+                            </div>
+                            <div class="navigator-user">
+                                <img class="account-pfp" src="@Context.PFPs.FirstOrDefault(x => x.UserName == SignInManager.UserManager.GetUserAsync(User).Result.UserName).ReturnFile" />
+                                <a asp-controller="User" asp-action="UserPage" asp-route-userName="@SignInManager.UserManager.GetUserAsync(User).Result.UserName">My account</a>
+                            </div>
+                            <br />
                         </div>
-                        <div class="navigator-flex">
-                            <a asp-area="" asp-controller="Page" asp-action="Index">Destinations</a>
-                        </div>
-                        <div class="navigator-flex">
-                            <a asp-area="" asp-controller="Forum" asp-action="Index">Forum</a>
-                        </div>
-                        <div class="navigator-flex">
-                            <a asp-area="" asp-controller="Page" asp-action="AllCulture">Culture</a>
-                        </div>
-                        <div class="Username">
-                            <a asp-controller="User" asp-action="UserPage" asp-route-userName="@SignInManager.UserManager.GetUserAsync(User).Result.UserName">My account</a>
-                        </div>
-                        <br />
-                    </div>
-            </header>
-            <a asp-controller="User" asp-action="UserPage" asp-route-userName="@SignInManager.UserManager.GetUserAsync(User).Result.UserName">My account</a>
+                </header>
+            }
         }
-    }
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
     </div>
-
+    @{
+        if (SignInManager != null && Context != null && SignInManager.IsSignedIn(User))
+        {
+            <footer class="main-footer">
+                <a class="footer-copyright" asp-controller="Page" asp-action="CopyrightIcon">Copyright for icons</a>
+            </footer>
+        }    
+    }
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

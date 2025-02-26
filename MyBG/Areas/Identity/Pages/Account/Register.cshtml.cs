@@ -141,7 +141,16 @@ namespace MyBG.Areas.Identity.Pages.Account
                         protocol: Request.Scheme);
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    _context.PFPs.Add(new Models.PFPModel() { UserName = Input.Username, Nationality = Input.Nationality });
+                    Models.PFPModel pfp = new Models.PFPModel() { UserName = Input.Username, Nationality = Input.Nationality };
+                    using(var memoryStream = new MemoryStream())
+                    {
+                        FileStream fileStream = System.IO.File.Open("ServerTextures/DefaultPfp.png", FileMode.Open);
+                        fileStream.CopyTo(memoryStream);
+                        pfp.Image = memoryStream.ToArray();
+                        fileStream.Close();
+                        memoryStream.Close(); 
+                    }
+                    _context.PFPs.Add(pfp);
                     _context.SaveChanges();
                     return LocalRedirect(returnUrl);
                 }

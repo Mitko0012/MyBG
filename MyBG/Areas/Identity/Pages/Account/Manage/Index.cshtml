@@ -5,7 +5,7 @@
 
 <div class="left-div">
     <h1>Change profile picture</h1>
-    <a class="link" asp-route-userName="@Manager.UserManager.GetUserAsync(User).Result.UserName" asp-controller="User" asp-action="UserPage">Back</a>
+    <a class="link" asp-route-userName="@Manager.UserManager.GetUserAsync(User).Result.UserName" asp-controller="User" asp-action="UserPage"><img src="~/Textures/arrow.png" class="back-icon" /> Back</a>
     <form method="post" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
         <div>

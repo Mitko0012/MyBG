@@ -4,16 +4,16 @@
 
 <h1>Posts</h1>
 <hr />
-<form asp-action="Index">
+<form id="searchField" asp-action="Index">
 	<select asp-for="SearchType" oninput="showOrHideSearch()" name="sortingType" id="searchSelect">
 		<option value="NewestFirst">Newest First</option>
 		<option value="MostLiked">Most Liked</option>
 		<option value="Search">Search</option>
 	</select>
 	<input asp-for="SearchString" name="searchString" id="search"/>
-	<button type="submit">Apply options</button>
+	<button type="submit" class="">Apply options</button>
 </form>
-<a asp-action="Add" class="link">Create a new post</a>
+<a asp-action="Add" class="submit-a">Create a new post</a>
 @{
 	foreach(ForumQuestion i in Model.ForumPosts)
 	{

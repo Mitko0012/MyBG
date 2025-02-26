@@ -4,19 +4,19 @@
 	@if (Model.CreatePage)
 	{
 		<h1>Submission for creation of page @Model.PageToEdit.Title</h1>
-		<p>Description: @Model.PageToEdit.Summary</p>
+		<p class="user-text">Description: @Model.PageToEdit.Summary</p>
 	}
 	else
 	{
 		<h1>Edit submission for page @Model.PageToEdit.Title</h1>
 	}
-	<p>Submission created by @Model.UserCreated.UserName</p>
+	<p class="user-text">Submission created by @Model.UserCreated.UserName</p>
 	
 	<h3>Content before the edit</h3>
 	@{
 		if (Model.CreatePage)
 		{ 
-			<p>This submission creates the page</p>
+			<p class="user-text">This submission creates the page</p>
 		}
 		else
 		{	
@@ -24,14 +24,39 @@
 		}
 	}
 	<h3>Content after the edit</h3>
-	<p id="NewTextP">@Model.NewText</p>
+	<p id="NewTextP" class="user-text">@Model.NewText</p>
 	@if(Model.CreatePage && !Model.PageToEdit.IsCulture)
 	{
+		<h3>Transport ways</h3>
 		foreach(TransportWay way in Model.PageToEdit.TransportWays)
 		{
-			<p class="TransportWayDisplay">@($"{way.TransportWayType} From {way.TransportOrigin}: {way.TransportTimeHours} hours and {way.TransportTimeMinutes} minutes")</p>
+			<p class="TransportWayDisplay">
+				@switch(way.TransportWayType)
+				{
+					case (MyBG.Data.TransportWays)0:
+						<img src="~/textures/car.png" class="page-way-icon" />
+						break;
+					case (MyBG.Data.TransportWays)1: 
+						<img src="~/textures/train.png" class="page-way-icon" />
+						break;
+					case (MyBG.Data.TransportWays)2:
+						<img src="~/textures/bus.png" class="page-way-icon" />
+						break;
+					case (MyBG.Data.TransportWays)3:
+						<img src="~/textures/plane.png" class="page-way-icon" />
+						break;
+				}	
+				@($" From {way.TransportOrigin}: {way.TransportTimeHours}:{way.TransportTimeMinutes} hours")</p>
 		}
+		<h3>The destination on a map</h3>
+		<div id="map"></div>
+		<input id="latInfo" value="@Model.PageToEdit.Lat" class="hidden" />
+		<input id="longInfo" value="@Model.PageToEdit.Long" class="hidden" />
 	}
-	<a asp-action="EditSubmissionApprove" asp-route-id="@Model.ID">Approve</a>
-	<a asp-action="EditSubmissionDecline" asp-route-id="@Model.ID">Decline</a>
+	<br />
+	<a asp-action="EditSubmissionApprove" class="admin-button-positive" asp-route-id="@Model.ID">Approve</a>
+	<a asp-action="EditSubmissionDecline" class="admin-button" asp-route-id="@Model.ID">Decline</a>
 </div>
+
+<script src="~/js/site.js"></script>
+<script src="~/js/initDisplayMap.js"></script>

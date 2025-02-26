@@ -126,6 +126,7 @@ namespace MyBG.Controllers
         public async Task<IActionResult> PageViewer(int id, int? replyCount)
         {
             IdentityUser user = await _manager.GetUserAsync(User);
+            PFPModel userModel = _context.PFPs.Where(x => !x.IsDeleted).FirstOrDefault(x => x.UserName == user.UserName);
             PageModel model = _context.Pages.Where(x => !x.IsDeleted && !x.IsCulture).Include(p => p.UsersLiked)
                                             .Include(p => p.Comments)
                                                 .ThenInclude(p => p.User)
@@ -139,7 +140,7 @@ namespace MyBG.Controllers
                                                 .ThenInclude(p => p.User)
                                             .Include(p => p.TransportWays)
                                             .FirstOrDefault(p => p.Id == id);
-            if (model == null || user == null)
+            if (model == null || user == null || userModel == null)
             {
                 return RedirectToAction("index");
             }
@@ -161,18 +162,38 @@ namespace MyBG.Controllers
             {
                 item.PFP = _context.PFPs.FirstOrDefault(x => x.UserName == item.User.UserName);
                 item.Replies = item.Replies.Where(x => !x.IsDeleted).ToList();
+                if (item.LikedUser.FirstOrDefault(x => x.UserName == user.UserName) != null)
+                {
+                    item.LikedByUser = true;
+                }
+                else
+                {
+                    item.LikedByUser = false;
+                }
                 foreach(var reply in item.Replies)
                 {
                     reply.PFP = _context.PFPs.FirstOrDefault(x => x.UserName == reply.User.UserName);
+                    if (reply.LikedUser.FirstOrDefault(x => x.UserName == user.UserName) != null)
+                    {
+                        reply.LikedByUser = true;
+                    }
+                    else
+                    {
+                        reply.LikedByUser = false;
+                    }
                 }
             }
             if (model.UsersLiked.FirstOrDefault(x => x.UserName == user.UserName) != null)
             {
                 model.LikedByUser = true;
             }
+            if (userModel.SavedPages.Contains(model.Id))
+            {
+                model.Saved = true;
+            }
             else
             {
-                model.LikedByUser = false;
+                model.Saved = false;
             }
             if (model != null && model.Approved == true)
             {
@@ -187,6 +208,7 @@ namespace MyBG.Controllers
         public IActionResult CulturePage(int id, int? replyCount)
         {
             IdentityUser user = _manager.GetUserAsync(User).Result;
+            PFPModel userModel = _context.PFPs.Where(x => !x.IsDeleted).FirstOrDefault(x => x.UserName == user.UserName);
             PageModel model = _context.Pages.Where(x => !x.IsDeleted && x.IsCulture).Include(p => p.UsersLiked)
                                             .Include(p => p.Comments)
                                                 .ThenInclude(p => p.User)
@@ -200,7 +222,7 @@ namespace MyBG.Controllers
                                                 .ThenInclude(p => p.User)    
                                             .Include(p => p.TransportWays)
                                             .FirstOrDefault(p => p.Id == id);
-           if (model == null || user == null)
+           if (model == null || user == null || userModel == null)
             {
                 return RedirectToAction("index");
             }
@@ -222,9 +244,25 @@ namespace MyBG.Controllers
             {
                 item.PFP = _context.PFPs.FirstOrDefault(x => x.UserName == item.User.UserName);
                 item.Replies = item.Replies.Where(x => !x.IsDeleted).ToList();
+                if (item.LikedUser.FirstOrDefault(x => x.UserName == user.UserName) != null)
+                {
+                    item.LikedByUser = true;
+                }
+                else
+                {
+                    item.LikedByUser = false;
+                }
                 foreach(var reply in item.Replies)
                 {
                     reply.PFP = _context.PFPs.FirstOrDefault(x => x.UserName == reply.User.UserName);
+                    if (reply.LikedUser.FirstOrDefault(x => x.UserName == user.UserName) != null)
+                    {
+                        reply.LikedByUser = true;
+                    }
+                    else
+                    {
+                        reply.LikedByUser = false;
+                    }
                 }
             }
             if (model.UsersLiked.FirstOrDefault(x => x.UserName == user.UserName) != null)
@@ -234,6 +272,14 @@ namespace MyBG.Controllers
             else
             {
                 model.LikedByUser = false;
+            }
+            if (userModel.SavedPages.Contains(model.Id))
+            {
+                model.Saved = true;
+            }
+            else
+            {
+                model.Saved = false;
             }
             if (model != null && model.Approved == true)
             {
@@ -365,13 +411,14 @@ namespace MyBG.Controllers
             return RedirectToAction("PageViewer", new { id = id, replyCount = replyCount });
         }
         [Authorize]
-        public async Task<IActionResult> LikeComment(int id, int replyCount)
+        public async Task<IActionResult> LikeComment(int id, int replyCount, int? pageId, PageModel page, double? scroll)
         {
             IdentityUser sourceUser = await _manager.GetUserAsync(User);
             PFPModel user = _context.PFPs.Where(x => !x.IsDeleted).Include(p => p.CommentsLiked)
                             .FirstOrDefault(x => x.UserName == sourceUser.UserName);
             CommentModel model = _context.Comments.Where(x => !x.IsDeleted).Include(p => p.LikedUser)
                                             .FirstOrDefault(p => p.Id == id);
+            TempData["Scroll"] = Convert.ToString(scroll);
             if (user == null || model == null)
             {
                 return RedirectToAction("Index");
@@ -385,9 +432,13 @@ namespace MyBG.Controllers
                 model.LikedUser.Remove(user);
             }
             _context.SaveChanges();
+            if(model.PageId == null)
+            {
+                model.PageId = pageId;
+            }
             if (_context.Pages.Find(model.PageId) != null && _context.Pages.Find(model.PageId).IsCulture)
             {
-                return RedirectToAction("CulturePage", new { id = id, replyCount = replyCount });
+                return RedirectToAction("CulturePage", new { id = model.PageId, replyCount = replyCount });
             }
             return RedirectToAction("PageViewer", new { id = model.PageId, replyCount = replyCount });
         }
@@ -460,6 +511,11 @@ namespace MyBG.Controllers
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }
+        }
+        [Authorize]
+        public IActionResult CopyrightIcon()
+        {
+            return View();
         }
     }
 }
