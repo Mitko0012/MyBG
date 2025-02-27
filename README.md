@@ -7,7 +7,7 @@ Any user can submit a page about a destination or a culture mark in Bulgaria. Th
 #### Forum
 A forum where users can post questions about the app or a specific destinations. Other users can reply to the user on the forum
 #### Roles
-There are 3 roles: User, Admin and Manager
+There are 3 roles: User, Admin and Manager.
 The user can add page submissions, and the admin can approve or decline them. The admin can delete comments and forum posts deemed inappropriate. There is one manager who has all the powers as the admins, but can also give and take admin permissions of users.
 
 ### Installing MyBG
