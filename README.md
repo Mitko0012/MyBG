@@ -8,12 +8,16 @@ Any user can submit a page about a destination or a culture mark in Bulgaria. Th
 A forum where users can post questions about the app or a specific destinations. Other users can reply to the user on the forum
 #### Roles
 There are 3 roles: User, Admin and Manager.
+<br>
 The user can add page submissions, and the admin can approve or decline them. The admin can delete comments and forum posts deemed inappropriate. There is one manager who has all the powers as the admins, but can also give and take admin permissions of users.
 
 ### Installing MyBG
 There is a self-contained release of the latest beta on the Releases section of the repo, which should work fine on windows systems. Older versions may not be self contained and not work well. The login info for the manager account on the local version is :
+<br>
 __Username: Manager__
+<br>
 __Password: Abc1234!__
+<br>
 The online version is accesible at [mybg.azurewebsites.net](https://mybg.azurewebsites.net)
 
 ### Copyright notice
