@@ -32,7 +32,9 @@ public class UserController : Controller
         PFPModel userDataModel = _ctx.PFPs.Where(x => !x.IsDeleted).Include(x => x.Contributions).FirstOrDefault(x => x.UserName == userName);
         if (!ModelState.IsValid || userDataModel == null)
         {
-            return RedirectToAction("Index", "Page");
+            userDataModel = new PFPModel();
+            userDataModel.UserName = userName;
+            return View("NotFound", userDataModel);
         }
         userDataModel.Contributions = userDataModel.Contributions.Where(x => x.Approved && !x.IsDeleted).ToList();
         return View(userDataModel);
@@ -88,7 +90,7 @@ public class UserController : Controller
         {
             users.AllUsers.Add(_ctx.Users.FirstOrDefault(x => x.UserName == model.UserName));
         }
-        users.AllUsers.OrderBy((x) => _manager.UserManager.GetRolesAsync(x).Result.Contains("Manager") ? 0 : _manager.UserManager.GetRolesAsync(x).Result.Contains("Admin") ? 1 : 2).ToList();
+        users.AllUsers = users.AllUsers.OrderBy((x) => _manager.UserManager.GetRolesAsync(x).Result.Contains("Manager") ? 0 : _manager.UserManager.GetRolesAsync(x).Result.Contains("Admin") ? 1 : 2).ToList();
         return View(users);
     }
 

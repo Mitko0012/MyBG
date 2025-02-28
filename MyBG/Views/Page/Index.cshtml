@@ -14,7 +14,7 @@
 		<option value="Destination">Destinations</option>
 	</select>
 	<input asp-for="SearchString" id="search"/>
-	<select oninput="showOrHideSearch()" asp-for="RegionSelect" id="regionSelect">
+	<select oninput="showOrHideSearch()" asp-for="RegionSelect" id="regionSelect" class="options-select">
 		<option value="0">Southwestern</option>
 		<option value="1">Southern</option>
 		<option value="2">Southeastern</option>
@@ -22,7 +22,7 @@
 		<option value="4">Northern</option>
 		<option value="5">Northeastern</option>
 	</select>
-	<select oninput="showOrHideSearch()" asp-for="DestinationTypeSelect" id="typeSelect">
+	<select oninput="showOrHideSearch()" asp-for="DestinationTypeSelect" id="typeSelect" class="options-select">
 		<option value="0">Landmark</option>
 		<option value="1">History site</option>
 		<option value="2">Nature site</option>

@@ -8,13 +8,13 @@
 }
 
 <form id="searchField" asp-action="AllCulturePost">
-	<select asp-for="DisplayType" oninput="showOrHideSearch()" id="searchSelect">
+	<select asp-for="DisplayType" oninput="showOrHideSearch()" id="searchSelect" class="option-select">
 		<option value="MostLikes">Most Likes</option>
 		<option value="Search">Search</option>
 		<option value="CultureType">Culture type</option>
 	</select>
 	<input asp-for="SearchString" id="search"/>
-	<select asp-for="CultureType" id="typeSelect">
+	<select asp-for="CultureType" id="typeSelect" class="options-select">
 		<option value="0">Meal</option>
 		<option value="1">Tradition</option>
 		<option value="2">Dance</option>
@@ -42,5 +42,5 @@
 	}
 }
 
-<script src="~/js/site.js"></script>
+<script src="~/js/showOrHideInit.js"></script>
 <script src="~/js/destinationPage.js"></script>

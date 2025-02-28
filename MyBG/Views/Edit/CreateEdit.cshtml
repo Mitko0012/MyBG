@@ -3,17 +3,22 @@
 <div>
 	@if (Model.PageToEdit.IsCulture)
 	{
-		<a asp-action="CulturePage" asp-controller="Page" asp-route-id="@Model.PageToEdit.Id"><img src="~/Textures/arrow.png" class="back-icon" />  Back</a>
+		<a asp-action="CulturePage" class="link" asp-controller="Page" asp-route-id="@Model.PageToEdit.Id"><img src="~/Textures/arrow.png" class="back-icon" />  Back</a>
 	}
 	else
 	{
-		<a asp-action="PageViewer" asp-controller="Page" asp-route-id="@Model.PageToEdit.Id">Back</a>
+		<a asp-action="PageViewer" class="link" asp-controller="Page" asp-route-id="@Model.PageToEdit.Id"><img src="~/Textures/arrow.png" class="back-icon" /> Back</a>
 	}
 	<h1>Submit a new page edit for page @Model.PageToEdit.Title</h1>
 	<hr />
 	<form asp-action="PostEdit" asp-route-pageId="@Model.PageModelKey" enctype="multipart/form-data" method="post">
-		<label>Text content</label>
-		<textarea asp-for="NewText">@Model.OldText</textarea>
-		<button type="submit">Submit edit</button>
+		<label class="user-text">Text content</label>
+		<textarea asp-for="NewText" class="message-area">@Model.OldText</textarea>
+		<span asp-validation-for="NewText" class="text-danger"></span>
+		<button type="submit" class="create-button">Submit edit</button>
 	</form>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

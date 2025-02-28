@@ -6,6 +6,7 @@
         <h1>Submit a culture page</h1>
         <br />
         <label for="titleContainer" class="create-label">Title: </label>
+        <div asp-validation-summary="None"></div>
         <p class="create-label-description">The title of the page</p>
         <input id ="titleContainer" asp-for="Title" class="create-input"/>
         <span asp-validation-for="Title" class="text-danger"></span>

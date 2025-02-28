@@ -17,12 +17,4 @@ function showComments(count) {
     }
 }
 
-function hidePostButtonRepky(index) {
-
-}
-
-function hidePostButtonComment(index) {
-    
-}
-
 expand()

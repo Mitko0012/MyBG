@@ -1,12 +1,12 @@
 @model AssignAdmin;
 
 <h1>Are you sure you want to assign the admin role to @Model.User ?</h1>
-<p>Message for user</p>
+<p class="user-text">Message for user</p>
 <form method="post" asp-action="ConfirmAdminAssign" enctype="multipart/form-data">    
-    <textarea name="Message" asp-for="Message"></textarea>
+    <textarea name="Message" class="message-area" asp-for="Message"></textarea>
     <span asp-validation-for="Message" class="text-danger"></span>
-    <textarea name="User" asp-for="User"></textarea>
-    <button type="submit">Assign role</button>
+    <textarea name="User" class="hidden" asp-for="User"></textarea>
+    <button type="submit" class="create-button">Assign role</button>
 </form>
 
 @section Scripts {

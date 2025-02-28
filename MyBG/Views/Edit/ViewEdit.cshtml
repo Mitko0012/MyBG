@@ -1,16 +1,15 @@
 ﻿@model EditModel
 
 <div id="create-div">
-	<a asp-action="ViewEdits" asp-route-pageId="@Model.PageToEdit.Id">Back</a>
+	<a asp-action="ViewEdits" class="link" asp-route-pageId="@Model.PageToEdit.Id"><img src="~/Textures/arrow.png" class="back-icon" /> Back</a>
 	<h1>Edit #@Model.PageIndex of page @Model.PageToEdit.Title</h1>
-	<p>Submission created by </p>
-	<a class="comment-username" asp-controller="User" asp-action="UserPage" asp-route-userName="@Model.UserCreated.UserName">@Model.UserCreated.UserName</a>
+	<p class="post-username-title">Edit created by <a class="post-username" asp-controller="User" asp-action="UserPage" asp-route-userName="@Model.UserCreated.UserName">@Model.UserCreated.UserName</a></p>
 
 	<h3>Content before the edit</h3>
 	@{
 		if (Model.CreatePage)
 		{
-			<p>This submission created the page</p>
+			<p>This edit created the page</p>
 		}
 		else
 		{

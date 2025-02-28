@@ -6,19 +6,18 @@
 	{
 		if (Model.Edits[0].PageToEdit.IsCulture)
 		{
-			<a asp-action="CulturePage" asp-controller="Page" asp-route-id="@Model.Edits[0].PageToEdit.Id"><img src="~/Textures/arrow.png" class="back-icon" />  Back</a>
+			<a asp-action="CulturePage" asp-controller="Page" class="link" asp-route-id="@Model.Edits[0].PageToEdit.Id"><img src="~/Textures/arrow.png" class="back-icon" />  Back</a>
 		}
 		else
 		{
-			<a asp-action="PageViewer" asp-controller="Page" asp-route-id="@Model.Edits[0].PageToEdit.Id"><img src="~/Textures/arrow.png" class="back-icon" />  Back</a>
+			<a asp-action="PageViewer" asp-controller="Page" class="link" asp-route-id="@Model.Edits[0].PageToEdit.Id"><img src="~/Textures/arrow.png" class="back-icon" />  Back</a>
 		}
 	}
 	foreach (EditModel model1 in Model.Edits)
 	{
 		<div class="editDiv">
 			<h3>Edit #@model1.PageIndex for @model1.PageToEdit.Title</h3>
-			<a class="edit-redirect" asp-action="ViewEdit" asp-route-pageId="@model1.PageToEdit.Id" asp-route-editIndex="@model1.PageIndex">View edit</a>
+			<a class="submit-a" asp-action="ViewEdit" asp-route-pageId="@model1.PageToEdit.Id" asp-route-editIndex="@model1.PageIndex">View edit</a>
 		</div>
 	}
 }
- 

@@ -101,7 +101,14 @@ namespace MyBG.Controllers
                 _dbContext.Messages.Add(message2);
             }
             _dbContext.SaveChanges();
-            return RedirectToAction("Index", "Page");
+            if(approve.EditModel.PageToEdit.IsCulture)
+            {
+                return RedirectToAction("AllCulture", "Page");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Page");
+            }
         }
         [Authorize(Roles = "Manager,Admin")]
         public IActionResult EditSubmissionDecline(int id)
@@ -139,7 +146,14 @@ namespace MyBG.Controllers
             model.UserCreated.Inbox.Add(message);
             _dbContext.Messages.Add(message);
             _dbContext.SaveChanges();
-            return RedirectToAction("Index", "Page");
+            if(model.PageToEdit.IsCulture)
+            {
+                return RedirectToAction("AllCulture", "Page");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Page");
+            }
         }
 
         [Authorize(Roles = "Manager,Admin")]
@@ -267,7 +281,7 @@ namespace MyBG.Controllers
             model.IsDeleted = true;
             await _manager.UserManager.UpdateSecurityStampAsync(user);
             _dbContext.SaveChanges();
-            return RedirectToAction("Index", "Page");
+            return RedirectToAction("Users", "User");
         }
 
         [Authorize(Roles = "Manager")]

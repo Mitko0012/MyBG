@@ -10,8 +10,8 @@
 	{
 		<h1>Edit submission for page @Model.PageToEdit.Title</h1>
 	}
-	<p class="user-text">Submission created by @Model.UserCreated.UserName</p>
-	
+	<p class="post-username-title">Submission created by <a class="post-username" asp-controller="User" asp-action="UserPage" asp-route-userName="@Model.UserCreated.UserName">@Model.UserCreated.UserName</a></p>
+	<img src="@Model.PageToEdit.ReturnFile" id="page-image"></img>
 	<h3>Content before the edit</h3>
 	@{
 		if (Model.CreatePage)
@@ -25,8 +25,14 @@
 	}
 	<h3>Content after the edit</h3>
 	<p id="NewTextP" class="user-text">@Model.NewText</p>
+	@if(Model.CreatePage && Model.PageToEdit.IsCulture)
+	{
+		<p class="user-text">Type: @Model.PageToEdit.CultureType</p>	
+	}
 	@if(Model.CreatePage && !Model.PageToEdit.IsCulture)
 	{
+		<p class="user-text">Region: @Model.PageToEdit.Regions</p>
+		<p class="user-text">Type of destination: @Model.PageToEdit.GetDestinationType</p>		
 		<h3>Transport ways</h3>
 		foreach(TransportWay way in Model.PageToEdit.TransportWays)
 		{
@@ -46,7 +52,7 @@
 						<img src="~/textures/plane.png" class="page-way-icon" />
 						break;
 				}	
-				@($" From {way.TransportOrigin}: {way.TransportTimeHours}:{way.TransportTimeMinutes} hours")</p>
+				@($" From {way.TransportOrigin}: {way.TransportTimeHours}:{(way.TransportTimeMinutes < 10? "0" + way.TransportTimeMinutes:way.TransportTimeMinutes)} hours")</p>
 		}
 		<h3>The destination on a map</h3>
 		<div id="map"></div>

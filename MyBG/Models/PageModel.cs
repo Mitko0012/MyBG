@@ -29,7 +29,7 @@ namespace MyBG.Models
         public string? Comment { get; set; }
         [NotMapped]
         public int CommenntsToDisplay { get; set; } = 10;
-        [Required]
+        [Required(ErrorMessage = "Please add at least one transport way")]
         public List<TransportWay> TransportWays { get; set; }
         [Required]
         public Regions Regions { get; set; } = Regions.Southwestern;
@@ -66,5 +66,30 @@ namespace MyBG.Models
         public double Scroll = 0;
         [NotMapped]
         public bool Saved = false;
+        [NotMapped]
+        public string GetDestinationType
+        {
+            get
+            {
+                switch((int)DestinationType)
+                {
+                    case(0):
+                        return "Landmark";
+                        break;
+                    case(1):
+                        return "Historical Site";
+                        break;
+                    case(2):
+                        return "Nature Site";
+                        break;
+                    case(3):
+                        return "Town";
+                        break;
+                    default:
+                        return "";
+                        break;
+                }
+            }
+        }
     }
 }

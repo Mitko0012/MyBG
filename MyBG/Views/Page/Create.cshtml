@@ -5,6 +5,7 @@
     <form method="post" asp-action="CreatePost" enctype="multipart/form-data">
         <h1>Submit a destination</h1>
         <br />
+        <div asp-validation-summary="All" class="text-danger"></div>
         <label for="titleContainer" class="create-label">Title: </label>
         <p class="create-label-description">The title of the page</p>
         <input id ="titleContainer" asp-for="Title" class="create-input"/>
@@ -41,7 +42,6 @@
         <p class="create-label-description">The main text of the page</p>
         <textarea id="textContainer" asp-for="TextBody" class="create-textBody" type=""></textarea>
         <span asp-validation-for="TextBody" class="text-danger"></span>
-        <div asp-validation-for="TextBody" class="text-danger"></div>
         <h3>Transport ways</h3>
         <p class="create-label" id="transportway-warning">You haven't added any transport ways. Please do so using the menu underneath.</p>
         <input asp-for="VerifyTransport" id="verify-transport" class="hidden"/>
@@ -72,7 +72,7 @@
         <input id="yInput" type="number" name="Long" asp-for="Long" value="25.238556" class="create-input" oninput="reverseUpdatePos()" />
         <button type="submit" class="create-button" value="Submit">Submit</button>
     </form>
-    <script src="~/js/addOptions.js"></script>
+    <script src="~/js/addTransportOptions.js"></script>
     <script src="~/js/site.js"></script>
     <script src="~/js/initEditMap.js"></script>
     <script src="~/js/create.js"></script>

@@ -31,7 +31,7 @@ function addTransportWay() {
         <input name="TransportWays[${index2}].TransportTimeHours" value="${timeInput.value}"/>
         <input name="TransportWays[${index2}].TransportTimeMinutes" value="${minInput.value}"/>
     </div>
-    <p class="TransportWayDisplay">${imageTag} From ${fromInput.value}: ${timeInput.value}:${minInput.value}</p>
+    <p class="TransportWayDisplay">${imageTag} From ${fromInput.value}: ${timeInput.value}:${(Number(minInput.value) < 10? "0" + String(minInput.value) : Number(minInput.value))}</p>
 `);
     transportValid.value = ".";
     index2++;

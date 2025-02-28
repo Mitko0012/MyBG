@@ -22,6 +22,7 @@ function showHideReplies(index) {
 function showAddReply(index) {
     addReplyForms[index].style.display = "block";
     replyAreas[index].value = "@" + names[index].innerHTML;
+    replyAreas[index].dispatchEvent(new Event("input"));
     showAddReplyPs[index].style.display = "none";
 }
 

@@ -23,7 +23,7 @@ function showOrHideSearch() {
     else {
         region.style.display = "none";
     }
-    if (searchSelect.value === "Destination") {
+    if (searchSelect.value === "Destination" || searchSelect.value === "CultureType") {
         destination.style.display = "inline";
     }
     else {

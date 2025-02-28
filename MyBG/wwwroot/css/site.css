@@ -1,6 +1,7 @@
 html {
   font-size: 14px;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  overflow-x: hidden;
 }
 
 @media (min-width: 768px) {
@@ -32,7 +33,6 @@ body {
 }
 
 .loginForm label {
-  display: block;
   color: black;
   transform: translate(-1%);
   padding-top: 5px;
@@ -51,23 +51,17 @@ body {
   text-align: center;
 }
 
-.loginForm a {
-  size: 0.9em;
-  text-decoration: none;
-  color: rgb(25, 108, 202);
-  margin-top: 10px;
-  text-align: center;
-}
-
 .log-input {
   border: gray solid 2px;
-  border-radius: 5px; 
-  padding-left: 100px;
-  padding-right: 100px;
+  border-radius: 5px;
+  padding-left: min(15vw, 100px);
+  padding-right: min(15vw, 100px); 
   padding-top: 12px;
   padding-bottom: 12px;
   font-size: 1.4em;
-  transform: translate(-1%);
+  position: relative;
+  left: 50%;
+  transform: translate(-50%);
   margin-top: 15px;
   margin-bottom: 15px;
   text-align: center;
@@ -76,6 +70,7 @@ body {
 .log-label {
   color: rgb(0, 0, 0);
   text-align: left;
+  display: block;
   padding: 0px;
   font-size: 1.2em;
 }
@@ -134,7 +129,7 @@ body {
   height: 35px;
 }
 
-#regionSelect {
+.options-select {
     display: none;
     border: 2px black solid;
     border-radius: 15px;
@@ -371,8 +366,9 @@ body {
 
 .account-pfp {
     margin-top: 10px;
-    width: 100px;
-    height: 100px;
+    width: 5vw;
+    max-width: 100px;
+    max-height: 100px;
 }
 
 .navigator-text {
@@ -418,6 +414,7 @@ body {
 
 .submit-a:hover {
     color: rgb(2, 71, 2);
+    cursor: pointer;
 }
 
 .navigator-img {
@@ -500,6 +497,8 @@ body {
     border-radius: 10px;
     display: inline-block;
     text-align: center;
+    margin: 20px;
+    padding: 5px;
 }
 
 .edit-redirect {
@@ -723,6 +722,7 @@ body {
 
 .user-text {
     font-size: 1.2em;
+    display: block;
 }
 
 .left-div {
@@ -794,7 +794,9 @@ body {
 }
 
 .back-icon {
-    width: 30px;
+    width: 1.7rem;
+    position: relative;
+    bottom: 0.1em;
 }
 
 .user-div {
@@ -828,4 +830,66 @@ html, body {
     min-height: 100%;
     margin-bottom: 50px; 
 }
-  
+
+.user-tag {
+    text-decoration: none;
+    font-size: 1em;
+}
+
+.nationality-selector {
+    display: inline;
+    position: relative;
+    float: right;
+    bottom: 25px;
+    right: 25px;
+}
+
+.nationality-select-label {
+    text-align: center;
+    display: block;
+    font-size: 1.2em;
+    margin-right: 10px;
+}
+
+.reply-post-button {
+    display: none;
+}
+
+.reply-box {
+    border:2px black solid;
+    border-radius: 5px;
+    width: 300px;
+    margin-top: 20px;
+}
+
+.user-data {
+    flex-grow: 0.3;
+}
+
+.user-data-name {
+    flex-grow: 1;
+}
+
+.user-data-name a {
+    text-align: left;
+    display: block;
+}
+
+.user-data-role {
+    flex-grow: 1;
+    text-align: right;
+}
+
+.flex-div {
+    display: flex;
+    flex-flow: row;
+    width: 80vw;
+}
+
+.inner-flex-element {
+    flex-grow: 1;
+}
+
+.login-warning {
+    text-align: center;
+}

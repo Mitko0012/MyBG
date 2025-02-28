@@ -1,12 +1,12 @@
 @model AssignAdmin;
 
 <h1>Are you sure you want to remove the admin role from @Model.User ?</h1>
-<p>Message for user</p>
+<p class="user-text">Message for user</p>
 <form method="post" asp-action="ConfirmAdminRemove" enctype="multipart/form-data">    
-    <textarea name="Message" class="user-text" asp-for="Message" class="message-area"></textarea>
+    <textarea name="Message" class="message-area" asp-for="Message"></textarea>
     <span asp-validation-for="Message" class="text-danger"></span>
     <input name="User" class="hidden" asp-for="User"></input>
-    <button type="submit">Remove role</button>
+    <button type="submit" class="create-button">Remove role</button>
 </form>
 
 @section Scripts {

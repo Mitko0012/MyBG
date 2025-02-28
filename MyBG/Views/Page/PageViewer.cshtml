@@ -7,7 +7,7 @@
 	<h1>@Model.Title</h1>
 	<div class="like-div">
 		<div class="filler"></div>
-		<form method="post" class="page-control class="like-container" asp-action="LikePost" asp-route-id="@Model.Id" enctype="multipart/form-data" asp-route-replyCount="@Model.CommenntsToDisplay">
+		<form method="post" class="page-control like-container" asp-action="LikePost" asp-route-id="@Model.Id" enctype="multipart/form-data" asp-route-replyCount="@Model.CommenntsToDisplay">
 			<div class="like-container">
 				@{
 					if (Model.LikedByUser)
@@ -34,6 +34,7 @@
 	</div>
 	<img src="@Model.ReturnFile" id="page-image"/>
 	<p id="regionDisplay">Region: @Model.Regions Bulgaria</p>
+	<p id="regionDisplay">@Model.GetDestinationType</p>
 	<p id="page-info">@Model.TextBody</p>
 	<hr />
 	<h2>How to get there</h2>
@@ -56,7 +57,7 @@
 						<img src="~/textures/plane.png" class="page-way-icon" />
 						break;
 				}	
-				@($" From {way.TransportOrigin}: {way.TransportTimeHours}:{way.TransportTimeMinutes} hours")</p>
+				@($" From {way.TransportOrigin}: {way.TransportTimeHours}:{(way.TransportTimeMinutes < 10? "0" + way.TransportTimeMinutes:way.TransportTimeMinutes)} hours")</p>
 		}
 	}
 	<hr />
@@ -71,10 +72,10 @@
 </div>
 <label for="commentInput" class="comment-label">Post a comment</label>
 <form method="post" id="comment-post" asp-action="PostComment" asp-route-comment="@Model.Comment" asp-route-id="@Model.Id" asp-route-replyCount="@Model.CommenntsToDisplay" enctype="multipart/form-data">
-	<textarea asp-for="Comment" class="comment-area"></textarea>
+	<textarea oninput="hideCommentPost()" asp-for="Comment" class="comment-area"></textarea>
 	<span asp-validation-for="Comment" class="text-danger"></span>
 	<br />
-	<button type="submit" class="comment-button">Upload comment</button>
+	<button type="submit" class="comment-button" id="upload-button">Upload comment</button>
 </form>
 @{
 	int index = 0;
@@ -111,9 +112,9 @@
 			}
 			<p class="addReplyButt show-replies" onclick="showAddReply(@index)">Add a reply</p>
 				<form class="replyForm" method="post"asp-action="PostReply" asp-route-isculture="false" asp-controller="Forum" asp-route-commentId="@comment.Id" asp-route-id="@Model.Id" enctype="multipart/form-data">
-					<textarea asp-for="Comment" class="reply-area"></textarea>
+					<textarea asp-for="Comment" class="reply-area reply-box" oninput="hideReplyPost(@index)"></textarea>
 					<span asp-validation-for="Comment" class="text-danger"></span>
-					<button class="comment-button" type="submit">Post reply</button>
+					<button class="comment-button reply-post-button" type="submit">Post reply</button>
 					<button class="comment-button" type="button" class="cancelReply" onclick="hideAddReply(@index)">Cancel</button>
 				</form>
 				<p class="hidden">@(index += 1);</p>
@@ -148,29 +149,33 @@
 						}
 						<p class="addReplyButt show-replies" onclick="showAddReply(@index)">Add a reply</p>
 						<form class="replyForm" method="post"asp-action="PostReply" asp-route-commentId="@reply.Id" asp-route-id="@Model.Id" asp-route-isculture="false" asp-controller="Forum" asp-route-commentId="@comment.Id" enctype="multipart/form-data">
-							<textarea asp-for="Comment" class="reply-area"></textarea>
+							<textarea asp-for="Comment" class="reply-area reply-box" oninput="hideReplyPost(@index)"></textarea>
 							<span asp-validation-for="Comment" class="text-danger"></span>
-							<button class="comment-button" type="submit">Post reply</button>
+							<button class="comment-button reply-post-button" type="submit">Post reply</button>
 							<button class="comment-button" type="button" class="cancelReply" onclick="hideAddReply(@index)">Cancel</button>
 						</form>
 						<p class="hidden">@(index += 1);</p>
 					}
 				</div>
-				<p onclick="showHideReplies(@commentIndex)" class="show-replies showHideReplies">Show replies</p>
+				@if(comment.Replies.Count > 0)
+				{
+					<p onclick="showHideReplies(@commentIndex)" class="show-replies showHideReplies">Show replies</p>
+				}
 				<p class="hidden">@(commentIndex += 1);</p>
 		</div>
 	}
 	<input id="countInput" asp-for="@Model.CommenntsToDisplay" class="hidden"/>
-	<p onclick="expand()" id="showMore">View 5 more comments</p>
+	<p onclick="expand()" id="showMore" class="submit-a">View 5 more comments</p>
 }
 
 <input class="hidden" id="scrollValue" value="@(TempData["Scroll"])"/>
 <script src="~/js/scroll.js"></script>
 <script src="~/js/site.js"></script>
 <script src="~/js/mention.js"></script>
-<script src="~/js/reply.js"></script>
+<script src="~/js/replyScript.js"></script>
 <script src="~/js/initDisplayMap.js" onload="fillMentions()"></script>
 <script src="~/js/showCommentsScript.js"></script>
+<script src="~/js/hidePost.js"></script>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

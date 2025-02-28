@@ -25,9 +25,9 @@
 <form method="post" id="comment-post" asp-action="CommentPost" asp-route-id="@Model.Id" enctype="multipart/form-data" asp-route-replyCount="@Model.CommentCount">
 	<label for="commentInput" class="comment-label">Post a comment</label>
 	<br />
-	<textarea class="comment-area" id="commentInput" asp-for="CommentCurrent"></textarea>
+	<textarea class="comment-area" id="commentInput" asp-for="CommentCurrent" oninput="hideCommentPost()"></textarea>
 	<span asp-validation-for="Comment" class="text-danger"></span>
-	<button type="submit" class="comment-button">Post a comment</button>
+	<button type="submit" class="comment-button" id="upload-button">Post a comment</button>
 </form>
 @{
 	int index = 0;
@@ -61,10 +61,10 @@
 				<a asp-action="DeleteComment" asp-controller="Admin" asp-route-id="@comment.Id" class="admin-button">Delete comment</a>
 			}
 			<p class="addReplyButt show-replies" onclick="showAddReply(@index)">Add a reply</p>
-				<form class="replyForm" method="post"asp-action="PostReplyForum" asp-route-id="@Model.Id" asp-controller="Forum" asp-route-commentId="@comment.Id" enctype="multipart/form-data">
-					<textarea asp-for="CommentCurrent" class="reply-area"></textarea>
+				<form class="replyForm" method="post"asp-action="PostReplyForum" asp-route-id="@Model.Id" asp-controller="Forum" asp-route-commentId="@comment.Id" oninput="hideReplyPost(@index)" enctype="multipart/form-data">
+					<textarea asp-for="CommentCurrent" oninput="hideReplyPost(@index)" class="reply-area reply-box"></textarea>
 					<span asp-validation-for="Comment" class="text-danger"></span>
-					<button class="comment-button" type="submit">Post reply</button>
+					<button class="comment-button reply-post-button" type="submit">Post reply</button>
 					<button class="comment-button" type="button" class="cancelReply" onclick="hideAddReply(@index)">Cancel</button>
 				</form>
 				<p class="hidden">@(index += 1);</p>
@@ -98,15 +98,18 @@
 						}
 						<p class="addReplyButt show-replies" onclick="showAddReply(@index)">Add a reply</p>
 						<form class="replyForm" method="post"asp-action="PostReplyForum" asp-route-id="@Model.Id" asp-controller="Forum" asp-route-commentId="@comment.Id" enctype="multipart/form-data">
-							<textarea asp-for="CommentCurrent" class="reply-area"></textarea>
+							<textarea asp-for="CommentCurrent" class="reply-area reply-box" oninput="hideReplyPost(@index)"></textarea>
 							<span asp-validation-for="Comment" class="text-danger"></span>
-							<button class="comment-button" type="submit">Post reply</button>
+							<button class="comment-button reply-post-button" type="submit">Post reply</button>
 							<button class="comment-button" type="button" class="cancelReply" onclick="hideAddReply(@index)">Cancel</button>
 						</form>
 						<p class="hidden">@(index += 1);</p>
 					}
 				</div>
-				<p onclick="showHideReplies(@commentIndex)" class="show-replies showHideReplies">Show replies</p>
+				@if(comment.Replies.Count > 0)
+				{
+					<p onclick="showHideReplies(@commentIndex)" class="show-replies showHideReplies">Show replies</p>
+				}
 				<p class="hidden">@(commentIndex += 1);</p>
 		</div>
 	}
@@ -114,9 +117,8 @@
 
 <script src="~/js/site.js"></script>
 <script src="~/js/mention.js"></script>
-<script src="~/js/reply.js"></script>
-<script src="~/js/initDisplayMap.js" onload="fillMentions()"></script>
-<script src="~/js/showCommentsScript.js"></script>
+<script src="~/js/replyScript.js"></script>
+<script src="~/js/hidePost.js"></script>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

@@ -33,11 +33,10 @@ namespace MyBG.Controllers
         [HttpPost]
         public IActionResult IndexPost(PageModelContainer cont)
         {
-            return RedirectToAction("Index", new {displayType = cont.DisplayType, searchString = cont.SearchString, region = (int)cont.RegionSelect, type = cont.DisplayType, destinationType = (int)cont.DestinationTypeSelect});
+            return RedirectToAction("Index", new {displayType = cont.DisplayType, searchString = cont.SearchString, region = (int)cont.RegionSelect, type = (int)cont.DestinationTypeSelect});
         }
         [Authorize]
         public IActionResult Index(string displayType, string? searchString, int region, int type)
-
         {
             PageModelContainer container = new PageModelContainer();
             if (displayType == null)
@@ -301,7 +300,7 @@ namespace MyBG.Controllers
         {
             if (!ModelState.IsValid || page == null)
             {
-                return RedirectToAction("Create");
+                return View("Create", page);
             }
             foreach(TransportWay transportWay in page.TransportWays)
             {
@@ -326,11 +325,11 @@ namespace MyBG.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("File", "The file is too large.");
+                    ModelState.AddModelError("PageImage", "The file is too large.");
                 }
                 if (!ModelState.IsValid)
                 {
-                    return RedirectToAction("Create");
+                    return View("Create", page);
                 }
                 PFPModel user = _context.PFPs.Include(x => x.Contributions).FirstOrDefault(x => x.UserName == _manager.GetUserAsync(User).Result.UserName);
                 EditModel firstEdit = new EditModel()
@@ -411,7 +410,7 @@ namespace MyBG.Controllers
             return RedirectToAction("PageViewer", new { id = id, replyCount = replyCount });
         }
         [Authorize]
-        public async Task<IActionResult> LikeComment(int id, int replyCount, int? pageId, PageModel page, double? scroll)
+        public async Task<IActionResult> LikeComment(int id, int replyCount, int? pageId, double? scroll)
         {
             IdentityUser sourceUser = await _manager.GetUserAsync(User);
             PFPModel user = _context.PFPs.Where(x => !x.IsDeleted).Include(p => p.CommentsLiked)
@@ -455,7 +454,7 @@ namespace MyBG.Controllers
         {
             if(model == null)
             {
-                return RedirectToAction("CreateCulture");
+                return View("CreateCulture", model);
             }
 
             model.IsCulture = true;
@@ -472,7 +471,13 @@ namespace MyBG.Controllers
                 if(model.Title == existingPage.Title)
                 {
                     ModelState.AddModelError("Title", "Another page with the same title exists already.");
+                    return View("CreateCulture", model);
                 }
+            }
+            if(model.PageImage == null)
+            {
+                ModelState.AddModelError("PageImage", "Please upload an image for the page.");
+                return View("CreateCulture", model);
             }
             using (var memoryStream = new MemoryStream())
             {
@@ -485,11 +490,8 @@ namespace MyBG.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("File", "The file is too large.");
-                    if (!ModelState.IsValid)
-                    {
-                        return RedirectToAction("CreateCulture");
-                    }
+                    ModelState.AddModelError("PageImage", "The file is too large.");
+                    return View("CreateCulture", model);
                 }
                 PFPModel user = _context.PFPs.Include(x => x.Contributions).FirstOrDefault(x => x.UserName == _manager.GetUserAsync(User).Result.UserName);
                 EditModel firstEdit = new EditModel()

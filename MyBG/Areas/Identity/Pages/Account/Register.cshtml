@@ -15,28 +15,30 @@
             <div>
                 <label asp-for="Input.Username" class="log-label">Username</label>
                 <input asp-for="Input.Username" class="log-input" autocomplete="username" aria-required="true"/>
-                <span asp-validation-for="Input.Username" class="text-danger"></span>
+                <span asp-validation-for="Input.Username" class="text-danger login-warning"></span>
             </div>
             <div>
                 <label asp-for="Input.Password" class="log-label">Password</label>
                 <input asp-for="Input.Password" class="log-input" autocomplete="new-password" aria-required="true"/>
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                <span asp-validation-for="Input.Password" class="text-danger login-warning"></span>
             </div>
             <div>
                 <label asp-for="Input.ConfirmPassword" class="log-label">Confirm Password</label>
                 <input asp-for="Input.ConfirmPassword" class="log-input" autocomplete="new-password" aria-required="true"/>
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger login-warning"></span>
             </div>
-            <p>I am a:</p>
-            <label for="bulgarianNat">Bulgarian</label>
-            <input type="radio" id="bulgarianNat" asp-for="Input.Nationality" value="0"/>
-            <label for="foreignNat">Foreigner</label>
-            <input type="radio" checked id="foreignNat" asp-for="Input.Nationality" value="1" />
-            <label for="foreignInBgNat">Foreigner living in Bulgaria</label>
-            <input type="radio" id="foreignInBgNat" asp-for="Input.Nationality" value="2" />
+            <p class="log-label">I am a:</p>
+            <div class="nationality-select-div">
+                <label for="bulgarianNat" class="nationality-select-label">Bulgarian</label>
+                <input type="radio" class="nationality-selector" id="bulgarianNat" asp-for="Input.Nationality" value="0"/>
+                <label for="foreignNat" class="nationality-select-label">Foreigner</label>
+                <input type="radio" class="nationality-selector" checked id="foreignNat" asp-for="Input.Nationality" value="1" />
+                <label for="foreignInBgNat" class="nationality-select-label">Foreigner, living in Bulgaria</label>
+                <input type="radio" class="nationality-selector" id="foreignInBgNat" asp-for="Input.Nationality" value="2" />
+            </div>
             <button id="logreg-button" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
-        <a asp-page="Login" class="submit-a">Login using an existing account</a>
+        <a asp-page="Login" class="submit-a">Log in using an existing account</a>
     </div>
 </div>
 
