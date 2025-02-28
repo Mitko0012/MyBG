@@ -129,7 +129,7 @@ body {
   height: 35px;
 }
 
-.options-select {
+.options-select {comment-text-data
     display: none;
     border: 2px black solid;
     border-radius: 15px;
@@ -251,6 +251,7 @@ body {
     text-align: left;
     flex-grow: 3;
     font-size: 1em;
+    width: 50%;
 }
 
 .comment-like-div {

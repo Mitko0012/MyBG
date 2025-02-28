@@ -67,11 +67,11 @@ namespace MyBG.Controllers
             return RedirectToAction("Index");
         }
         [Authorize]
-        public ActionResult PostViewer(int id)
+        public ActionResult PostViewer(int id, string? scroll, string? replyString)
         {
             ForumQuestion? question = _ctx.Posts.Where(x => !x.IsDeleted).Include(x => x.User).Include(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.User).Include(x => x.Comment).ThenInclude(x => x.Replies).ThenInclude(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.Replies).ThenInclude(x => x.User).FirstOrDefault(x => x.Id == id);
             PFPModel? userModel = _ctx.PFPs.Where(x => !x.IsDeleted).FirstOrDefault(x => x.UserName == _manager.GetUserAsync(User).Result.UserName);
-            if (!ModelState.IsValid || question == null || userModel == null)
+            if (question == null || userModel == null)
             {
                 return RedirectToAction("Index");
             }
@@ -83,6 +83,8 @@ namespace MyBG.Controllers
             {
                 question.LikedByUser = false;
             }
+            question.Scroll = scroll ?? "0";
+            question.ReplyString = replyString ?? "d";
             question.Pfp = _ctx.PFPs.FirstOrDefault(x => x.UserName == question.User.UserName);
             question.Comment = question.Comment.Where(x => !x.IsDeleted).ToList();
             foreach (var item in question.Comment)
@@ -136,7 +138,7 @@ namespace MyBG.Controllers
         }
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> CommentPost(string CommentCurrent, int id)
+        public async Task<IActionResult> CommentPost(string CommentCurrent, int id, string scroll, string replyString)
         {
             if(CommentCurrent == null)
             {
@@ -146,9 +148,9 @@ namespace MyBG.Controllers
             CommentModel commentModel = new CommentModel();
             IdentityUser startUser = await _manager.GetUserAsync(User);
             PFPModel model = _ctx.PFPs.FirstOrDefault(x => x.UserName == startUser.UserName);
-            if (!ModelState.IsValid || postModel == null || commentModel == null || startUser == null || model == null)
+            if (postModel == null || commentModel == null || startUser == null || model == null)
             {
-                return RedirectToAction("PostViewer", new { id = id });
+                return RedirectToAction("PostViewer", new { id = id, scroll = scroll, replyString = replyString });
             }
             commentModel.PostId = id;
             commentModel.PageId = 0;
@@ -158,18 +160,17 @@ namespace MyBG.Controllers
             postModel.Comment.Add(commentModel);
             _ctx.Comments.Add(commentModel);
             _ctx.SaveChanges();
-            return RedirectToAction("PostViewer", new { id = id });
+            return RedirectToAction("PostViewer", new { id = id, scroll = scroll, replyString = replyString });
         }
         [Authorize]
-        [HttpPost]
-        public async Task<IActionResult> LikeComment(int id, int forumId)
+        public async Task<IActionResult> LikeComment(int id, int forumId, string scroll, string replyString)
         {
             CommentModel comment = _ctx.Comments.Where(x => !x.IsDeleted).Include(x => x.LikedUser).FirstOrDefault(x => x.Id == id);
             IdentityUser user = await _manager.GetUserAsync(User);
             PFPModel model = _ctx.PFPs.FirstOrDefault(x => x.UserName == user.UserName);
-            if (!ModelState.IsValid || user == null || comment == null || model == null)
+            if (user == null || comment == null || model == null)
             {
-                return RedirectToAction("PageViewer", new { id = comment.PostId });
+                return RedirectToAction("PostViewer", new { id = comment.PostId });
             }
             if (comment.LikedUser.Contains(model))
             {
@@ -180,11 +181,11 @@ namespace MyBG.Controllers
                 comment.LikedUser.Add(model);
             }
             _ctx.SaveChanges();
-            return RedirectToAction("PostViewer", new { id = forumId});
+            return RedirectToAction("PostViewer", new { id = forumId, scroll = scroll, replyString = replyString });
         }
 
         [Authorize]
-        public IActionResult PostReply(int commentId, PageModel cmnt) 
+        public IActionResult PostReply(int commentId, PageModel cmnt, string? scroll, string replyString) 
         {
             CommentModel comment = _ctx.Comments.Where(x => !x.IsDeleted).FirstOrDefault(x => x.Id == commentId);
             if(cmnt.Comment == null)
@@ -205,15 +206,15 @@ namespace MyBG.Controllers
             _ctx.SaveChanges();
             if(cmnt.IsCulture)
             {
-                return RedirectToAction("CulturePage", "Page", new {id = cmnt.Id});
+                return RedirectToAction("CulturePage", "Page", new {id = cmnt.Id, replyCount = cmnt.CommenntsToDisplay, scroll = scroll, replyString = replyString});
             }
             else
             {
-                return RedirectToAction("PageViewer", "Page", new {id = cmnt.Id});
+                return RedirectToAction("PageViewer", "Page", new {id = cmnt.Id, replyCount = cmnt.CommenntsToDisplay, scroll = scroll, replyString = replyString});
             }
         }
         [Authorize]
-        public IActionResult PostReplyForum(int commentId, ForumQuestion cmnt) 
+        public IActionResult PostReplyForum(int commentId, ForumQuestion cmnt, string scroll, string replyString) 
         {
             CommentModel comment = _ctx.Comments.Where(x => !x.IsDeleted).FirstOrDefault(x => x.Id == commentId);
             if(comment == null)
@@ -228,7 +229,7 @@ namespace MyBG.Controllers
             comment.Replies.Add(reply);
             _ctx.Comments.Add(reply);
             _ctx.SaveChanges();
-            return RedirectToAction("PostViewer", new {id = cmnt.Id});
+            return RedirectToAction("PostViewer", new {id = cmnt.Id, scroll = scroll, replyString = replyString});
         }
     }
 }

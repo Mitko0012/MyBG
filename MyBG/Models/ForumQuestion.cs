@@ -36,5 +36,9 @@ namespace MyBG.Models
         public PFPModel Pfp { get; set; }
         [NotMapped]
         public bool LikedByUser { get; set; }
+        [NotMapped]
+        public string Scroll {get; set;}
+        [NotMapped]
+        public string ReplyString {get;set;}
     }
 }

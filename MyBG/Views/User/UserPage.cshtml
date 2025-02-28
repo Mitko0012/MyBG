@@ -8,16 +8,16 @@
 		<p class="page-username">@Model.UserName</p>
 		<p class="page-nationality">Nationality: @Model.GetNationality</p>
 		<p class="page-nationality">Role: @SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.FindByNameAsync(Model.UserName).Result).Result[0]</p>
+		<a class="submit-a" asp-action="Users">View all users</a>
 	</div>
 	<div class="inner-flex-element">
 		<div class="contrib-data">
 			<p class="contrib-number">@Model.Contributions.Count</p>
 			<p class="contrib-label">Contributions made </p>
+			<a asp-action="ViewContributions" class="submit-a" asp-route-userName="@Model.UserName">View contributions</a>
 		</div>
 	</div>
 </div>
-<a asp-action="ViewContributions" class="submit-a" asp-route-userName="@Model.UserName">View contributions</a>
-<a class="submit-a" asp-action="Users">View all users</a>
 @{
 	if(SignInManager.UserManager.GetUserAsync(User).Result.UserName == Model.UserName)
 	{

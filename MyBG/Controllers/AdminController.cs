@@ -205,7 +205,7 @@ namespace MyBG.Controllers
             {
                 return RedirectToAction("Index", "Page");
             }
-            message.Message = $"Dear {commentModel.User.UserName}, we have reviewd your comment \"{commentModel.Text}\" and we have decided that it does not seem appropriate for our platform. Your comment has since been removed.";
+            message.Message = $"Dear {commentModel.User.UserName}, we have reviewed your comment \"{commentModel.Text}\" and we have decided that it does not seem appropriate for our platform. Your comment has since been removed.";
             return View(message);
         }
 

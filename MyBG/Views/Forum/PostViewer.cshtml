@@ -22,12 +22,14 @@
 	}
 </form>
 <hr />
-<form method="post" id="comment-post" asp-action="CommentPost" asp-route-id="@Model.Id" enctype="multipart/form-data" asp-route-replyCount="@Model.CommentCount">
+<form method="post" asp-route-replyString="@Model.ReplyString" id="comment-post" asp-route-scroll="@Model.Scroll" asp-action="CommentPost" asp-route-id="@Model.Id" enctype="multipart/form-data" asp-route-replyCount="@Model.CommentCount">
 	<label for="commentInput" class="comment-label">Post a comment</label>
 	<br />
 	<textarea class="comment-area" id="commentInput" asp-for="CommentCurrent" oninput="hideCommentPost()"></textarea>
 	<span asp-validation-for="Comment" class="text-danger"></span>
-	<button type="submit" class="comment-button" id="upload-button">Post a comment</button>
+	<input asp-for="Scroll" id="comment-post-scroll-input" class="hidden" />
+	<input asp-for="ReplyString" id="comment-post-string-input" class="hidden" />
+	<button type="submit" class="comment-button" onclick="onPostCommentForum()" id="upload-button">Post a comment</button>
 </form>
 @{
 	int index = 0;
@@ -44,7 +46,9 @@
 					<a class="comment-username" asp-controller="User" asp-action="UserPage" asp-route-userName="@comment.PFP.UserName">@comment.PFP.UserName</a>
 				</div>
 				<p class="comment-text-data">@comment.Text</p>
-				<form asp-action="LikeComment" asp-route-forumId="@Model.Id" asp-route-id="@comment.Id" class="comment-like-div">
+				<form method="post" asp-route-replyString="@Model.ReplyString" onsubmit="onLikeForum(@index)" asp-route-forumId="@Model.Id" asp-route-scroll="@Model.Scroll" asp-action="LikeComment" asp-route-id="@comment.Id" class="comment-like-div" enctype="multipart/form-data">
+					<input asp-for="Scroll" class="comment-scroll-input hidden" />
+					<input asp-for="ReplyString" class="comment-reply-input hidden" />
 					<p id="commentLikeData">@comment.LikedUser.Count</p>
 					@if (comment.LikedByUser)
 					{
@@ -61,10 +65,12 @@
 				<a asp-action="DeleteComment" asp-controller="Admin" asp-route-id="@comment.Id" class="admin-button">Delete comment</a>
 			}
 			<p class="addReplyButt show-replies" onclick="showAddReply(@index)">Add a reply</p>
-				<form class="replyForm" method="post"asp-action="PostReplyForum" asp-route-id="@Model.Id" asp-controller="Forum" asp-route-commentId="@comment.Id" oninput="hideReplyPost(@index)" enctype="multipart/form-data">
+				<form class="replyForm" asp-route-replyString="@Model.ReplyString" asp-route-scroll="@Model.Scroll" asp-action="PostReplyForum" asp-route-id="@Model.Id" asp-controller="Forum" asp-route-commentId="@comment.Id" oninput="hideReplyPost(@index)" enctype="multipart/form-data">
 					<textarea asp-for="CommentCurrent" oninput="hideReplyPost(@index)" class="reply-area reply-box"></textarea>
 					<span asp-validation-for="Comment" class="text-danger"></span>
-					<button class="comment-button reply-post-button" type="submit">Post reply</button>
+					<input asp-for="Scroll" class="reply-scroll-input hidden"/>
+					<input asp-for="ReplyString" class="reply-post-string-input hidden" />
+					<button class="comment-button reply-post-button" type="submit" onclick="onPostReplyForum(@index)">Post reply</button>
 					<button class="comment-button" type="button" class="cancelReply" onclick="hideAddReply(@index)">Cancel</button>
 				</form>
 				<p class="hidden">@(index += 1);</p>
@@ -80,15 +86,17 @@
 								<a class ="comment-username" asp-controller="User" asp-action="UserPage" asp-route-userName="@reply.PFP.UserName">@reply.PFP.UserName</a>
 							</div>
 							<p class="comment-text-data">@reply.Text</p>
-							<form asp-action="LikeComment" asp-route-forumId="@Model.Id" asp-route-forumId="@Model.Id" asp-route-id="@reply.Id" class="comment-like-div">
+							<form asp-action="LikeComment" asp-route-replyString="@Model.ReplyString" asp-route-scroll=@Model.Scroll asp-route-forumId="@Model.Id" asp-route-id="@reply.Id" class="comment-like-div" enctype="multipart/form-data">
+								<input asp-for="Scroll" value="32" class="comment-scroll-input hidden"/>
+								<input asp-for="ReplyString" class="comment-reply-input hidden" />
 								<p id="commentLikeData">@reply.LikedUser.Count</p>
 								@if (reply.LikedByUser)
 								{
-									<input type="image" class="comment-icon" src="~/textures/like_star.png" />
+									<input type="image" onclick="onLikeForum(@index)" class="comment-icon" src="~/textures/like_star.png" />
 								}
 								else
 								{
-									<input type="image" class="comment-icon" src="~/textures/unliked_star.png" />
+									<input type="image" onclick="onLikeForum(@index)" class="comment-icon" src="~/textures/unliked_star.png" />
 								}
 							</form>
 						</div>
@@ -97,10 +105,12 @@
 							<a asp-action="DeleteComment" asp-controller="Admin" asp-route-id="@reply.Id" class="admin-button">Delete comment</a>
 						}
 						<p class="addReplyButt show-replies" onclick="showAddReply(@index)">Add a reply</p>
-						<form class="replyForm" method="post"asp-action="PostReplyForum" asp-route-id="@Model.Id" asp-controller="Forum" asp-route-commentId="@comment.Id" enctype="multipart/form-data">
+						<form class="replyForm" asp-route-replyString="@Model.ReplyString" asp-route-scroll=@Model.Scroll method="post"asp-action="PostReplyForum" asp-route-id="@Model.Id" asp-controller="Forum" asp-route-commentId="@comment.Id" enctype="multipart/form-data">
 							<textarea asp-for="CommentCurrent" class="reply-area reply-box" oninput="hideReplyPost(@index)"></textarea>
+							<input asp-for="Scroll" class="reply-scroll-input hidden"/>
+							<input asp-for="ReplyString" class="reply-post-string-input hidden" />
 							<span asp-validation-for="Comment" class="text-danger"></span>
-							<button class="comment-button reply-post-button" type="submit">Post reply</button>
+							<button class="comment-button reply-post-button" type="submit" onclick="onPostReplyForum(@index)">Post reply</button>
 							<button class="comment-button" type="button" class="cancelReply" onclick="hideAddReply(@index)">Cancel</button>
 						</form>
 						<p class="hidden">@(index += 1);</p>
@@ -110,15 +120,23 @@
 				{
 					<p onclick="showHideReplies(@commentIndex)" class="show-replies showHideReplies">Show replies</p>
 				}
+				else
+				{
+					<p class="showHideReplies hidden"></p>
+				}
 				<p class="hidden">@(commentIndex += 1);</p>
 		</div>
 	}
+	<input id="scrollInput" asp-for="@Model.Scroll" class="hidden"/>
+	<input id="replyInput" asp-for="@Model.ReplyString" class="hidden"/>
 }
 
 <script src="~/js/site.js"></script>
 <script src="~/js/mention.js"></script>
 <script src="~/js/replyScript.js"></script>
-<script src="~/js/hidePost.js"></script>
+<script src="~/js/hidePost.js" onload="fillMentions()"></script>
+<script src="~/js/scrollSet.js"></script>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

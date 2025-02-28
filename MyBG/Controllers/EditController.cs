@@ -47,6 +47,7 @@ public class EditController : Controller
         model.PageToEdit = page;
         model.PageModelKey = page.Id;
         model.OldText = model.PageToEdit.TextBody;
+        model.NewText = model.PageToEdit.TextBody;
         return View(model);
     }
     [Authorize]
@@ -61,7 +62,7 @@ public class EditController : Controller
         model.UserCreated = user;
         if (!ModelState.IsValid || page == null || model == null)
         {
-            return RedirectToAction("ViewEdits", new { id = pageId });
+            return RedirectToAction("ViewEdits", new { pageId = pageId });
         }
         model.PageToEdit = page;
         model.PageModelKey = pageId;

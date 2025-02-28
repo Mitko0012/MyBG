@@ -122,7 +122,7 @@ namespace MyBG.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> PageViewer(int id, int? replyCount)
+        public async Task<IActionResult> PageViewer(int id, int? replyCount, string? scroll, string replyString)
         {
             IdentityUser user = await _manager.GetUserAsync(User);
             PFPModel userModel = _context.PFPs.Where(x => !x.IsDeleted).FirstOrDefault(x => x.UserName == user.UserName);
@@ -143,6 +143,7 @@ namespace MyBG.Controllers
             {
                 return RedirectToAction("index");
             }
+            model.ReplyString = replyString ?? "d";
             model.Comments = model.Comments.Where(x => !x.IsDeleted).ToList();
             if (replyCount != null && replyCount != 0)
             {
@@ -157,6 +158,14 @@ namespace MyBG.Controllers
                 return RedirectToAction("Index");
             }
             _page = model;
+            if(scroll == null)
+            {
+                model.Scroll = "0";
+            }
+            else
+            {
+                model.Scroll = scroll;
+            }
             foreach (var item in model.Comments)
             {
                 item.PFP = _context.PFPs.FirstOrDefault(x => x.UserName == item.User.UserName);
@@ -204,7 +213,7 @@ namespace MyBG.Controllers
             }
         }
         [Authorize]
-        public IActionResult CulturePage(int id, int? replyCount)
+        public IActionResult CulturePage(int id, int? replyCount, string? scroll, string replyString)
         {
             IdentityUser user = _manager.GetUserAsync(User).Result;
             PFPModel userModel = _context.PFPs.Where(x => !x.IsDeleted).FirstOrDefault(x => x.UserName == user.UserName);
@@ -234,11 +243,20 @@ namespace MyBG.Controllers
             {
                 model.CommenntsToDisplay = 5;
             }   
+            model.ReplyString = replyString ?? "d";
             if (model == null || user == null)
             {
                 return RedirectToAction("Index");
             }
             _page = model;
+            if(scroll == null)
+            {
+                model.Scroll = "0";
+            }
+            else
+            {
+                model.Scroll = scroll;
+            }
             foreach (var item in model.Comments)
             {
                 item.PFP = _context.PFPs.FirstOrDefault(x => x.UserName == item.User.UserName);
@@ -384,7 +402,7 @@ namespace MyBG.Controllers
         }
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> PostComment(string comment, int id, int replyCount)
+        public async Task<IActionResult> PostComment(string comment, int id, int replyCount, PageModel dataModel, string scroll, string replyString)
         {
             IdentityUser user = await _manager.GetUserAsync(User);
             PageModel model = _context.Pages.Where(x => !x.IsDeleted).Include(p => p.UsersLiked)
@@ -396,28 +414,24 @@ namespace MyBG.Controllers
             {
                 return RedirectToAction("PageViewer", new { id = id, replyCount = model.CommenntsToDisplay });
             }
-            if (!ModelState.IsValid)
-            {
-                return RedirectToAction("PageViewer", new { id = id, replyCount = model.CommenntsToDisplay });
-            }
             _context.Comments.Add(comment1);
             model.Comments.Add(comment1);
             _context.SaveChanges();
             if (model.IsCulture)
             {
-                return RedirectToAction("CulturePage", new { id = id, replyCount = replyCount });
+                return RedirectToAction("CulturePage", new { id = id, replyCount = dataModel.CommenntsToDisplay, scroll = scroll, replyString = replyString });
             }
-            return RedirectToAction("PageViewer", new { id = id, replyCount = replyCount });
+            return RedirectToAction("PageViewer", new { id = id, replyCount = dataModel.CommenntsToDisplay, scroll = scroll, replyString = replyString });
         }
+        
         [Authorize]
-        public async Task<IActionResult> LikeComment(int id, int replyCount, int? pageId, double? scroll)
+        public async Task<IActionResult> LikeComment(int id, int? pageId, PageModel pageModel, string? scroll, string replyString)
         {
             IdentityUser sourceUser = await _manager.GetUserAsync(User);
             PFPModel user = _context.PFPs.Where(x => !x.IsDeleted).Include(p => p.CommentsLiked)
                             .FirstOrDefault(x => x.UserName == sourceUser.UserName);
             CommentModel model = _context.Comments.Where(x => !x.IsDeleted).Include(p => p.LikedUser)
                                             .FirstOrDefault(p => p.Id == id);
-            TempData["Scroll"] = Convert.ToString(scroll);
             if (user == null || model == null)
             {
                 return RedirectToAction("Index");
@@ -437,9 +451,9 @@ namespace MyBG.Controllers
             }
             if (_context.Pages.Find(model.PageId) != null && _context.Pages.Find(model.PageId).IsCulture)
             {
-                return RedirectToAction("CulturePage", new { id = model.PageId, replyCount = replyCount });
+                return RedirectToAction("CulturePage", new { id = model.PageId, replyCount = pageModel.CommenntsToDisplay, scroll = scroll, replyString = replyString });
             }
-            return RedirectToAction("PageViewer", new { id = model.PageId, replyCount = replyCount });
+            return RedirectToAction("PageViewer", new { id = model.PageId, replyCount = pageModel.CommenntsToDisplay, scroll = scroll, replyString = replyString });
         }
 
         [Authorize]

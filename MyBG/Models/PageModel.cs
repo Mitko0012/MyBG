@@ -63,7 +63,7 @@ namespace MyBG.Models
         public CultureType CultureType { get; set; } = CultureType.Meal;
         public bool IsCulture {get; set;} = false;
         [NotMapped]
-        public double Scroll = 0;
+        public string Scroll;
         [NotMapped]
         public bool Saved = false;
         [NotMapped]
@@ -91,5 +91,7 @@ namespace MyBG.Models
                 }
             }
         }
+        [NotMapped]
+        public string ReplyString;
     }
 }

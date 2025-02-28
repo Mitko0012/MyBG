@@ -7,13 +7,13 @@
     <h1>Change profile picture</h1>
     <a class="link" asp-route-userName="@Manager.UserManager.GetUserAsync(User).Result.UserName" asp-controller="User" asp-action="UserPage"><img src="~/Textures/arrow.png" class="back-icon" /> Back</a>
     <form method="post" enctype="multipart/form-data">
-        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
         <div>
             <p class="account-label">Current profile Picture</p>
             <img src="@Model.PFP.ReturnFile" class="userpage-pfp"/>
             <label class="create-file-button" for="fileCont">Upload file</label>
             <input id="fileCont" asp-for="@Model.FormFile" type="file" class="file-hidden" accept=".jpg,.png,.jpeg" />
             <p id="input-msg" class="create-label-description"></p>
+            <span asp-validation-for="@Model.FormFile" class="text-danger"></span>
             <button type="submit" class="account-button">Update profile picture</button>
         </div>
     </form>

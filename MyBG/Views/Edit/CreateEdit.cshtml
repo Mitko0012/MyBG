@@ -13,7 +13,7 @@
 	<hr />
 	<form asp-action="PostEdit" asp-route-pageId="@Model.PageModelKey" enctype="multipart/form-data" method="post">
 		<label class="user-text">Text content</label>
-		<textarea asp-for="NewText" class="message-area">@Model.OldText</textarea>
+		<textarea asp-for="@Model.NewText" class="message-area">@Model.NewText</textarea>
 		<span asp-validation-for="NewText" class="text-danger"></span>
 		<button type="submit" class="create-button">Submit edit</button>
 	</form>

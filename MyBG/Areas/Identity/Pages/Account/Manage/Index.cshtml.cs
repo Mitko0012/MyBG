@@ -109,15 +109,15 @@ namespace MyBG.Areas.Identity.Pages.Account.Manage
                 }
                 else
                 {
-                    ModelState.AddModelError("File", "The file is too large.");
+                    ModelState.AddModelError("FormFile", "The file is too large.");
                 }
             }
             _context.SaveChanges();
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("Index");
+                return Page();
             }
-            return RedirectToAction("Index");
+            return Page();
         }
     }
 }
