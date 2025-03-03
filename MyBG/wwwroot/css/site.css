@@ -19,6 +19,11 @@ html {
   min-height: 100%;
 }
 
+.like-container {
+    display: block;
+    width: fit-content;
+}
+
 body {
   margin-bottom: 60px;
 }
@@ -129,7 +134,7 @@ body {
   height: 35px;
 }
 
-.options-select {comment-text-data
+.options-select {
     display: none;
     border: 2px black solid;
     border-radius: 15px;
@@ -762,11 +767,6 @@ body {
     font-size: 1.6em;
     position: relative;
     text-align: center;
-}
-
-.like-container {
-    display: block;
-    width: fit-content;
 }
 
 .comment-icon {
