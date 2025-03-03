@@ -68,7 +68,7 @@ namespace MyBG.Controllers
         [HttpPost]
         public IActionResult ConfirmApprove(int id, ApproveModel approve)
         {
-            approve.EditModel = _dbContext.Edits.Where(x => !x.IsDeleted).Include(x => x.PageToEdit).Include(x => x.UserCreated).FirstOrDefault(x => x.ID == id);
+            approve.EditModel = _dbContext.Edits.Where(x => !x.IsDeleted).Include(x => x.PageToEdit).ThenInclude(x => x.Edits).Include(x => x.UserCreated).FirstOrDefault(x => x.ID == id);
             if (approve == null || approve.EditModel == null)
             {
                 return RedirectToAction("Index", "Page");
@@ -89,7 +89,7 @@ namespace MyBG.Controllers
             approve.EditModel.UserCreated.Inbox.Add(message);
             _dbContext.Messages.Add(message);
            _dbContext.SaveChanges();
-            foreach (EditModel edit in _dbContext.Edits.Include(x => x.UserCreated).Where(x => x.Approved == false && x.PageToEdit.Title == approve.EditModel.PageToEdit.Title))
+            foreach (EditModel edit in _dbContext.Edits.Include(x => x.UserCreated).Where(x => x.Approved == false && x.IsDeleted == false && x.PageToEdit.Title == approve.EditModel.PageToEdit.Title))
             {
                 edit.IsDeleted = true;
                 InboxMessage message2 = new InboxMessage()
