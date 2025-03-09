@@ -11,8 +11,8 @@ There are 3 roles: User, Admin and Manager.
 <br>
 The user can add page submissions, and the admin can approve or decline them. The admin can delete comments and forum posts deemed inappropriate. There is one manager who has all the powers as the admins, but can also give and take admin permissions of users.
 
-### Installing MyBG
-There is a self-contained release of the latest beta on the Releases section of the repo, which should work fine on windows systems. Older versions may not be self contained and not work well. The login info for the manager account on the local version is :
+### Using MyBG
+There is a self-contained release of the latest beta on the Releases section of the repo, which should work fine on windows systems. Older versions may not be self contained and may not contain all current features. The login info for the manager account on the local version is :
 <br>
 __Username: Manager__
 <br>
