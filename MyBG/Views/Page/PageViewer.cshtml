@@ -5,6 +5,7 @@
 <a asp-action="Index" class="link backButton"><img src="~/Textures/arrow.png" class="back-icon" /> Back</a>
 <div class="page-display">
 	<h1>@Model.Title</h1>
+	<p id="regionDisplay">@Model.Summary</p>
 	<div class="like-div">
 		<div class="filler"></div>
 		<form method="post" class="page-control like-container" asp-action="LikePost" asp-route-id="@Model.Id" enctype="multipart/form-data" asp-route-replyCount="@Model.CommenntsToDisplay">

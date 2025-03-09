@@ -5,7 +5,8 @@
 @{
 	ViewData["Title"] = "Home Page";
 }
-
+<h1>Destinations</h1>
+<hr />
 <form id="searchField" asp-action="IndexPost">
 	<select asp-for="DisplayType" oninput="showOrHideSearch()" id="searchSelect">
 		<option value="MostLikes">Most Likes</option>
@@ -43,7 +44,6 @@
 		{
 			<div class="destinationDiv">
 				<h3>@pagey.Title</h3>
-				<p>@pagey.Summary</p>
 				<a asp-action="PageViewer" asp-route-id="@pagey.Id" class="submit-a">View page</a>
 			</div>
 		}

@@ -6,7 +6,8 @@
 @{
 	ViewData["Title"] = "Home Page";
 }
-
+<h1>Culture</h1>
+<hr />
 <form id="searchField" asp-action="AllCulturePost">
 	<select asp-for="DisplayType" oninput="showOrHideSearch()" id="searchSelect" class="option-select">
 		<option value="MostLikes">Most Likes</option>
@@ -35,7 +36,6 @@
 		{
 			<div class="destinationDiv">
 				<h3>@pagey.Title</h3>
-				<p>@pagey.Summary</p>
 				<a asp-action="CulturePage" asp-route-id="@pagey.Id" class="submit-a">View page</a>
 			</div>
 		}

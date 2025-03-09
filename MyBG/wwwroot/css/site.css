@@ -147,7 +147,7 @@ body {
   padding: 5px;
   margin: 20px;
   display: inline-block;
-  min-width: 200px;
+  width: 16rem;
   text-align: center;
 }
 
@@ -155,6 +155,7 @@ body {
   color: rgb(53, 53, 53);
   padding-top: 7px;
   padding-bottom: 5px;
+  overflow: auto;
 }
 
 .create-label {
@@ -328,7 +329,6 @@ body {
     background-color: rgb(2, 71, 2);
     margin: 0px;
     margin-bottom: 20px;
-    padding-bottom: 10px
 }
 
 #flexDiv {
@@ -347,8 +347,7 @@ body {
 .navigator-flex {
     text-align: center;
     flex: 1;
-    font-size: 1.5em;
-    color: rgb(2, 71, 2);
+    font-size: 1.5vw;
     transform:translate(0, -25%);
 }
 
@@ -362,7 +361,7 @@ body {
     color: white;
     text-decoration: none;
     background-color: rgb(2, 71, 2);
-    font-size: 1.8em;
+    font-size: 1.5vw;
     display: block;
 }
 
@@ -372,9 +371,10 @@ body {
 
 .account-pfp {
     margin-top: 10px;
-    width: 5vw;
-    max-width: 100px;
-    max-height: 100px;
+    height: 5.5vw;
+    width: 5.5vw;
+    max-width: 200px;
+    max-height: 200px;
 }
 
 .navigator-text {
@@ -393,19 +393,19 @@ body {
 }
 
 #logoNav {
-    width: 100px;
+    width: 8vw;
     position: relative;
     left: 50%;
+    padding-bottom: 10px;
     transform: translate(-50%);
 }
 
 .titleNav {
     color: white;
-    text-align: center;
     display: block;
-    font-size: 1.5em;
+    font-size: 1.5vw;
+    text-align: center;
     padding: 5px;
-    margin: 10px;
     padding-top: 0px;
 }
 
@@ -421,13 +421,6 @@ body {
 .submit-a:hover {
     color: rgb(2, 71, 2);
     cursor: pointer;
-}
-
-.navigator-img {
-    flex: 0.2;
-    position: relative;
-    top: 10px;
-    left: 20px;
 }
 
 #ProfileA {
@@ -515,6 +508,14 @@ body {
 .replyForm {
     display: none;
 }
+
+.navigator-img {
+    flex: 0.2;
+    position: relative;
+    top: 10px;
+    left: 20px;
+}
+
 
 .TransportWayDisplay {
     font-size: 1.6em;
