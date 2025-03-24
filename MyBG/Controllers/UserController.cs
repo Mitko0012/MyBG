@@ -26,7 +26,6 @@ public class UserController : Controller
         _manager = manager;
     }
 
-    [Authorize]
     public IActionResult UserPage(string userName)
     {
         PFPModel userDataModel = _ctx.PFPs.Where(x => !x.IsDeleted).Include(x => x.Contributions).FirstOrDefault(x => x.UserName == userName);
@@ -79,7 +78,6 @@ public class UserController : Controller
         return View(msg);
     }
 
-    [Authorize]
     public IActionResult Users()
     {
         List<PFPModel> models = new List<PFPModel>();

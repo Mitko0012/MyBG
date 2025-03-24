@@ -28,7 +28,7 @@
 <body>
     <div class="main-content">
         @{
-            if (SignInManager != null && Context != null && SignInManager.IsSignedIn(User))
+            if (SignInManager != null && Context != null)
             {
                 <header id="navHed">
                         <div id="flexDiv">
@@ -45,10 +45,13 @@
                             <div class="navigator-flex">
                                 <a asp-area="" asp-controller="Page" asp-action="AllCulture">Culture</a>
                             </div>
-                            <div class="navigator-user">
-                                <img class="account-pfp" src="@Context.PFPs.FirstOrDefault(x => x.UserName == SignInManager.UserManager.GetUserAsync(User).Result.UserName).ReturnFile" />
-                                <a asp-controller="User" asp-action="UserPage" asp-route-userName="@SignInManager.UserManager.GetUserAsync(User).Result.UserName">My account</a>
-                            </div>
+                            if(SignInManager.IsSignedIn(User))
+                            {
+                                <div class="navigator-user">
+                                    <img class="account-pfp" src="@Context.PFPs.FirstOrDefault(x => x.UserName == SignInManager.UserManager.GetUserAsync(User).Result.UserName).ReturnFile" />
+                                    <a asp-controller="User" asp-action="UserPage" asp-route-userName="@SignInManager.UserManager.GetUserAsync(User).Result.UserName">My account</a>
+                                </div>
+                            }
                             <br />
                         </div>
                 </header>
@@ -61,7 +64,7 @@
         </div>
     </div>
     @{
-        if (SignInManager != null && Context != null && SignInManager.IsSignedIn(User))
+        if (SignInManager != null && Context != null)
         {
             <footer class="main-footer">
                 <a class="footer-copyright" asp-controller="Page" asp-action="CopyrightIcon">Copyright for icons</a>

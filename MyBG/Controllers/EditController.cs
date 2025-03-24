@@ -22,7 +22,6 @@ public class EditController : Controller
         _manager = manager;
     }
 
-    [Authorize]
     public IActionResult ViewEdit(int pageId, int editIndex)
     {
         PageModel? page = _ctx.Pages.Include(x => x.Edits).ThenInclude(x => x.UserCreated).FirstOrDefault(x => x.Id == pageId);
@@ -72,7 +71,6 @@ public class EditController : Controller
         return RedirectToAction("ViewEdits", new { pageId = model.PageModelKey });
     }
 
-    [Authorize]
     public IActionResult ViewEdits(int pageId)
     {
         ViewEditsModel model = new ViewEditsModel();

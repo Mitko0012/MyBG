@@ -18,7 +18,6 @@ namespace MyBG.Controllers
             _manager = manager;
         }
 
-        [Authorize]
         public IActionResult Index(string? sortingType, string? searchString)
         {
             ForumContainer model = new ForumContainer();
@@ -66,7 +65,6 @@ namespace MyBG.Controllers
             _ctx.SaveChanges();
             return RedirectToAction("Index");
         }
-        [Authorize]
         public ActionResult PostViewer(int id, string? scroll, string? replyString)
         {
             ForumQuestion? question = _ctx.Posts.Where(x => !x.IsDeleted).Include(x => x.User).Include(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.User).Include(x => x.Comment).ThenInclude(x => x.Replies).ThenInclude(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.Replies).ThenInclude(x => x.User).FirstOrDefault(x => x.Id == id);

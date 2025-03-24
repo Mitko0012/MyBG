@@ -19,12 +19,15 @@
 	</div>
 </div>
 @{
-	if(SignInManager.UserManager.GetUserAsync(User).Result.UserName == Model.UserName)
+	if(SignInManager.IsSignedIn)
 	{
-		<a asp-action="Inbox" class="page-control-button">Inbox</a>
-		<a asp-action="ViewSaved" class="page-control-button">My saved pages</a>
-		<a href="~/Identity/Account/Manage" class="page-control-button">Change PFP</a>
-		<a href="~/Identity/Account/Manage/ChangePassword" class="page-control-button">Change password</a>
-		<a href="~/Identity/Account/Logout" class="page-control-button">Log out</a>
+		if(SignInManager.UserManager.GetUserAsync(User).Result.UserName == Model.UserName)
+		{
+			<a asp-action="Inbox" class="page-control-button">Inbox</a>
+			<a asp-action="ViewSaved" class="page-control-button">My saved pages</a>
+			<a href="~/Identity/Account/Manage" class="page-control-button">Change PFP</a>
+			<a href="~/Identity/Account/Manage/ChangePassword" class="page-control-button">Change password</a>
+			<a href="~/Identity/Account/Logout" class="page-control-button">Log out</a>
+		}
 	}
-}
+}		

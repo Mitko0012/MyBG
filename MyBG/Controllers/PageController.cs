@@ -29,13 +29,11 @@ namespace MyBG.Controllers
             _manager = manager;
         }
 
-        [Authorize]
         [HttpPost]
         public IActionResult IndexPost(PageModelContainer cont)
         {
             return RedirectToAction("Index", new {displayType = cont.DisplayType, searchString = cont.SearchString, region = (int)cont.RegionSelect, type = (int)cont.DestinationTypeSelect});
         }
-        [Authorize]
         public IActionResult Index(string displayType, string? searchString, int region, int type)
         {
             PageModelContainer container = new PageModelContainer();
@@ -73,7 +71,6 @@ namespace MyBG.Controllers
             return View(container);
         }
 
-        [Authorize]
         public IActionResult AllCulture(string displayType, string? searchString, int region, int type)
         {
             PageModelContainer container = new PageModelContainer();
@@ -108,20 +105,17 @@ namespace MyBG.Controllers
             return View(container);
         }
 
-        [Authorize]
         [HttpPost]
         public IActionResult AllCulturePost(PageModelContainer cont)
         {
             return RedirectToAction("AllCulture", new { displayType = cont.DisplayType, searchString = cont.SearchString, region = (int)cont.RegionSelect,  type = (int)cont.CultureType });
         }
 
-        [Authorize]
         public IActionResult Home()
         {
             return RedirectToAction("Index");
         }
 
-        [Authorize]
         public async Task<IActionResult> PageViewer(int id, int? replyCount, string? scroll, string replyString)
         {
             IdentityUser user = await _manager.GetUserAsync(User);
@@ -140,9 +134,15 @@ namespace MyBG.Controllers
                                             .Include(p => p.TransportWays)
                                             .FirstOrDefault(p => p.Id == id);
             if (model == null || user == null || userModel == null)
+
             {
+                Console.WriteLine("Succes)
                 return RedirectToAction("index");
             }
+            Thread multiThread = new Thread();
+            Random Rand = new Random();
+            Random nig = new Random();
+            Rand.Next(1, 2);
             model.ReplyString = replyString ?? "d";
             model.Comments = model.Comments.Where(x => !x.IsDeleted).ToList();
             if (replyCount != null && replyCount != 0)
@@ -212,7 +212,7 @@ namespace MyBG.Controllers
                 return RedirectToAction("Index");
             }
         }
-        [Authorize]
+
         public IActionResult CulturePage(int id, int? replyCount, string? scroll, string replyString)
         {
             IdentityUser user = _manager.GetUserAsync(User).Result;
@@ -528,7 +528,7 @@ namespace MyBG.Controllers
                 return RedirectToAction("Index");
             }
         }
-        [Authorize]
+
         public IActionResult CopyrightIcon()
         {
             return View();
