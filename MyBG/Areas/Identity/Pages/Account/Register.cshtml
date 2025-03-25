@@ -19,12 +19,18 @@
             </div>
             <div>
                 <label asp-for="Input.Password" class="log-label">Password</label>
-                <input asp-for="Input.Password" class="log-input" autocomplete="new-password" aria-required="true"/>
+                <div>
+                    <input asp-for="Input.Password" class="log-input password-input" autocomplete="new-password" aria-required="true"/>
+                    <img class="password-eye" src="~/textures/view.png" onclick="hideOrShowPassword(0)">
+                </div>
                 <span asp-validation-for="Input.Password" class="text-danger login-warning"></span>
             </div>
             <div>
                 <label asp-for="Input.ConfirmPassword" class="log-label">Confirm Password</label>
-                <input asp-for="Input.ConfirmPassword" class="log-input" autocomplete="new-password" aria-required="true"/>
+                <div>    
+                    <input asp-for="Input.ConfirmPassword" class="log-input password-input" autocomplete="new-password" aria-required="true"/>
+                    <img class="password-eye" src="~/textures/view.png" onclick="hideOrShowPassword(1)">
+                </div>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger login-warning"></span>
             </div>
             <p class="log-label">I am a:</p>
@@ -40,6 +46,7 @@
         </form>
         <a asp-page="Login" class="submit-a">Log in using an existing account</a>
     </div>
+    <script src="~/js/hideOrShowPassword.js"></script>
 </div>
 
 @section Scripts {

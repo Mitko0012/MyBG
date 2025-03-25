@@ -21,7 +21,10 @@
                 </div>
                 <div>
                     <label asp-for="Input.Password" class="log-label">Password</label>
-                    <input asp-for="Input.Password" class="log-input" autocomplete="current-password" aria-required="true"/>
+                    <div>
+                        <input asp-for="Input.Password" class="log-input password-input" autocomplete="current-password" aria-required="true"/>
+                        <img class="password-eye" src="~/textures/view.png" onclick="hideOrShowPassword(0)">
+                    </div>
                     <br>
                     <span asp-validation-for="Input.Password" class="text-danger  login-warning"></span>
                 </div>
@@ -38,6 +41,7 @@
             <a asp-page="Register" class="submit-a">Don't have an account?</a>
         </section>
     </div>
+    <script src="~/js/hideOrShowPassword.js"></script>
 </div>
 
 @section Scripts {

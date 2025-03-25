@@ -147,7 +147,7 @@ body {
   padding: 5px;
   margin: 20px;
   display: inline-block;
-  width: 16rem;
+  width: 20rem;
   text-align: center;
 }
 
@@ -156,6 +156,16 @@ body {
   padding-top: 7px;
   padding-bottom: 5px;
   overflow: auto;
+}
+
+.destinationDiv h3 {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.editDiv h3 {
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .create-label {
@@ -894,4 +904,11 @@ html, body {
 
 .login-warning {
     text-align: center;
+}
+
+.password-eye {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    right: 40px;
 }
