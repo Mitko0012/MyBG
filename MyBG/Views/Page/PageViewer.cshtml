@@ -112,6 +112,7 @@
 					}
 				</form>
 			</div>
+			@if(SignInManager.IsSignedIn(User))
 			@if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager"))
 			{
 				<a asp-action="DeleteComment" asp-controller="Admin" asp-route-id="@comment.Id" class="admin-button">Delete comment</a>
@@ -154,7 +155,8 @@
 								}
 							</form>
 						</div>
-						@if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager"))
+						@if(SignInManager.IsSignedIn(User))
+						@if(SignInManager.IsSignedIn(User) && SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager"))
 						{
 							<a asp-action="DeleteComment" asp-controller="Admin" asp-route-id="@reply.Id" class="admin-button">Delete comment</a>
 						}

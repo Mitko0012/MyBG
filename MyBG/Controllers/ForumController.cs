@@ -12,10 +12,12 @@ namespace MyBG.Controllers
     {
         ApplicationDbContext _ctx;
         UserManager<IdentityUser> _manager;
-        public ForumController(ApplicationDbContext ctx, UserManager<IdentityUser> manager) 
+        SignInManager<IdentityUser> _signInManager;
+        public ForumController(ApplicationDbContext ctx, UserManager<IdentityUser> manager, SignInManager<IdentityUser> signInManager) 
         {
             _ctx = ctx;
             _manager = manager;
+            _signInManager = signInManager;
         }
 
         public IActionResult Index(string? sortingType, string? searchString)
@@ -68,19 +70,26 @@ namespace MyBG.Controllers
         public ActionResult PostViewer(int id, string? scroll, string? replyString)
         {
             ForumQuestion? question = _ctx.Posts.Where(x => !x.IsDeleted).Include(x => x.User).Include(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.User).Include(x => x.Comment).ThenInclude(x => x.Replies).ThenInclude(x => x.LikedUser).Include(x => x.Comment).ThenInclude(x => x.Replies).ThenInclude(x => x.User).FirstOrDefault(x => x.Id == id);
-            PFPModel? userModel = _ctx.PFPs.Where(x => !x.IsDeleted).FirstOrDefault(x => x.UserName == _manager.GetUserAsync(User).Result.UserName);
-            if (question == null || userModel == null)
+            PFPModel? userModel = new PFPModel();
+            if(_signInManager.IsSignedIn(User))
+            {
+                userModel = _ctx.PFPs.Where(x => !x.IsDeleted).FirstOrDefault(x => x.UserName == _manager.GetUserAsync(User).Result.UserName);
+            }
+            if (question == null)
             {
                 return RedirectToAction("Index");
             }
-            if (question.LikedUser.FirstOrDefault(x => x.UserName == userModel.UserName) != null)
+            if(_signInManager.IsSignedIn(User))
             {
-                question.LikedByUser = true;
+                if (_signInManager.IsSignedIn(User) && question.LikedUser.FirstOrDefault(x => x.UserName == userModel.UserName) != null)
+                {
+                    question.LikedByUser = true;
+                }
+                else
+                {
+                    question.LikedByUser = false;
+                }
             }   
-            else
-            {
-                question.LikedByUser = false;
-            }
             question.Scroll = scroll ?? "0";
             question.ReplyString = replyString ?? "d";
             question.Pfp = _ctx.PFPs.FirstOrDefault(x => x.UserName == question.User.UserName);
@@ -89,24 +98,30 @@ namespace MyBG.Controllers
             {
                 item.PFP = _ctx.PFPs.FirstOrDefault(x => x.UserName == item.User.UserName);
                 item.Replies = item.Replies.Where(x => !x.IsDeleted).ToList();
-                if (item.LikedUser.FirstOrDefault(x => x.UserName == userModel.UserName) != null)
+                if(_signInManager.IsSignedIn(User))
                 {
-                    item.LikedByUser = true;
-                }
-                else
-                {
-                    item.LikedByUser = false;
+                    if (item.LikedUser.FirstOrDefault(x => x.UserName == userModel.UserName) != null)
+                    {
+                        item.LikedByUser = true;
+                    }
+                    else
+                    {
+                        item.LikedByUser = false;
+                    } 
                 }
                 foreach(var reply in item.Replies)
                 {
                     reply.PFP = _ctx.PFPs.FirstOrDefault(x => x.UserName == reply.User.UserName);
-                    if (reply.LikedUser.FirstOrDefault(x => x.UserName == userModel.UserName) != null)
+                    if(_signInManager.IsSignedIn(User))
                     {
-                        reply.LikedByUser = true;
-                    }
-                    else
-                    {
-                        reply.LikedByUser = false;
+                        if (_signInManager.IsSignedIn(User) && reply.LikedUser.FirstOrDefault(x => x.UserName == userModel.UserName) != null)
+                        {
+                            reply.LikedByUser = true;
+                        }
+                        else
+                        {
+                            reply.LikedByUser = false;
+                        }
                     }
                 }
             }

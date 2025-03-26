@@ -152,7 +152,7 @@ namespace MyBG.Areas.Identity.Pages.Account
                     }
                     _context.PFPs.Add(pfp);
                     _context.SaveChanges();
-                    return LocalRedirect(returnUrl);
+                    return RedirectToAction("Index", "Page");
                 }
                 foreach (var error in result.Errors)
                 {

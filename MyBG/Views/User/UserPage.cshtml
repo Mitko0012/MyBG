@@ -19,7 +19,7 @@
 	</div>
 </div>
 @{
-	if(SignInManager.IsSignedIn)
+	if(SignInManager.IsSignedIn(User))
 	{
 		if(SignInManager.UserManager.GetUserAsync(User).Result.UserName == Model.UserName)
 		{

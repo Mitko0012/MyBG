@@ -45,11 +45,17 @@
                             <div class="navigator-flex">
                                 <a asp-area="" asp-controller="Page" asp-action="AllCulture">Culture</a>
                             </div>
-                            if(SignInManager.IsSignedIn(User))
+                            @if(SignInManager.IsSignedIn(User))
                             {
                                 <div class="navigator-user">
                                     <img class="account-pfp" src="@Context.PFPs.FirstOrDefault(x => x.UserName == SignInManager.UserManager.GetUserAsync(User).Result.UserName).ReturnFile" />
                                     <a asp-controller="User" asp-action="UserPage" asp-route-userName="@SignInManager.UserManager.GetUserAsync(User).Result.UserName">My account</a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="navigator-flex">
+                                    <a href="~/Identity/Account/Login">Log in</a>
                                 </div>
                             }
                             <br />

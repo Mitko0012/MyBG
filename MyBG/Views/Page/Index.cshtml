@@ -31,9 +31,12 @@
 	</select>
 	<button type="submit">Apply search setting</button>
 	<a asp-action="Create" class="submit-a">Submit a destination</a>
-	@if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager"))
+	@if(SignInManager.IsSignedIn(User))
 	{
-		<a asp-controller="Admin" asp-action="EditSubmissions" class="admin-button-positive">View submissions</a>
+		if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager"))
+		{
+			<a asp-controller="Admin" asp-action="EditSubmissions" class="admin-button-positive">View submissions</a>
+		}
 	}
 </form>
 <br />

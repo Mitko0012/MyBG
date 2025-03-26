@@ -21,9 +21,12 @@
 			<hr />
 			<a asp-action="PostViewer" asp-route-id="@i.Id" id="ForumPost" class="post-title">@i.Title</a>
 			<br />
-			@if (SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager"))
+			@if(SignInManager.IsSignedIn(User))
 			{
-				<a asp-action="DeleteForumPost" asp-controller="Admin" class="admin-button" asp-route-id="@i.Id">Delete post</a>
+				@if (SignInManager.IsSignedIn(User) && SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager"))
+				{
+					<a asp-action="DeleteForumPost" asp-controller="Admin" class="admin-button" asp-route-id="@i.Id">Delete post</a>
+				}
 			}
 		</div>
 	}
