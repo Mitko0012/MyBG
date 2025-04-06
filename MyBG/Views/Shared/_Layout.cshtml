@@ -49,6 +49,10 @@
                             {
                                 <div class="navigator-user">
                                     <img class="account-pfp" src="@Context.PFPs.FirstOrDefault(x => x.UserName == SignInManager.UserManager.GetUserAsync(User).Result.UserName).ReturnFile" />
+                                     @if(Context.PFPs.Include(x => x.Inbox).FirstOrDefault(x => x.UserName == SignInManager.UserManager.GetUserAsync(User).Result.UserName).Inbox.Where(x => !x.IsRead).ToArray().Length != 0)
+                                     {
+                                        <img id="notify-pfp" src="~/textures/notify.png" />
+                                     }
                                     <a asp-controller="User" asp-action="UserPage" asp-route-userName="@SignInManager.UserManager.GetUserAsync(User).Result.UserName">My account</a>
                                 </div>
                             }

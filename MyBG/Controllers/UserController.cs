@@ -28,7 +28,7 @@ public class UserController : Controller
 
     public IActionResult UserPage(string userName)
     {
-        PFPModel userDataModel = _ctx.PFPs.Where(x => !x.IsDeleted).Include(x => x.Contributions).FirstOrDefault(x => x.UserName == userName);
+        PFPModel userDataModel = _ctx.PFPs.Where(x => !x.IsDeleted).Include(x => x.Contributions).Include(x => x.Inbox).FirstOrDefault(x => x.UserName == userName);
         if (!ModelState.IsValid || userDataModel == null)
         {
             userDataModel = new PFPModel();
@@ -63,7 +63,12 @@ public class UserController : Controller
         {
             return RedirectToAction("Index", "Page");
         }
+        foreach(InboxMessage msg in model.Inbox.Where(x => !x.IsRead))
+        {
+            msg.IsRead = true;
+        }
         model.Inbox.Reverse();
+        _ctx.SaveChanges();
         return View(model);
     }
 

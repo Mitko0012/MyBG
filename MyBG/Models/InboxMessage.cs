@@ -13,6 +13,14 @@ namespace MyBG.Models
         [Required]
         public string Message { get; set; }
         [Required]
-        public PFPModel UserSource { get; set; }   
+        public PFPModel UserSource { get; set; }
+        [Required]
+        public bool IsRead {get; set;} = true;   
+
+        public InboxMessage()
+        {
+            IsRead = false;
+        }
+
     }
 }

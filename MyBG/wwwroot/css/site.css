@@ -364,6 +364,7 @@ body {
 .navigator-user {
     text-align: center;
     flex: 0.5;
+    position: relative;
 }
 
 .navigator-user a {
@@ -725,6 +726,7 @@ body {
     display: block;
     text-decoration: none;
     border-radius: 5px;
+    position: relative;
 }
 
 .page-control-button:hover {
@@ -914,4 +916,22 @@ html, body {
     left: 410px;
     bottom: 65px;
     white-space: nowrap;
+}
+
+#notify-pfp {
+    width: 20px;
+    height: 20px;
+    display: block;
+    position: absolute;
+    bottom: 7vw;
+    left: 8vw;
+}
+
+#notify-button {
+    width: 20px;
+    height: 20px;
+    display: block;
+    position: absolute;
+    bottom: 30px;
+    left: 50px;
 }

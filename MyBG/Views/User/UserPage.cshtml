@@ -23,7 +23,12 @@
 	{
 		if(SignInManager.UserManager.GetUserAsync(User).Result.UserName == Model.UserName)
 		{
-			<a asp-action="Inbox" class="page-control-button">Inbox</a>
+			<a asp-action="Inbox" class="page-control-button">Inbox
+				@if(Model.Inbox.Where(x => !x.IsRead).ToArray().Length != 0)
+				{
+					<img id="notify-button" src="~/textures/notify.png" />
+				}
+			</a>
 			<a asp-action="ViewSaved" class="page-control-button">My saved pages</a>
 			<a href="~/Identity/Account/Manage" class="page-control-button">Change PFP</a>
 			<a href="~/Identity/Account/Manage/ChangePassword" class="page-control-button">Change password</a>
