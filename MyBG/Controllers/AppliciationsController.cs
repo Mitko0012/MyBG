@@ -9,53 +9,57 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace MyBG.Controllers;
 
-public class ApplicationsController
+public class ApplicationsController : Controller
 {
     ApplicationDbContext _ctx;
     UserManager<IdentityUser> _userManager;
-    public ApplicationsController(ApplicationDbContext ctx)
+    public ApplicationsController(ApplicationDbContext ctx, UserManager<IdentityUser> userManager)
     {
         _ctx = ctx;
+        _userManager = userManager;
     }
 
     [Authorize(Roles = "User")]
     public ActionResult Submit()
     {
-        return View(new AssignAdmin());
+        return View(new AssignAdmin()
+        {
+            User = _userManager.GetUserAsync(User).Result.UserName
+        });
     }
 
-    [HttpPost]
     [Authorize(Roles = "User")]
-    public ActionResult Submit(AssignAdmin message)
+    [HttpPost]
+    public ActionResult Submit(string message)
     {
         AdminRequest request = new AdminRequest();
-        request.UserCreated = _ctx.PFPs.FirstOrDefault(_userManager.GetUserAsync(User).Result.UserName);
-        request.Message = message.Message;
+        request.UserCreated = _ctx.PFPs.FirstOrDefault(x => x.UserName == _userManager.GetUserAsync(User).Result.UserName);
+        request.Message = message;
         _ctx.Requests.Add(request);
         _ctx.SaveChanges();
-        return RedirectToAction("Home")
+        return RedirectToAction("Index", "Page");
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Manager")]
     public ActionResult ViewPending()
     {
         AdminRequests requests = new AdminRequests();
-        requests.Requests = _ctx.Requests.Where(x => !x.Processed).ToList();
+        requests.Requests = _ctx.Requests.Include(x => x.UserCreated).Where(x => !x.Processed).ToList();
         return View(requests);
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Manager")]
     public ActionResult ViewRequest(int id)
     {
-        AdminRequest? request = _ctx.Requests.Where(x => !x.Processed).FirstOrDefault(x => x.Id == id);
+        AdminRequest? request = _ctx.Requests.Where(x => !x.Processed).Include(x => x.UserCreated).FirstOrDefault(x => x.Id == id);
         if(request == null)
         {
-            return RedirectToAction("Home");
+            return RedirectToAction("Index", "Page");
         }
-        return View();
+        return View(request);
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Manager")]
     public ActionResult Approve(int id)
     {
         AdminRequestResponse response = new AdminRequestResponse();
@@ -68,11 +72,11 @@ public class ApplicationsController
         return View(response);
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Manager")]
     public ActionResult Decline(int id)
     {
         AdminRequestResponse response = new AdminRequestResponse();
-        response.Request = _ctx.Requests.Where(x => !x.Processed).FirstOrDefault(x => x.Id == id);
+        response.Request = _ctx.Requests.Where(x => !x.Processed).Include(x => x.UserCreated).FirstOrDefault(x => x.Id == id);
         response.Message = $"Dear {response.Request.UserCreated.UserName}, the My BG team has reviewed your application and has decided that you do not fit as an appropriate administrator. We thank you for your decision to volunteer to be an administrator.";
         if(response == null)
         {
@@ -81,31 +85,43 @@ public class ApplicationsController
         return View(response);
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Manager")]
     [HttpPost]
-    public async Task<ActionResult> Approve(AdminRequestResponse requestResponse)
+    public async Task<ActionResult> Approve(string message, AdminRequest? request)
     {
         InboxMessage msg = new InboxMessage();
-        msg.Message = requestResponse.Message;
+        msg.Message = message;
         msg.Title = "You have been promoted to admin!";
-        requestResponse.Request.UserCreated.Inbox.Add(msg);
-        IdentityUser user = _ctx.Users.First(x => x.Id == requestResponse.Request.UserCreated.UserName);
+        request = _ctx.Requests.Where(x => !x.Processed).Include(x => x.UserCreated).FirstOrDefault(x => x.Id == request.Id);
+        if(request == null)
+        {
+            return RedirectToAction("Index", "Page");
+        }
+        request.Processed = true;
+        request.UserCreated.Inbox.Add(msg);
+        IdentityUser user = _ctx.Users.First(x => x.UserName == request.UserCreated.UserName);
         await _userManager.AddToRoleAsync(user, "Admin");
         await _userManager.RemoveFromRoleAsync(user, "User");
         await _userManager.UpdateSecurityStampAsync(user);
         _ctx.SaveChanges();
-        return RedirectToAction("Home");
+        return RedirectToAction("Index", "Page");
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Manager")]
     [HttpPost]
-    public async Task<ActionResult> Decline(AdminRequestResponse requestResponse)
+    public async Task<ActionResult> Decline(string message, AdminRequest? request)
     {
         InboxMessage msg = new InboxMessage();
-        msg.Message = requestResponse.Message;
+        msg.Message = message;
         msg.Title = "Your admin application has been reviewed.";
-        requestResponse.Request.UserCreated.Inbox.Add(msg);
+        request = _ctx.Requests.Where(x => !x.Processed).Include(x => x.UserCreated).FirstOrDefault(x => x.Id == request.Id);
+        if(request == null)
+        {
+            return RedirectToAction("Index", "Page");
+        }
+        request.Processed = true;
+        request.UserCreated.Inbox.Add(msg);
         _ctx.SaveChanges();
-        return RedirectToAction("Home");
+        return RedirectToAction("Index", "Page");
     }
 }

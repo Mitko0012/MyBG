@@ -1,0 +1,6 @@
+@model AdminRequest
+
+<h1>Proposal by @Model.UserCreated.UserName</h1>
+<p class="user-text">@Model.Message</p>
+<a asp-action="Approve" asp-route-id="@Model.Id" class="admin-button-positive">Approve</a>
+<a asp-action="Decline" asp-route-id="@Model.Id" class="admin-button">Decline</a>

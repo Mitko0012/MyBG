@@ -1,0 +1,8 @@
+@model AdminRequests
+
+<h1>Admin applications</h1>
+@foreach(AdminRequest proposal in Model.Requests)
+{
+    <a asp-action="ViewRequest" asp-route-id="@proposal.Id" class="post-title">Admin proposal by @proposal.UserCreated.UserName</a>
+    <hr />
+}

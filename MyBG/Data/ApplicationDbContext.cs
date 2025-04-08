@@ -52,6 +52,9 @@ namespace MyBG.Data
                         .OnDelete(DeleteBehavior.SetNull);
             modelBuilder.Entity<CommentModel>()
                         .HasMany(x => x.Replies);
+
+            modelBuilder.Entity<AdminRequest>()
+                        .HasOne(x => x.UserCreated);
         }
     }
 }

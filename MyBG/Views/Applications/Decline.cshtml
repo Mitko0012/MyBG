@@ -1,0 +1,8 @@
+@model AdminRequestResponse
+
+<a class="link" asp-action="ViewRequest" asp-route-id="@Model.Request.Id"><img src="~/Textures/arrow.png" class="back-icon" /> Back</a>
+<h1>Are you sure you want to decline the admin application of @(Model.Request.UserCreated.UserName)?</h1>
+<form method="post" enctype="multipart/form-data">    
+    <textarea asp-for="Message" class="message-area"></textarea>
+    <button type="submit" class="create-button">Decline</button>
+</form>

@@ -273,6 +273,29 @@ namespace MyBG.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("MyBG.Models.AdminRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Processed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserCreatedId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserCreatedId");
+
+                    b.ToTable("Requests");
+                });
+
             modelBuilder.Entity("MyBG.Models.CommentModel", b =>
                 {
                     b.Property<int>("Id")
@@ -651,6 +674,17 @@ namespace MyBG.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MyBG.Models.AdminRequest", b =>
+                {
+                    b.HasOne("MyBG.Models.PFPModel", "UserCreated")
+                        .WithMany()
+                        .HasForeignKey("UserCreatedId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserCreated");
                 });
 
             modelBuilder.Entity("MyBG.Models.CommentModel", b =>

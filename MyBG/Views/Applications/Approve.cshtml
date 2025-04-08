@@ -1,0 +1,8 @@
+@model AdminRequestResponse
+
+<a class="link" asp-action="ViewRequest" asp-route-id="@Model.Request.Id"><img src="~/Textures/arrow.png" class="back-icon" /> Back</a>
+<form method="post" enctype="multipart/form-data">    
+    <h1>Are you sure you want to approve @(Model.Request.UserCreated.UserName)'s admin application?</h1>
+    <textarea asp-for="Message" class="message-area"></textarea>
+    <button type="submit" class="create-button">Approve</button>
+</form>

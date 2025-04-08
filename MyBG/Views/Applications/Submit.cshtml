@@ -1,0 +1,13 @@
+@model AssignAdmin
+
+<h1>Submit an admin application</h1>
+<form method="post" asp-action="Submit" enctype="multipart/form-data">  
+    <label class="create-label" asp-for="Message">Your application message</label>
+    <textarea name="Message" class="message-area"></textarea>
+    <span asp-validation-for="Message" class="text-danger"></span>
+    <button type="submit" class="create-button">Submit application</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
