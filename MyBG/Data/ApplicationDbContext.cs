@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using MyBG.Controllers;
 using MyBG.Models;
 
 namespace MyBG.Data
@@ -14,6 +15,7 @@ namespace MyBG.Data
         public DbSet<TransportWay> TransportWays { get; set; }
         public DbSet<EditModel> Edits {get; set;}
         public DbSet<InboxMessage> Messages { get; set; }
+        public DbSet<AdminRequest> Requests {get; set;}
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {

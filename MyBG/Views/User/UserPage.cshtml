@@ -33,6 +33,10 @@
 			<a href="~/Identity/Account/Manage" class="page-control-button">Change PFP</a>
 			<a href="~/Identity/Account/Manage/ChangePassword" class="page-control-button">Change password</a>
 			<a href="~/Identity/Account/Logout" class="page-control-button">Log out</a>
+			@if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("User"))
+			{
+				<a href="~/Applications/Submit" class="page-control-button">Submit an admin application</a>
+			}
 		}
 	}
 }		
