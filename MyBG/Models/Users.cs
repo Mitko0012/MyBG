@@ -5,5 +5,6 @@ namespace MyBG.Models
     public class Users
     {
         public List<IdentityUser>? AllUsers;
+        public List<IdentityUser>? DeletedUsers;
     }
 }

@@ -38,13 +38,34 @@
                 }
                 if (!SignInManager.UserManager.GetRolesAsync(user).Result.Contains("Admin") && !SignInManager.UserManager.GetRolesAsync(user).Result.Contains("Manager") && (SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Admin") || SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager")))
                 {
-                    <a asp-controller="Admin" class="admin-button" asp-action="DeleteUser" asp-route-userName="@user.UserName">Delete user</a>
+                    <a asp-controller="Admin" class="admin-button" asp-action="DeleteUserPage" asp-route-userName="@user.UserName">Delete user</a>
                 }
                 if (SignInManager.UserManager.GetRolesAsync(user).Result.Contains("Admin") && SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Result.Contains("Manager"))
                 {
-                    <a asp-controller="Admin" class="admin-button" asp-action="DeleteAdminUser" asp-route-userName="@user.UserName">Delete user</a>
+                    <a asp-controller="Admin" class="admin-button" asp-action="DeleteAdminPage" asp-route-userName="@user.UserName">Delete user</a>
                 }
             }
+            <hr />
+        }
+    }
+    if(SignInManager.UserManager.GetRolesAsync(SignInManager.UserManager.GetUserAsync(User).Result).Contains("Manager"))
+    {
+        <h3>Deleted users</h3>
+        <hr />
+        foreach(var user in Model.DeletedUsers)
+        {
+            <div class="user-div">
+                <div class="user-data">
+                    <img class="profile-pic" src="@Ctx.PFPs.FirstOrDefault(x => x.UserName == user.UserName).ReturnFile" />
+                </div>
+                <div class="user-data-name">
+                    <a asp-controller="User" class="comment-username" asp-action="UserPage" asp-route-userName = "@user.UserName">@user.UserName</a>
+                </div>
+                <div class="user-role">
+                    <p class="user-text">@SignInManager.UserManager.GetRolesAsync(user).Result[0]</p>
+                </div>
+            </div>
+            <a asp-controller="Admin" class="admin-button-positive" asp-action="Restore" asp-route-userName="@user.UserName">Restore user</a>
             <hr />
         }
     }

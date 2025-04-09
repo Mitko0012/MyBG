@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using MyBG.Data;
 using MyBG.Models;
+using System.Drawing;
 
 namespace MyBG.Areas.Identity.Pages.Account.Manage
 {
@@ -95,28 +96,36 @@ namespace MyBG.Areas.Identity.Pages.Account.Manage
             using (var memoryStream = new MemoryStream())
             {
                 FormFile.CopyTo(memoryStream);
-
                 _context.PFPs.FirstOrDefault(x => x.UserName == Username);
-                // Upload the file if less than 2 MB
                 if (PFP == null)
                 {
                     PFP = new PFPModel() { UserName = Username}; // Initialize if null
                     _context.PFPs.Add(PFP);
                 }
+                bool isImage = ImageValidator.IsImage(memoryStream);
+                if(!isImage)
+                {
+                    ModelState.AddModelError("FormFile", "The file is not an image file.");
+                }
+                if(memoryStream.Length < 1)
+                {
+                    ModelState.AddModelError("FormFile", "The file has no data.");
+                }
                 if (memoryStream.Length < 2097152)
                 {
-                    PFP.Image = memoryStream.ToArray();
+                    if(isImage && memoryStream.Length < 1)
+                        PFP.Image = memoryStream.ToArray();
                 }
                 else
                 {
                     ModelState.AddModelError("FormFile", "The file is too large.");
                 }
             }
-            _context.SaveChanges();
             if (!ModelState.IsValid)
             {
                 return Page();
             }
+            _context.SaveChanges();
             return Page();
         }
     }

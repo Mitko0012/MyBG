@@ -1,0 +1,4 @@
+@model PFPModel
+<a class="link" asp-action="Users" asp-controller="User"><img src="~/Textures/arrow.png" class="back-icon" /> Back</a>
+<h1>Are you sure you want to delete @(Model.Username)'s account?</h1>
+<a class="admin-button" asp-action="DeleteAdminUser" asp-route-userName="@Model.UserName">Delete account</a>

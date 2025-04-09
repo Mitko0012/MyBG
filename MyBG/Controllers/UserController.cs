@@ -85,15 +85,21 @@ public class UserController : Controller
 
     public IActionResult Users()
     {
-        List<PFPModel> models = new List<PFPModel>();
-        models = _ctx.PFPs.Where(p => !p.IsDeleted).ToList();
+        List<PFPModel> models = _ctx.PFPs.Where(p => !p.IsDeleted).ToList();
+        List<PFPModel> deletedModels = _ctx.PFPs.Where(p => p.IsDeleted).ToList();
         Users users = new Users();
         users.AllUsers = new List<IdentityUser>();
+        users.DeletedUsers = new List<IdentityUser>();
         foreach (var model in models)
         {
             users.AllUsers.Add(_ctx.Users.FirstOrDefault(x => x.UserName == model.UserName));
         }
+        foreach(var model in deletedModels)
+        {
+            users.AllUsers.Add(_ctx.Users.FirstOrDefault(x => x.UserName == model.UserName));
+        }
         users.AllUsers = users.AllUsers.OrderBy((x) => _manager.UserManager.GetRolesAsync(x).Result.Contains("Manager") ? 0 : _manager.UserManager.GetRolesAsync(x).Result.Contains("Admin") ? 1 : 2).ToList();
+        users.DeletedUsers = users.DeletedUsers.OrderBy((x) => _manager.UserManager.GetRolesAsync(x).Result.Contains("Admin") ? 0 : 1).ToList();
         return View(users);
     }
 

@@ -1,0 +1,4 @@
+@model PFPModel
+<a class="link" asp-action="Users" asp-controller="User"><img src="~/Textures/arrow.png" class="back-icon" /> Back</a>
+<h1>Are you sure you want to restore @(Model.Username)'s deleted account?</h1>
+<a class="admin-button-positive" asp-action="RestoreConfirm" asp-route-userName="@Model.UserName">Restore account</a>

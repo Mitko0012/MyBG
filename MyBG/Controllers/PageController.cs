@@ -350,11 +350,19 @@ namespace MyBG.Controllers
             using (var memoryStream = new MemoryStream())
             {
                 page.PageImage.CopyTo(memoryStream);
-
-                // Upload the file if less than 2 MB
+                bool isImage = ImageValidator.IsImage(memoryStream);
+                if(!isImage)
+                {
+                    ModelState.AddModelError("FormFile", "The file is not an image file.");
+                }
+                if(memoryStream.Length < 1)
+                {
+                    ModelState.AddModelError("FormFile", "The file has no data.");
+                }
                 if (memoryStream.Length < 2097152)
                 {
-                    page.PageImageArr = memoryStream.ToArray();
+                    if(isImage && memoryStream.Length < 1)
+                        page.PageImageArr = memoryStream.ToArray();
                 }
                 else
                 {
@@ -511,11 +519,19 @@ namespace MyBG.Controllers
             using (var memoryStream = new MemoryStream())
             {
                 model.PageImage.CopyTo(memoryStream);
-
-                // Upload the file if less than 2 MB
+                bool isImage = ImageValidator.IsImage(memoryStream);
+                if(!isImage)
+                {
+                    ModelState.AddModelError("FormFile", "The file is not an image file.");
+                }
+                if(memoryStream.Length < 1)
+                {
+                    ModelState.AddModelError("FormFile", "The file has no data.");
+                }
                 if (memoryStream.Length < 2097152)
                 {
-                    model.PageImageArr = memoryStream.ToArray();
+                    if(isImage && memoryStream.Length < 1)
+                        page.PageImageArr = memoryStream.ToArray();
                 }
                 else
                 {
