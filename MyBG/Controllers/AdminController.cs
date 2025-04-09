@@ -272,7 +272,7 @@ namespace MyBG.Controllers
         [Authorize(Roles = "Manager,Admin")]
         public async Task<IActionResult> DeleteUserPage(string userName)
         {
-            PFPModel? model = _dbContext.PFPs.FirstOrDefault(p => p.UserName == userName);
+            PFPModel? model = _dbContext.PFPs.Where(x => !x.IsDeleted).FirstOrDefault(p => p.UserName == userName);
             IdentityUser? user = _dbContext.Users.FirstOrDefault(u => u.UserName == userName);
             if(model == null || user == null || _manager.UserManager.GetRolesAsync(user).Result.Contains("Admin") || _manager.UserManager.GetRolesAsync(user).Result.Contains("Manager"))
             {
@@ -284,7 +284,7 @@ namespace MyBG.Controllers
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> DeleteAdminPage(string userName)
         {
-            PFPModel? model = _dbContext.PFPs.FirstOrDefault(p => p.UserName == userName);
+            PFPModel? model = _dbContext.PFPs.Where(x => !x.IsDeleted).FirstOrDefault(p => p.UserName == userName);
             IdentityUser? user = _dbContext.Users.FirstOrDefault(u => u.UserName == userName);
             if(model == null || user == null || _manager.UserManager.GetRolesAsync(user).Result.Contains("User") || _manager.UserManager.GetRolesAsync(user).Result.Contains("Manager"))
             {
@@ -296,7 +296,7 @@ namespace MyBG.Controllers
         [Authorize(Roles = "Manager,Admin")]
         public async Task<IActionResult> DeleteUser(string userName)
         {
-            PFPModel? model = _dbContext.PFPs.FirstOrDefault(p => p.UserName == userName);
+            PFPModel? model = _dbContext.PFPs.Where(x => !x.IsDeleted).FirstOrDefault(p => p.UserName == userName);
             IdentityUser? user = _dbContext.Users.FirstOrDefault(u => u.UserName == userName);
             if(user == null || model == null || _manager.UserManager.GetRolesAsync(user).Result.Contains("Admin") || _manager.UserManager.GetRolesAsync(user).Result.Contains("Manager"))
             {
@@ -311,7 +311,7 @@ namespace MyBG.Controllers
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> DeleteAdminUser(string userName)
         {
-            PFPModel? model = _dbContext.PFPs.FirstOrDefault(p => p.UserName == userName);
+            PFPModel? model = _dbContext.PFPs.Where(x => !x.IsDeleted).FirstOrDefault(p => p.UserName == userName);
             IdentityUser? user = _dbContext.Users.FirstOrDefault(u => u.UserName == userName);
             if(user == null || model == null || _manager.UserManager.GetRolesAsync(user).Result.Contains("User") || _manager.UserManager.GetRolesAsync(user).Result.Contains("Manager"))
             {
@@ -418,7 +418,7 @@ namespace MyBG.Controllers
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Restore(string userName)
         {
-            PFPModel? model = _dbContext.PFPs.FirstOrDefault(p => p.UserName == userName);
+            PFPModel? model = _dbContext.PFPs.Where(x => x.IsDeleted).FirstOrDefault(p => p.UserName == userName);
             IdentityUser? user = _dbContext.Users.FirstOrDefault(u => u.UserName == userName);
             if(model == null || user == null || _manager.UserManager.GetRolesAsync(user).Result.Contains("Manager"))
             {
@@ -430,7 +430,7 @@ namespace MyBG.Controllers
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> RestoreConfirm(string userName)
         {
-            PFPModel? model = _dbContext.PFPs.FirstOrDefault(p => p.UserName == userName);
+            PFPModel? model = _dbContext.PFPs.Where(x => x.IsDeleted).FirstOrDefault(p => p.UserName == userName);
             IdentityUser? user = _dbContext.Users.FirstOrDefault(u => u.UserName == userName);
             if(user == null || model == null || _manager.UserManager.GetRolesAsync(user).Result.Contains("Manager"))
             {

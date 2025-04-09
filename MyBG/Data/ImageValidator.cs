@@ -7,7 +7,7 @@ public static class ImageValidator
 {
     public static bool IsImage(MemoryStream memoryStream)
     {
-        bool isImage
+        bool isImage;
         if(memoryStream.CanSeek)
             memoryStream.Seek(0, SeekOrigin.Begin);
         try

@@ -113,7 +113,7 @@ namespace MyBG.Areas.Identity.Pages.Account.Manage
                 }
                 if (memoryStream.Length < 2097152)
                 {
-                    if(isImage && memoryStream.Length < 1)
+                    if(isImage && memoryStream.Length >= 1)
                         PFP.Image = memoryStream.ToArray();
                 }
                 else

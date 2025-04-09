@@ -361,7 +361,7 @@ namespace MyBG.Controllers
                 }
                 if (memoryStream.Length < 2097152)
                 {
-                    if(isImage && memoryStream.Length < 1)
+                    if(isImage && memoryStream.Length >= 1)
                         page.PageImageArr = memoryStream.ToArray();
                 }
                 else
@@ -530,8 +530,8 @@ namespace MyBG.Controllers
                 }
                 if (memoryStream.Length < 2097152)
                 {
-                    if(isImage && memoryStream.Length < 1)
-                        page.PageImageArr = memoryStream.ToArray();
+                    if(isImage && memoryStream.Length >= 1)
+                        model.PageImageArr = memoryStream.ToArray();
                 }
                 else
                 {
